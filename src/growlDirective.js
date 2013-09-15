@@ -6,7 +6,7 @@ angular.module("angular-growl").directive(["$rootScope", function ($rootScope) {
 					'	<div class="alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
 					'		<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' +
 					'		<h4 ng-if="message.heading">{{ message.heading |translate}}</h4>' +
-		            '            {{ message.text | translate}}' +
+		            '            {{ message.text}}' +
 					'	</div>' +
 					'</div>',
 		replace: false,
