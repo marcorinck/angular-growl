@@ -46,10 +46,6 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 				$scope.messages.push(message);
 			});
 
-			$rootScope.$on("growlMessages", function (event, messages) {
-				$scope.messages = $scope.messages.concat(messages);
-			});
-
 			$scope.deleteMessage = function (message) {
 				var index = $scope.messages.indexOf(message);
 				if (index > -1) {
@@ -69,14 +65,20 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 	};
 }]);
 
-angular.module("angular-growl").factory("growl", ["$rootScope", function ($rootScope) {
+angular.module("angular-growl").factory("growl", ["$rootScope", "$filter", function ($rootScope, $filter) {
+	var translate;
 
-	function broadcastMessage(message) {
-		$rootScope.$broadcast("growlMessage", message);
+	try {
+		translate = $filter("translate");
+	} catch (e){
+		//
 	}
 
-	function broadcastMessages(messages) {
-		$rootScope.$broadcast("growlMessages", messages);
+	function broadcastMessage(message) {
+		if (translate) {
+			message = translate(message);
+		}
+		$rootScope.$broadcast("growlMessage", message);
 	}
 
 	function sendMessage(text, severity) {
@@ -109,7 +111,7 @@ angular.module("angular-growl").factory("growl", ["$rootScope", function ($rootS
 
 	function addServerMessages(messages) {
 		if (messages && messages.length > 0) {
-			broadcastMessages(messages);
+			broadcastMessage(messages);
 		}
 	}
 
@@ -122,3 +124,4 @@ angular.module("angular-growl").factory("growl", ["$rootScope", function ($rootS
 
 	};
 }]);
+

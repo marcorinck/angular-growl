@@ -1,11 +1,17 @@
-angular.module("angular-growl").directive(["$rootScope", function ($rootScope) {
+angular.module("angular-growl").factory("growl", ["$rootScope", "$filter", function ($rootScope, $filter) {
+	var translate;
 
-	function broadcastMessage(message) {
-		$rootScope.$broadcast("growlMessage", message);
+	try {
+		translate = $filter("translate");
+	} catch (e){
+		//
 	}
 
-	function broadcastMessages(messages) {
-		$rootScope.$broadcast("growlMessages", messages);
+	function broadcastMessage(message) {
+		if (translate) {
+			message = translate(message);
+		}
+		$rootScope.$broadcast("growlMessage", message);
 	}
 
 	function sendMessage(text, severity) {
@@ -38,7 +44,7 @@ angular.module("angular-growl").directive(["$rootScope", function ($rootScope) {
 
 	function addServerMessages(messages) {
 		if (messages && messages.length > 0) {
-			broadcastMessages(messages);
+			broadcastMessage(messages);
 		}
 	}
 

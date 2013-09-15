@@ -1,14 +1,13 @@
-angular.module("angular-growl").directive(["$rootScope", function ($rootScope) {
+angular.module("angular-growl").directive("growl", ["$rootScope", function ($rootScope) {
 
 	return {
 		restrict: 'A',
 		template:   '<div class="growl" ng-show="showMessages()" style="position: fixed; top: 10px; right: 10px; float: right; width: 250px;">' +
-					'	<div class="alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
-					'		<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' +
-					'		<h4 ng-if="message.heading">{{ message.heading |translate}}</h4>' +
-		            '            {{ message.text}}' +
-					'	</div>' +
-					'</div>',
+			'	<div class="alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
+			'		<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' +
+			'            {{ message.text}}' +
+			'	</div>' +
+			'</div>',
 		replace: false,
 		scope: true,
 		controller: function ($scope) {
@@ -20,10 +19,6 @@ angular.module("angular-growl").directive(["$rootScope", function ($rootScope) {
 
 			$rootScope.$on("growlMessage", function (event, message) {
 				$scope.messages.push(message);
-			});
-
-			$rootScope.$on("growlMessages", function (event, messages) {
-				$scope.messages = $scope.messages.concat(messages);
 			});
 
 			$scope.deleteMessage = function (message) {
