@@ -23,14 +23,14 @@ angular.module('angular-growl', [])
 		}]);
 	}]);
 
-angular.module("angular-growl").directive(["$rootScope", function ($rootScope) {
+angular.module("angular-growl").directive("growl", ["$rootScope", function ($rootScope) {
 
 	return {
 		restrict: 'A',
 		template:   '<div class="growl" ng-show="showMessages()" style="position: fixed; top: 10px; right: 10px; float: right; width: 250px;">' +
 			'	<div class="alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
 			'		<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' +
-			'            {{ message.text | translate}}' +
+			'            {{ message.text}}' +
 			'	</div>' +
 			'</div>',
 		replace: false,
@@ -69,7 +69,7 @@ angular.module("angular-growl").directive(["$rootScope", function ($rootScope) {
 	};
 }]);
 
-angular.module("angular-growl").directive(["$rootScope", function ($rootScope) {
+angular.module("angular-growl").factory("growl", ["$rootScope", function ($rootScope) {
 
 	function broadcastMessage(message) {
 		$rootScope.$broadcast("growlMessage", message);
