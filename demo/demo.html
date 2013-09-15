@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>angular-growl demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com//twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="../build/angular-growl.js"></script>
+    <script src="demo.js"></script>
+</head>
+<body ng-app="demo">
+
+<div ng-controller="demoCtrl">
+    <div class="text-center container"><h1>angular-growl Demo site</h1></div>
+
+    <div growl></div>
+    <div class="container">
+        <div class="well row">
+            <label>
+                Message type<br/>
+            </label>
+
+            <div class="btn-group">
+                <label>
+                    <input type="radio" name="alertType" ng-model="alertType" value="success">
+                    success
+                </label>
+                <label>
+                    <input type="radio" name="alertType" ng-model="alertType" value="info">
+                    info
+                </label>
+                <label>
+                    <input type="radio" name="alertType" ng-model="alertType" value="warn">
+                    warn
+                </label>
+                <label>
+                    <input type="radio" name="alertType" ng-model="alertType" value="error">
+                    error
+                </label>
+            </div>
+
+            <label>
+                Message text
+                <input type="text" ng-model="message">
+            </label>
+
+            <button ng-click="createMessage()">Create Message</button>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
