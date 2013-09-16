@@ -22,6 +22,7 @@
 		"grunt-bump": "0.0.2",
 		"grunt-karma": "~0.7.x",
 		"grunt-ngmin": "0.0.2",
+		"grunt-push-release": "0.1.x",
 		"matchdep": "0.1.2"
 	}
 }

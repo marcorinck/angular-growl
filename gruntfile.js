@@ -114,6 +114,24 @@ module.exports = function (grunt) {
 				src: '<%= concat.core.dest %>',
 				dest: '<%= concat.core.dest %>'
 			}
+		},
+		push: {
+			options: {
+				files: ['package.json', 'bower.json'],
+				add: true,
+				addFiles: ['.'], // '.' for all files except ingored files in .gitignore
+				commit: true,
+				commitMessage: 'Release v%VERSION%',
+				commitFiles: ['package.json', 'bower.json', 'build/angular-onbeforeunload.js'], // '-a' for all files
+				createTag: true,
+				tagName: 'v%VERSION%',
+				tagMessage: 'Version %VERSION%',
+				push: true,
+				pushTo: 'origin',
+				npm: true,
+				npmTag: 'Release v%VERSION%',
+				gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d' // options to use with '$ git describe'
+			}
 		}
 	});
 
