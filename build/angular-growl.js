@@ -1,29 +1,30 @@
-angular.module('angular-growl', [])
-	.config(['$httpProvider', function ($httpProvider) {
-		$httpProvider.responseInterceptors.push(['$q', 'growl', function ($q, growl) {
-			function success(response) {
-				if (response.messages) {
-					growl.addServerMessages(response.messages);
-				}
-				return response;
+angular.module('angular-growl', []).config(['$httpProvider', function ($httpProvider) {
+	"use strict";
+
+	$httpProvider.responseInterceptors.push(['$q', 'growl', function ($q, growl) {
+		function success(response) {
+			if (response.messages) {
+				growl.addServerMessages(response.messages);
+			}
+			return response;
+		}
+
+		function error(response) {
+			if (response.messages) {
+				growl.addServerMessages(response.messages);
 			}
 
-			function error(response) {
-				if (response.messages) {
-					growl.addServerMessages(response.messages);
-				}
+			return $q.reject(response);
 
-				return $q.reject(response);
+		}
 
-			}
-
-			return function (promise) {
-				return promise.then(success, error);
-			};
-		}]);
+		return function (promise) {
+			return promise.then(success, error);
+		};
 	}]);
-
+}]);
 angular.module("angular-growl").directive("growl", ["$rootScope", function ($rootScope) {
+	"use strict";
 
 	return {
 		restrict: 'A',
@@ -60,12 +61,13 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 					'alert-error': message.isError,
 					'alert-info': message.isInfo
 				};
-			}
+			};
 		}
 	};
 }]);
-
 angular.module("angular-growl").factory("growl", ["$rootScope", "$filter", function ($rootScope, $filter) {
+	"use strict";
+
 	var translate;
 
 	try {
@@ -124,4 +126,3 @@ angular.module("angular-growl").factory("growl", ["$rootScope", "$filter", funct
 
 	};
 }]);
-

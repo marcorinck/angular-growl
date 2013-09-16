@@ -1,4 +1,5 @@
 angular.module("angular-growl").directive("growl", ["$rootScope", function ($rootScope) {
+	"use strict";
 
 	return {
 		restrict: 'A',
@@ -35,7 +36,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 					'alert-error': message.isError,
 					'alert-info': message.isInfo
 				};
-			}
+			};
 		}
 	};
 }]);

@@ -1,4 +1,6 @@
 angular.module("angular-growl").factory("growl", ["$rootScope", "$filter", function ($rootScope, $filter) {
+	"use strict";
+
 	var translate;
 
 	try {
