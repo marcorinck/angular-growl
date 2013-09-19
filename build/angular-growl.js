@@ -112,8 +112,11 @@ angular.module("angular-growl").factory("growl", ["$rootScope", "$filter", funct
 	}
 
 	function addServerMessages(messages) {
+		var i;
 		if (messages && messages.length > 0) {
-			broadcastMessage(messages);
+			for (i= 0;i< messages.length; i++) {
+				broadcastMessage(messages);
+			}
 		}
 	}
 
