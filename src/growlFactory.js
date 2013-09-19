@@ -16,7 +16,7 @@ angular.module("angular-growl").factory("growl", ["$rootScope", "$filter", funct
 		$rootScope.$broadcast("growlMessage", message);
 	}
 
-	function sendMessage(text, severity) {
+	function sendMessage(text, severity, ttl) {
 		var message = {
 			text: text,
 			isWarn: severity.isWarn,
@@ -24,24 +24,27 @@ angular.module("angular-growl").factory("growl", ["$rootScope", "$filter", funct
 			isInfo: severity.isInfo,
 			isSuccess: severity.isSuccess
 		};
-
+		if (ttl) {
+			message.ttl = ttl;
+		}
+		
 		broadcastMessage(message);
 	}
 
-	function addWarnMessage(text) {
-		sendMessage(text, {isWarn: true});
+	function addWarnMessage(text, ttl) {
+		sendMessage(text, {isWarn: true}, ttl);
 	}
 
-	function addErrorMessage(text) {
-		sendMessage(text, {isError: true});
+	function addErrorMessage(text, ttl) {
+		sendMessage(text, {isError: true}, ttl);
 	}
 
-	function addInfoMessage(text) {
-		sendMessage(text, {isInfo: true});
+	function addInfoMessage(text, ttl) {
+		sendMessage(text, {isInfo: true}, ttl);
 	}
 
-	function addSuccessMessage(text) {
-		sendMessage(text, {isSuccess: true});
+	function addSuccessMessage(text, ttl) {
+		sendMessage(text, {isSuccess: true}, ttl);
 	}
 
 	function addServerMessages(messages) {

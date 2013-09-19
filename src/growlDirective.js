@@ -11,7 +11,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 			'</div>',
 		replace: false,
 		scope: true,
-		controller: function ($scope) {
+		controller: function ($scope, $timeout) {
 			$scope.messages = [];
 
 			$scope.showMessages = function () {
@@ -20,6 +20,9 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 
 			$rootScope.$on("growlMessage", function (event, message) {
 				$scope.messages.push(message);
+				if (message.ttl) {
+                                    $timeout(function() { $scope.deleteMessage(message); }, message.ttl);
+                                }
 			});
 
 			$scope.deleteMessage = function (message) {
