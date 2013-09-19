@@ -24,7 +24,9 @@ angular.module("angular-growl").factory("growl", ["$rootScope", "$filter", funct
 			isInfo: severity.isInfo,
 			isSuccess: severity.isSuccess
 		};
-		if (ttl) message.ttl = ttl;
+		if (ttl) {
+			message.ttl = ttl;
+		}
 		
 		broadcastMessage(message);
 	}
