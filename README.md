@@ -15,7 +15,7 @@ Alternatively you can download the file (build/angular-growl.js) manually and in
 As angular-growl is based on its own angularJS module, you have to alter your dependency list when creating your application
 module:
 
-````
+````javascript
     ...
     var app = angular.module('myApp', ['angular-growl']);
     ...
@@ -23,7 +23,7 @@ module:
 
 Finally, you have to include the directive somewhere in your HTML like this:
 
-````
+````html
     <body>
         ...
         <div growl></div>
@@ -35,10 +35,11 @@ Finally, you have to include the directive somewhere in your HTML like this:
 
 ##Configuration
 
-You can configure a global timeout (TTL) when notifications should be automatically closed. To do this, you can configure
-it during config phase of angular bootstrap like this:
+Standard behaviour is, that all notifications need to be manually by the user. However, you can configure a global
+timeout (TTL) after which notifications should be automatically closed.  To do this, you have to configure this during
+config phase of angular bootstrap like this:
 
-````
+````javascript
     ...
     var app = angular.module('myApp', ['angular-growl']);
 
@@ -51,7 +52,7 @@ This sets a global timeout of 5 seconds after which every notification will be c
 
 However, you can override this for every single message if you want:
 
-````
+````javascript
     app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
         $scope.addSpecialWarnMessage = function() {
             growl.addWarnMessage("this is a special warn message, overriding global ttl setting", {ttl: 10000});
@@ -63,7 +64,7 @@ This sets a 10 second timeout, after which the notification will be automaticall
 
 If you have set a global TTL, you can disable automatic closing of single notifications by setting their ttl to -1:
 
-````
+````javascript
     app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
         $scope.addSpecialWarnMessage = function() {
             growl.addWarnMessage("this is a special warn message, which will not be closed automatically", {ttl: -1});
