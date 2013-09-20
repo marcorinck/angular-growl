@@ -28,16 +28,15 @@ Finally, you have to include the directive somewhere in your HTML like this:
         ...
         <div growl></div>
         ...
-
     </body>
-
 ````
 
 ##Configuration
 
-Standard behaviour is, that all notifications need to be manually by the user. However, you can configure a global
-timeout (TTL) after which notifications should be automatically closed.  To do this, you have to configure this during
-config phase of angular bootstrap like this:
+Standard behaviour is, that all notifications need to be closed manually by the user.
+
+However, you can configure a global timeout (TTL) after which notifications should be automatically closed.  To do
+this, you have to configure this during config phase of angular bootstrap like this:
 
 ````javascript
     ...
@@ -50,12 +49,12 @@ config phase of angular bootstrap like this:
 
 This sets a global timeout of 5 seconds after which every notification will be closed.
 
-However, you can override this for every single message if you want:
+You can override TTL generally for every single message if you want:
 
 ````javascript
     app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
         $scope.addSpecialWarnMessage = function() {
-            growl.addWarnMessage("this is a special warn message, overriding global ttl setting", {ttl: 10000});
+            growl.addWarnMessage("Override global ttl setting", {ttl: 10000});
         }
     }]);
 ````
@@ -67,7 +66,7 @@ If you have set a global TTL, you can disable automatic closing of single notifi
 ````javascript
     app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
         $scope.addSpecialWarnMessage = function() {
-            growl.addWarnMessage("this is a special warn message, which will not be closed automatically", {ttl: -1});
+            growl.addWarnMessage("this will not be closed automatically even when a global ttl is set", {ttl: -1});
         }
     }]);
 ````
