@@ -1,67 +1,76 @@
-angular.module("angular-growl").factory("growl", ["$rootScope", "$filter", function ($rootScope, $filter) {
+angular.module("angular-growl").provider("growl", function() {
 	"use strict";
 
-	var translate;
+	var _ttl = null;
 
-	try {
-		translate = $filter("translate");
-	} catch (e){
-		//
-	}
+	this.globalTimeToLive = function(ttl) {
+		_ttl = ttl;
+	};
 
-	function broadcastMessage(message) {
-		if (translate) {
-			message = translate(message);
+	this.$get = ["$rootScope", "$filter", function ($rootScope, $filter) {
+
+		var translate;
+
+		try {
+			translate = $filter("translate");
+		} catch (e) {
+			//
 		}
-		$rootScope.$broadcast("growlMessage", message);
-	}
 
-	function sendMessage(text, severity, ttl) {
-		var message = {
-			text: text,
-			isWarn: severity.isWarn,
-			isError: severity.isError,
-			isInfo: severity.isInfo,
-			isSuccess: severity.isSuccess
-		};
-		if (ttl) {
-			message.ttl = ttl;
+		function broadcastMessage(message) {
+			if (translate) {
+				message = translate(message);
+			}
+			$rootScope.$broadcast("growlMessage", message);
 		}
-		
-		broadcastMessage(message);
-	}
 
-	function addWarnMessage(text, ttl) {
-		sendMessage(text, {isWarn: true}, ttl);
-	}
+		function sendMessage(text, config, severity) {
+			var _config = config || {};
 
-	function addErrorMessage(text, ttl) {
-		sendMessage(text, {isError: true}, ttl);
-	}
+			var message = {
+				text: text,
+				isWarn: severity.isWarn,
+				isError: severity.isError,
+				isInfo: severity.isInfo,
+				isSuccess: severity.isSuccess,
+				ttl: _config.ttl || _ttl
+			};
 
-	function addInfoMessage(text, ttl) {
-		sendMessage(text, {isInfo: true}, ttl);
-	}
+			broadcastMessage(message);
+		}
 
-	function addSuccessMessage(text, ttl) {
-		sendMessage(text, {isSuccess: true}, ttl);
-	}
+		function addWarnMessage(text, config) {
+			sendMessage(text, config, {isWarn: true});
+		}
 
-	function addServerMessages(messages) {
-		var i;
-		if (messages && messages.length > 0) {
-			for (i= 0;i< messages.length; i++) {
-				broadcastMessage(messages);
+		function addErrorMessage(text, config) {
+			sendMessage(text, config, {isError: true});
+		}
+
+		function addInfoMessage(text, config) {
+			sendMessage(text, config, {isInfo: true});
+		}
+
+		function addSuccessMessage(text, config) {
+			sendMessage(text, config, {isSuccess: true});
+		}
+
+		function addServerMessages(messages) {
+			var i;
+			if (messages && messages.length > 0) {
+				for (i = 0; i < messages.length; i++) {
+					sendMessage(messages[i].text, undefined, messages[i].severity);
+				}
 			}
 		}
-	}
 
-	return {
-		addWarnMessage: addWarnMessage,
-		addErrorMessage: addErrorMessage,
-		addInfoMessage: addInfoMessage,
-		addSuccessMessage: addSuccessMessage,
-		addServerMessages: addServerMessages
+		return {
+			addWarnMessage: addWarnMessage,
+			addErrorMessage: addErrorMessage,
+			addInfoMessage: addInfoMessage,
+			addSuccessMessage: addSuccessMessage,
+			addServerMessages: addServerMessages
 
-	};
-}]);
+		};
+	}];
+});

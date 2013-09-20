@@ -43,6 +43,11 @@
                 <input type="text" ng-model="message">
             </label>
 
+            <label>
+                Timeout (this demo has a standard timeout of 2000 ms, enter a number to override standard or -1 for no timeout)
+                <input type="number" ng-model="timeout">
+            </label>
+
             <button ng-click="createMessage()">Create Message</button>
 
         </div>
