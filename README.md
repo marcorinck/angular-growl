@@ -4,13 +4,15 @@
 
 ##Features
 
+![Standard bootstrap 2.x styles](doc/screenshot.jpg)
+
 ##Installation
 
 You can install angular-growl with bower:
 
 > bower install angular-growl
 
-Alternatively you can download the file (build/angular-growl.js) manually and include it in your project.
+Alternatively you can download the file [build/angular-growl.js](build/angular-growl.js) manually and include it in your project.
 
 As angular-growl is based on its own angularJS module, you have to alter your dependency list when creating your application
 module:
