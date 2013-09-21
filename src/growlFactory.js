@@ -56,10 +56,29 @@ angular.module("angular-growl").provider("growl", function() {
 		}
 
 		function addServerMessages(messages) {
-			var i;
-			if (messages && messages.length > 0) {
-				for (i = 0; i < messages.length; i++) {
-					sendMessage(messages[i].text, undefined, messages[i].severity);
+			var i, message, severity, length;
+			length = messages.length;
+			if (messages && length > 0) {
+				for (i = 0; i < length; i++) {
+					message = messages[i];
+
+					if (message.text && message.severity) {
+						switch (message.severity) {
+							case "warn":
+								severity = {isWarn: true};
+								break;
+							case "success":
+								severity = {isSuccess: true};
+								break;
+							case "info":
+								severity = {isInfo: true};
+								break;
+							case "error":
+								severity = {isError: true};
+								break;
+						}
+						sendMessage(messages[i].text, undefined, severity);
+					}
 				}
 			}
 		}
