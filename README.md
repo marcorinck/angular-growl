@@ -6,42 +6,76 @@
 
 ![Standard bootstrap 2.x styles](doc/screenshot.jpg)
 
+* growl like notifications like in MacOS X
+* using standard bootstrap classes (alert, alert-info, alert-error, alert-success)
+* global or per message configuration of a timeout when message will be automatically closed
+* pre-defined $http-Interceptor to automatically handle $http responses for server-sent messages
+
+##Changelog
+
+**0.1.3**  - 20th Sept 2013
+
+* introducing ttl config option, fixes #2
+
 ##Installation
 
 You can install angular-growl with bower:
 
 > bower install angular-growl
 
-Alternatively you can download the file [build/angular-growl.js](build/angular-growl.js) manually and include it in your project.
+Alternatively you can download the files in the [build folder](build/) manually and include them in your project.
+
+````html
+    <html>
+        <head>
+            <link href="bootstrap.min.css" rel="stylesheet">
+            <script src="angular.min.js"></script>
+
+            <link href="angular-growl.css" rel="stylesheet">
+            <script src="angular-growl.js"></script>
+        </head>
+    </html>
+````
 
 As angular-growl is based on its own angularJS module, you have to alter your dependency list when creating your application
 module:
 
 ````javascript
-    ...
     var app = angular.module('myApp', ['angular-growl']);
-    ...
 ````
 
 Finally, you have to include the directive somewhere in your HTML like this:
 
 ````html
     <body>
-        ...
         <div growl></div>
-        ...
     </body>
+````
+
+##Usage
+
+Just let angular inject the growl Factory into your code and call the 4 functions that the factory provides accordingly:
+
+````javascript
+    app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
+        $scope.addSpecialWarnMessage = function() {
+            growl.addWarnMessage("This adds a warn message");
+            growl.addInfoMessage("This adds a info message");
+            growl.addSuccessMessage("This adds a success message");
+            growl.addErrorMessage("This adds a error message");
+        }
+    }]);
 ````
 
 ##Configuration
 
+###Automatic closing of notifications (timeout, ttl)
 Standard behaviour is, that all notifications need to be closed manually by the user.
 
 However, you can configure a global timeout (TTL) after which notifications should be automatically closed.  To do
 this, you have to configure this during config phase of angular bootstrap like this:
 
 ````javascript
-    ...
     var app = angular.module('myApp', ['angular-growl']);
 
     app.config(['growlProvider', function(growlProvider) {
@@ -72,3 +106,25 @@ If you have set a global TTL, you can disable automatic closing of single notifi
         }
     }]);
 ````
+###Handling of server sent notifications
+
+When doing $http requests, you can configure angular-growl to look automatically for messages in $http responses, so your
+business logic on the server is able to send messages/notifications to the client and you can display them automagically:
+
+````javascript
+    var app = angular.module('myApp', ['angular-growl']);
+
+    app.config(['growlProvider', '$httpProvider', function(growlProvider, $httpProvider) {
+        $httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
+    }]);
+````
+
+This adds a pre-defined angularJS HTTP interceptor that is called on every HTTP request and looks if response contains
+messages. Messages from the server need to satisfy these requirements:
+
+* response needs to have a "messages" attribute of type array in root of response
+* every message needs to have these attributes:
+  * text - message text
+  * severity - severity of message, needs to be one of the following strings: "warn", "info", "error", "success"
+
+Server messages will be created with default TTL.
