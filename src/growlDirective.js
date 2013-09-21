@@ -3,7 +3,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 
 	return {
 		restrict: 'A',
-		template:   '<div class="growl" ng-show="showMessages()" style="position: fixed; top: 10px; right: 10px; float: right; width: 250px;">' +
+		template:   '<div class="growl" ng-show="showMessages()">' +
 					'	<div class="alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
 					'		<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' +
 					'            {{ message.text}}' +
