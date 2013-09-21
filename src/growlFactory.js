@@ -77,7 +77,7 @@ angular.module("angular-growl").provider("growl", function() {
 								severity = {isError: true};
 								break;
 						}
-						sendMessage(messages[i].text, undefined, severity);
+						sendMessage(message.text, undefined, severity);
 					}
 				}
 			}
