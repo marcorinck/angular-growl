@@ -1,8 +1,9 @@
 var app = angular.module("demo", ["angular-growl"]);
 
-app.config(["growlProvider", function(growlProvider) {
+app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvider) {
 	console.log(growlProvider);
 	growlProvider.globalTimeToLive(2000);
+	$httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
 }]);
 
 app.controller("demoCtrl", function demoCtrl($scope, growl) {
