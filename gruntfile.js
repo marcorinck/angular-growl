@@ -120,7 +120,7 @@ module.exports = function (grunt) {
 		},
 		push: {
 			options: {
-				files: ['package.json', 'bower.json', 'build/angular-growl.js', 'build/angular-growl.min.js', 'build/angular-growl.css', 'build/angular-growl.min.css'],
+				files: ['package.json', 'bower.json'],
 				add: true,
 				addFiles: ['.'], // '.' for all files except ingored files in .gitignore
 				commit: true,
