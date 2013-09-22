@@ -14,6 +14,12 @@
 
 ##Changelog
 
+**0.2.0** - xxx Sept 2013
+
+* reworking, bugfixing and documenting handling of sever sent messages
+* externalizing css styles of growl class
+* provide minified versions of the build files in build folder
+
 **0.1.3**  - 20th Sept 2013
 
 * introducing ttl config option, fixes #2
