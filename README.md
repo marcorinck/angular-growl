@@ -14,7 +14,7 @@
 
 ##Changelog
 
-**0.2.0** - xxx Sept 2013
+**0.2.0** - 22nd Sept 2013
 
 * reworking, bugfixing and documenting handling of server sent messages/notifications
 * externalizing css styles of growl class
