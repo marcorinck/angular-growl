@@ -10,15 +10,15 @@
 * using standard bootstrap classes (alert, alert-info, alert-error, alert-success)
 * global or per message configuration of a timeout when message will be automatically closed
 * pre-defined $http-Interceptor to automatically handle $http responses for server-sent messages
-* only 1 kB after GZIP
+* < 1 kB after GZIP
 
 ##Changelog
 
 **0.2.0** - xxx Sept 2013
 
-* reworking, bugfixing and documenting handling of sever sent messages
+* reworking, bugfixing and documenting handling of server sent messages/notifications
 * externalizing css styles of growl class
-* provide minified versions of the build files in build folder
+* provide minified versions of js and css files in build folder
 
 **0.1.3**  - 20th Sept 2013
 
