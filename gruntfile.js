@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 				'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
 				' * <%= pkg.homepage %>\n' +
 				' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-				' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */\n'
+				' Licensed <%= pkg.license %>\n */\n'
 		},
 
 		build_dir: 'build',
@@ -24,7 +24,9 @@ module.exports = function (grunt) {
 				'src/growlDirective.js',
 				'src/growlFactory.js'
 			],
-
+			css:  [
+				'src/growl.css'
+			],
 			test: ['test/**/*.js']
 		},
 
@@ -39,13 +41,12 @@ module.exports = function (grunt) {
 				options: {
 					livereload: true
 				},
-				files: ['src/**/*.js', 'demo/*'],
-				tasks: ['jshint', 'karma:unit', 'concat', 'copy:demo']
+				files: ['src/**/*.*'],
+				tasks: ['jshint', 'karma:unit']
 			}
 		},
 
 		jshint: {
-
 			options: {
 				jshintrc: '.jshintrc'
 			},
@@ -80,24 +81,27 @@ module.exports = function (grunt) {
 			}
 		},
 
-		uglify: {
+		cssmin: {
 			core: {
 				files: {
-					'<%= build_dir %>/angular-growl.min.js': '<%= concat.core.dest %>'
+					'build/angular-growl.min.css': '<%= lib_files.css %>'
+				},
+				options: {
+					'banner': '<%= meta.banner %>',
+					'report': 'gzip'
 				}
 			}
 		},
 
-		copy: {
-			demo: {
-				files: [
-					{
-						src: 'angular-translate.js',
-						dest: 'demo/js/',
-						cwd: 'dist/',
-						expand: true
-					}
-				]
+		uglify: {
+			core: {
+				files: {
+					'<%= build_dir %>/angular-growl.min.js': '<%= concat.core.dest %>'
+				},
+				options: {
+					banner: '<%= meta.banner %>',
+					report: 'gzip'
+				}
 			}
 		},
 
@@ -109,7 +113,6 @@ module.exports = function (grunt) {
 		},
 
 		ngmin: {
-
 			core: {
 				src: '<%= concat.core.dest %>',
 				dest: '<%= concat.core.dest %>'
@@ -117,7 +120,7 @@ module.exports = function (grunt) {
 		},
 		push: {
 			options: {
-				files: ['package.json', 'bower.json'],
+				files: ['package.json', 'bower.json', 'build/angular-growl.js', 'build/angular-growl.min.js', 'build/angular-growl.css', 'build/angular-growl.min.css'],
 				add: true,
 				addFiles: ['.'], // '.' for all files except ingored files in .gitignore
 				commit: true,
@@ -146,15 +149,15 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('build:core', [
-		'jshint:core',
 		'concat:core',
 		'ngmin:core',
 		'concat:banner',
-		'uglify:core'
+		'uglify:core',
+		'cssmin:core'
 	]);
 
 	// For development purpose.
-	grunt.registerTask('dev', ['jshint', 'karma:unit', 'concat', 'copy:demo', 'watch:livereload']);
+	grunt.registerTask('dev', ['jshint', 'karma:unit', 'watch:livereload']);
 
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 };
