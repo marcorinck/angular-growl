@@ -76,6 +76,17 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 }]);
 ````
 
+If [angular-translate](https://github.com/PascalPrecht/angular-translate) is present, its filter is automatically called for translating of messages, so you have to provide
+only the key:
+
+````javascript
+app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
+    $scope.addSpecialWarnMessage = function() {
+        growl.addSuccessMessage("SAVE_SUCCESS_MESSAGE");
+        growl.addErrorMessage("VALIDATION_ERROR");
+    }
+}]);
+
 ##Configuration
 
 ###Automatic closing of notifications (timeout, ttl)
