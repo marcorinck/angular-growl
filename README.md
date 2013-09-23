@@ -86,6 +86,7 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
         growl.addErrorMessage("VALIDATION_ERROR");
     }
 }]);
+````
 
 ##Configuration
 
