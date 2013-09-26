@@ -12,9 +12,15 @@
 * automatic translation of messages if [angular-translate](https://github.com/PascalPrecht/angular-translate) filter is
 present, you only have to provide keys as messages, angular-translate will translate them
 * pre-defined $http-Interceptor to automatically handle $http responses for server-sent messages
+* automatic CSS animations when adding/closing notifications (only when using >= angularJS 1.2)
 * < 1 kB after GZIP
 
 ##Changelog
+
+**0.3.0** - xx Sept 2013
+
+* adding css animations support via ngAnimate (for angularJS >= 1.2)
+* ability to configure server message keys
 
 **0.2.0** - 22nd Sept 2013
 
@@ -127,6 +133,48 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
     }
 }]);
 ````
+
+###Animations
+
+Beginning with angularJS 1.2 growl messages can be automatically animated with CSS animations when adding and/or closing
+them. All you have to do is load the angular-animate.js provided by angularJS and add **ngAnimate** to your applications
+dependency list:
+
+````html
+<html>
+    <head>
+        <link href="bootstrap.min.css" rel="stylesheet">
+        <script src="angular.min.js"></script>
+        <script src="angular-animate.min.js"></script>
+
+        <link href="angular-growl.css" rel="stylesheet">
+        <script src="angular-growl.js"></script>
+    </head>
+</html>
+````
+
+````javascript
+var app = angular.module('myApp', ['angular-growl', 'ngAnimate']);
+````
+
+That's it. The angular-growl.css comes with a pre-defined animation of 0.5s to opacity.
+
+To configure the animations, just change the _growl-item.*_ classes in the css file to your preference. F.i. to change length
+of animation from 0.5s to 1s do this:
+
+````css
+.growl-item.ng-enter,
+.growl-item.ng-leave {
+    -webkit-transition:1s linear all;
+    -moz-transition:1s linear all;
+    -o-transition:1s linear all;
+    transition:1s linear all;
+}
+````
+
+Basically you can style your animations just as you like if ngAnimate can pick it up automatically. See the [ngAnimate
+docs](http://docs.angularjs.org/api/ngAnimate) for more info.
+
 ###Handling of server sent notifications
 
 When doing $http requests, you can configure angular-growl to look automatically for messages in $http responses, so your
@@ -141,7 +189,7 @@ app.config(['growlProvider', '$httpProvider', function(growlProvider, $httpProvi
 ````
 
 This adds a pre-defined angularJS HTTP interceptor that is called on every HTTP request and looks if response contains
-messages. Messages from the server need to satisfy these requirements:
+messages. Messages f rom the server need to satisfy these requirements:
 
 * response needs to have a "messages" attribute of type array in root of response
 * every message needs to have these attributes:
