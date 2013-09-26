@@ -21,4 +21,5 @@
 .growl-item.ng-leave,
 .growl-item.ng-enter.ng-enter-active {
     opacity:1;
+
 }
