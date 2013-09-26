@@ -198,7 +198,7 @@ response which results in 3 growl messages:
 	"messages": [
 		{"text":"this is a server message", "severity": "warn"},
 		{"text":"this is another server message", "severity": "info"},
-		{"etext":"and another", "severity": "error"}
+		{"text":"and another", "severity": "error"}
 	]
 }
 ````
