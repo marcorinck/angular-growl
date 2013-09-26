@@ -1,12 +1,29 @@
-var app = angular.module("demo", ["angular-growl", "ngAnimate"]);
+var app = angular.module("demo", ["angular-growl", "ngAnimate", "ngMockE2E"]);
 
-app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvider) {
-	console.log(growlProvider);
-	growlProvider.globalTimeToLive(2000);
+app.config(["growlProvider", "$httpProvider", "$injector", function(growlProvider, $httpProvider) {
+	growlProvider.globalTimeToLive(10000);
+	growlProvider.messagesKey("my-messages");
+	growlProvider.messageTextKey("messagetext");
+	growlProvider.messageSeverityKey("severity-level");
 	$httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
+
+
 }]);
 
-app.controller("demoCtrl", function demoCtrl($scope, growl) {
+app.run(function($httpBackend) {
+	//mocking backend to simulate handling server messages
+	$httpBackend.when('GET', '/mockbackend').respond({
+		someData: "fhsdfshfshdfs",
+		"my-messages": [
+			{"messagetext":"this is a server messages", "severity-level": "warn"},
+			{"messagetext":"this is another server messages", "severity-level": "info"},
+			{"messagetext":"and another", "severity-level": "error"}
+		]
+	});
+});
+
+app.controller("demoCtrl", function demoCtrl($scope, growl, $http) {
+
 	$scope.createMessage = function () {
 		var config = {};
 		if ($scope.timeout) {
@@ -28,5 +45,11 @@ app.controller("demoCtrl", function demoCtrl($scope, growl) {
 		if ($scope.alertType === "error") {
 			growl.addErrorMessage($scope.message, config);
 		}
-	}
+	};
+
+	$scope.simulateServerMessages= function() {
+		$http.get("/mockbackend").then(function(data) {
+			console.log(data);
+		});
+	};
 });
