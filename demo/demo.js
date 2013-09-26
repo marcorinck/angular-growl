@@ -1,7 +1,7 @@
 var app = angular.module("demo", ["angular-growl", "ngAnimate", "ngMockE2E"]);
 
-app.config(["growlProvider", "$httpProvider", "$injector", function(growlProvider, $httpProvider) {
-	growlProvider.globalTimeToLive(10000);
+app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvider) {
+	growlProvider.globalTimeToLive(2000);
 	growlProvider.messagesKey("my-messages");
 	growlProvider.messageTextKey("messagetext");
 	growlProvider.messageSeverityKey("severity-level");
@@ -15,8 +15,8 @@ app.run(function($httpBackend) {
 	$httpBackend.when('GET', '/mockbackend').respond({
 		someData: "fhsdfshfshdfs",
 		"my-messages": [
-			{"messagetext":"this is a server messages", "severity-level": "warn"},
-			{"messagetext":"this is another server messages", "severity-level": "info"},
+			{"messagetext":"this is a server message", "severity-level": "warn"},
+			{"messagetext":"this is another server message", "severity-level": "info"},
 			{"messagetext":"and another", "severity-level": "error"}
 		]
 	});

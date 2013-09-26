@@ -189,11 +189,31 @@ app.config(['growlProvider', '$httpProvider', function(growlProvider, $httpProvi
 ````
 
 This adds a pre-defined angularJS HTTP interceptor that is called on every HTTP request and looks if response contains
-messages. Messages f rom the server need to satisfy these requirements:
+messages. Interceptor looks in response for a "messages" array of objects with "text" and "severity" key. This is an example
+response which results in 3 growl messages:
 
-* response needs to have a "messages" attribute of type array in root of response
-* every message needs to have these attributes:
-  * text - message text
-  * severity - severity of message, needs to be one of the following strings: "warn", "info", "error", "success"
+````json
+{
+    "someOtherData": {...},
+	"messages": [
+		{"text":"this is a server message", "severity": "warn"},
+		{"text":"this is another server message", "severity": "info"},
+		{"etext":"and another", "severity": "error"}
+	]
+}
+````
+
+You can configure the keys, the interceptor is looking for like this:
+
+````javascript
+var app = angular.module("demo", ["angular-growl"]);
+
+app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvider) {
+	growlProvider.messagesKey("my-messages");
+	growlProvider.messageTextKey("messagetext");
+	growlProvider.messageSeverityKey("severity-level");
+	$httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
+}]);
+````
 
 Server messages will be created with default TTL.
