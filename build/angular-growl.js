@@ -1,7 +1,7 @@
 /**
- * angular-growl - v0.2.0 - 2013-09-22
+ * angular-growl - v0.3.0 - 2013-09-26
  * https://github.com/marcorinck/angular-growl
- * Copyright (c) 2013 ; Licensed MIT
+ * Copyright (c) 2013 Marco Rinck; Licensed MIT
  */
 angular.module('angular-growl', []);
 angular.module('angular-growl').directive('growl', [
@@ -10,7 +10,7 @@ angular.module('angular-growl').directive('growl', [
     'use strict';
     return {
       restrict: 'A',
-      template: '<div class="growl" ng-show="showMessages()">' + '\t<div class="alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '\t\t<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' + '            {{ message.text}}' + '\t</div>' + '</div>',
+      template: '<div class="growl">' + '\t<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '\t\t<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' + '            {{ message.text}}' + '\t</div>' + '</div>',
       replace: false,
       scope: true,
       controller: [
@@ -18,9 +18,6 @@ angular.module('angular-growl').directive('growl', [
         '$timeout',
         function ($scope, $timeout) {
           $scope.messages = [];
-          $scope.showMessages = function () {
-            return $scope.messages.length > 0;
-          };
           $rootScope.$on('growlMessage', function (event, message) {
             $scope.messages.push(message);
             if (message.ttl && message.ttl !== -1) {
@@ -49,24 +46,34 @@ angular.module('angular-growl').directive('growl', [
 ]);
 angular.module('angular-growl').provider('growl', function () {
   'use strict';
-  var _ttl = null;
+  var _ttl = null, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity';
   this.globalTimeToLive = function (ttl) {
     _ttl = ttl;
+  };
+  this.messagesKey = function (messagesKey) {
+    _messagesKey = messagesKey;
+  };
+  this.messageTextKey = function (messageTextKey) {
+    _messageTextKey = messageTextKey;
+  };
+  this.messageSeverityKey = function (messageSeverityKey) {
+    _messageSeverityKey = messageSeverityKey;
   };
   this.serverMessagesInterceptor = [
     '$q',
     'growl',
     function ($q, growl) {
-      function success(response) {
-        if (response.messages) {
-          growl.addServerMessages(response.messages);
+      function checkResponse(response) {
+        if (response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
+          growl.addServerMessages(response.data[_messagesKey]);
         }
+      }
+      function success(response) {
+        checkResponse(response);
         return response;
       }
       function error(response) {
-        if (response.messages && response.messages.length > 0) {
-          growl.addServerMessages(response.messages);
-        }
+        checkResponse(response);
         return $q.reject(response);
       }
       return function (promise) {
@@ -90,15 +97,15 @@ angular.module('angular-growl').provider('growl', function () {
         $rootScope.$broadcast('growlMessage', message);
       }
       function sendMessage(text, config, severity) {
-        var _config = config || {};
-        var message = {
-            text: text,
-            isWarn: severity.isWarn,
-            isError: severity.isError,
-            isInfo: severity.isInfo,
-            isSuccess: severity.isSuccess,
-            ttl: _config.ttl || _ttl
-          };
+        var _config = config || {}, message;
+        message = {
+          text: text,
+          isWarn: severity.isWarn,
+          isError: severity.isError,
+          isInfo: severity.isInfo,
+          isSuccess: severity.isSuccess,
+          ttl: _config.ttl || _ttl
+        };
         broadcastMessage(message);
       }
       function addWarnMessage(text, config) {
@@ -118,8 +125,8 @@ angular.module('angular-growl').provider('growl', function () {
         length = messages.length;
         for (i = 0; i < length; i++) {
           message = messages[i];
-          if (message.text && message.severity) {
-            switch (message.severity) {
+          if (message[_messageTextKey] && message[_messageSeverityKey]) {
+            switch (message[_messageSeverityKey]) {
             case 'warn':
               severity = { isWarn: true };
               break;
@@ -133,7 +140,7 @@ angular.module('angular-growl').provider('growl', function () {
               severity = { isError: true };
               break;
             }
-            sendMessage(message.text, undefined, severity);
+            sendMessage(message[_messageTextKey], undefined, severity);
           }
         }
       }
