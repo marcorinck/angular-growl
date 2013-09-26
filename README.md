@@ -17,6 +17,11 @@ present, you only have to provide keys as messages, angular-translate will trans
 
 ##Changelog
 
+**0.3.0** - xx Sept 2013
+
+* adding css animations support via ngAnimate (for angularJS >= 1.2)
+* ability to configure server message keys
+
 **0.2.0** - 22nd Sept 2013
 
 * reworking, bugfixing and documenting handling of server sent messages/notifications
