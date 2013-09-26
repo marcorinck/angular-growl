@@ -12,6 +12,7 @@
 * automatic translation of messages if [angular-translate](https://github.com/PascalPrecht/angular-translate) filter is
 present, you only have to provide keys as messages, angular-translate will translate them
 * pre-defined $http-Interceptor to automatically handle $http responses for server-sent messages
+* automatic CSS animations when adding/closing notifications (only when using >= angularJS 1.2)
 * < 1 kB after GZIP
 
 ##Changelog
@@ -131,8 +132,8 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 ###Animations
 
 Beginning with angularJS 1.2 growl messages can be automatically animated with CSS animations when adding and/or closing
-them. All you have to do is add **ngAnimate** to your applications dependency list (and load the angular-animate.js provided
-by angularJS):
+them. All you have to do is load the angular-animate.js provided by angularJS and add **ngAnimate** to your applications
+dependency list:
 
 ````html
 <html>
@@ -153,7 +154,7 @@ var app = angular.module('myApp', ['angular-growl', 'ngAnimate']);
 
 That's it. The angular-growl.css comes with a pre-defined animation of 0.5s to opacity.
 
-To configure the animations, just change the **growl-item.* ** classes in the css file to your preference. F.i. to change length
+To configure the animations, just change the _growl-item.*_ classes in the css file to your preference. F.i. to change length
 of animation from 0.5s to 1s do this:
 
 ````css
@@ -165,6 +166,9 @@ of animation from 0.5s to 1s do this:
     transition:1s linear all;
 }
 ````
+
+Basically you can style your animations just as you like if ngAnimate can pick it up automatically. See the [ngAnimate
+docs](http://docs.angularjs.org/api/ngAnimate) for more info.
 
 ###Handling of server sent notifications
 
