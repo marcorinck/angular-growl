@@ -127,6 +127,45 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
     }
 }]);
 ````
+
+###Animations
+
+Beginning with angularJS 1.2 growl messages can be automatically animated with CSS animations when adding and/or closing
+them. All you have to do is add **ngAnimate** to your applications dependency list (and load the angular-animate.js provided
+by angularJS):
+
+````html
+<html>
+    <head>
+        <link href="bootstrap.min.css" rel="stylesheet">
+        <script src="angular.min.js"></script>
+        <script src="angular-animate.min.js"></script>
+
+        <link href="angular-growl.css" rel="stylesheet">
+        <script src="angular-growl.js"></script>
+    </head>
+</html>
+````
+
+````javascript
+var app = angular.module('myApp', ['angular-growl', 'ngAnimate']);
+````
+
+That's it. The angular-growl.css comes with a pre-defined animation of 0.5s to opacity.
+
+To configure the animations, just change the **growl-item.* ** classes in the css file to your preference. F.i. to change length
+of animation from 0.5s to 1s do this:
+
+````css
+.growl-item.ng-enter,
+.growl-item.ng-leave {
+    -webkit-transition:1s linear all;
+    -moz-transition:1s linear all;
+    -o-transition:1s linear all;
+    transition:1s linear all;
+}
+````
+
 ###Handling of server sent notifications
 
 When doing $http requests, you can configure angular-growl to look automatically for messages in $http responses, so your

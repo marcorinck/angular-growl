@@ -1,4 +1,4 @@
-var app = angular.module("demo", ["angular-growl"]);
+var app = angular.module("demo", ["angular-growl", "ngAnimate"]);
 
 app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvider) {
 	console.log(growlProvider);
