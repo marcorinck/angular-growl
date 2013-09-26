@@ -189,7 +189,7 @@ app.config(['growlProvider', '$httpProvider', function(growlProvider, $httpProvi
 ````
 
 This adds a pre-defined angularJS HTTP interceptor that is called on every HTTP request and looks if response contains
-messages. Messages from the server need to satisfy these requirements:
+messages. Messages f rom the server need to satisfy these requirements:
 
 * response needs to have a "messages" attribute of type array in root of response
 * every message needs to have these attributes:
