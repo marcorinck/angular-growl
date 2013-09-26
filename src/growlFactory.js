@@ -6,22 +6,48 @@ angular.module("angular-growl").provider("growl", function() {
 		_messageTextKey = 'text',
 		_messageSeverityKey = 'severity';
 
+	/**
+	 * set a global timeout (time to live) after which messages will be automatically closed
+	 *
+	 * @param ttl in seconds
+	 */
 	this.globalTimeToLive = function(ttl) {
 		_ttl = ttl;
 	};
 
+	/**
+	 * sets the key in $http response the serverMessagesInterecptor is looking for server-sent messages, value of key
+	 * needs to be an array of objects
+	 *
+	 * @param {string} messagesKey default: messages
+	 */
 	this.messagesKey = function(messagesKey) {
 		_messagesKey = messagesKey;
 	};
 
+	/**
+	 * sets the key in server sent messages the serverMessagesInterecptor is looking for text of message
+	 *
+	 * @param {string} messageTextKey default: text
+	 */
 	this.messageTextKey = function(messageTextKey) {
 		_messageTextKey = messageTextKey;
 	};
 
+	/**
+	 * sets the key in server sent messages the serverMessagesInterecptor is looking for severity of message
+	 *
+	 * @param {string} messageSeverityKey default: severity
+	 */
 	this.messageSeverityKey = function(messageSeverityKey) {
 		_messageSeverityKey = messageSeverityKey;
 	};
 
+	/**
+	 * $http interceptor that can be added to array of $http interceptors during config phase of application
+	 * via $httpProvider.responseInterceptors.push(...)
+	 *
+	 */
 	this.serverMessagesInterceptor = ['$q', 'growl', function ($q, growl) {
 		function checkResponse(response) {
 			if (response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
