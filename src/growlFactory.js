@@ -2,6 +2,7 @@ angular.module("angular-growl").provider("growl", function() {
 	"use strict";
 
 	var _ttl = null,
+        _disableEscaping = false,
 		_messagesKey = 'messages',
 		_messageTextKey = 'text',
 		_messageSeverityKey = 'severity';
@@ -13,6 +14,15 @@ angular.module("angular-growl").provider("growl", function() {
 	 */
 	this.globalTimeToLive = function(ttl) {
 		_ttl = ttl;
+	};
+
+	/**
+	 * set whether message content should be escaped (default) or not
+	 *
+	 * @param {bool} true to make all messages not escapes
+	 */
+	this.globalDisableEscaping = function(disableEscaping) {
+		_disableEscaping = disableEscaping;
 	};
 
 	/**
@@ -95,7 +105,8 @@ angular.module("angular-growl").provider("growl", function() {
 				isError: severity.isError,
 				isInfo: severity.isInfo,
 				isSuccess: severity.isSuccess,
-				ttl: _config.ttl || _ttl
+				ttl: _config.ttl || _ttl,
+				disableEscaping: _config.disableEscaping || _disableEscaping
 			};
 
 			broadcastMessage(message);
