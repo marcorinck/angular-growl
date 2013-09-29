@@ -45,6 +45,7 @@ Alternatively you can download the files in the [build folder](build/) manually 
     <head>
         <link href="bootstrap.min.css" rel="stylesheet">
         <script src="angular.min.js"></script>
+        <script src="angular-sanitize.min.js"></script>
 
         <link href="angular-growl.css" rel="stylesheet">
         <script src="angular-growl.js"></script>
