@@ -29,8 +29,8 @@ app.controller("demoCtrl", function demoCtrl($scope, growl, $http) {
 		if ($scope.timeout) {
 			config.ttl = $scope.timeout;
 		}
-		if ($scope.disableEscaping) {
-			config.disableEscaping = $scope.disableEscaping;
+		if ($scope.enableHtml) {
+			config.enableHtml = $scope.enableHtml;
 		}
 
 		if ($scope.alertType === "success") {

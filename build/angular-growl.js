@@ -10,7 +10,7 @@ angular.module('angular-growl').directive('growl', [
     'use strict';
     return {
       restrict: 'A',
-      template: '<div class="growl">' + '\t<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '\t\t<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' + '<div ng-switch="message.disableEscaping">' + '<div ng-switch-when="true" ng-bind-html="message.text"></div>' + '<div ng-switch-default ng-bind="message.text"></div>' + '</div>' + '\t</div>' + '</div>',
+      template: '<div class="growl">' + '\t<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '\t\t<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' + '           <div ng-switch="message.enableHtml">' + '               <div ng-switch-when="true" ng-bind-html="message.text"></div>' + '               <div ng-switch-default ng-bind="message.text"></div>' + '           </div>' + '\t</div>' + '</div>',
       replace: false,
       scope: true,
       controller: [
@@ -46,12 +46,12 @@ angular.module('angular-growl').directive('growl', [
 ]);
 angular.module('angular-growl').provider('growl', function () {
   'use strict';
-  var _ttl = null, _disableEscaping = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity';
+  var _ttl = null, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity';
   this.globalTimeToLive = function (ttl) {
     _ttl = ttl;
   };
-  this.globalDisableEscaping = function (disableEscaping) {
-    _disableEscaping = disableEscaping;
+  this.globalEnableHtml = function (enableHtml) {
+    _enableHtml = enableHtml;
   };
   this.messagesKey = function (messagesKey) {
     _messagesKey = messagesKey;
@@ -108,7 +108,7 @@ angular.module('angular-growl').provider('growl', function () {
           isInfo: severity.isInfo,
           isSuccess: severity.isSuccess,
           ttl: _config.ttl || _ttl,
-          disableEscaping: _config.disableEscaping || _disableEscaping
+          enableHtml: _config.enableHtml || _enableHtml
         };
         broadcastMessage(message);
       }
