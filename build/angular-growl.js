@@ -1,16 +1,16 @@
 /**
- * angular-growl - v0.3.0 - 2013-09-26
+ * angular-growl - v0.3.0 - 2013-09-30
  * https://github.com/marcorinck/angular-growl
  * Copyright (c) 2013 Marco Rinck; Licensed MIT
  */
-angular.module('angular-growl', []);
+angular.module('angular-growl', ['ngSanitize']);
 angular.module('angular-growl').directive('growl', [
   '$rootScope',
   function ($rootScope) {
     'use strict';
     return {
       restrict: 'A',
-      template: '<div class="growl">' + '\t<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '\t\t<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' + '            {{ message.text}}' + '\t</div>' + '</div>',
+      template: '<div class="growl">' + '\t<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '\t\t<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' + '           <div ng-switch="message.enableHtml">' + '               <div ng-switch-when="true" ng-bind-html="message.text"></div>' + '               <div ng-switch-default ng-bind="message.text"></div>' + '           </div>' + '\t</div>' + '</div>',
       replace: false,
       scope: true,
       controller: [
@@ -46,9 +46,12 @@ angular.module('angular-growl').directive('growl', [
 ]);
 angular.module('angular-growl').provider('growl', function () {
   'use strict';
-  var _ttl = null, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity';
+  var _ttl = null, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity';
   this.globalTimeToLive = function (ttl) {
     _ttl = ttl;
+  };
+  this.globalEnableHtml = function (enableHtml) {
+    _enableHtml = enableHtml;
   };
   this.messagesKey = function (messagesKey) {
     _messagesKey = messagesKey;
@@ -104,7 +107,8 @@ angular.module('angular-growl').provider('growl', function () {
           isError: severity.isError,
           isInfo: severity.isInfo,
           isSuccess: severity.isSuccess,
-          ttl: _config.ttl || _ttl
+          ttl: _config.ttl || _ttl,
+          enableHtml: _config.enableHtml || _enableHtml
         };
         broadcastMessage(message);
       }

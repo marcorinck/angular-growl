@@ -4,3 +4,4 @@ components
 bower_components
 .idea
 *.iml
+nbproject
