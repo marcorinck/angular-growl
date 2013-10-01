@@ -1,5 +1,5 @@
 /**
- * angular-growl - v0.3.0 - 2013-09-26
+ * angular-growl - v0.3.0 - 2013-10-01
  * https://github.com/marcorinck/angular-growl
  * Copyright (c) 2013 Marco Rinck; Licensed MIT
  */
@@ -92,7 +92,7 @@ angular.module('angular-growl').provider('growl', function () {
       }
       function broadcastMessage(message) {
         if (translate) {
-          message = translate(message);
+          message.text = translate(message.text);
         }
         $rootScope.$broadcast('growlMessage', message);
       }
