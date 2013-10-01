@@ -34,8 +34,10 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 			$scope.computeClasses = function (message) {
 				return {
 					'alert-success': message.isSuccess,
-					'alert-error': message.isError,
-					'alert-info': message.isInfo
+					'alert-error': message.isError, //bootstrap 2.3
+					'alert-danger': message.isError, //bootstrap 3
+					'alert-info': message.isInfo,
+					'alert-warning': message.isWarn //bootstrap 3, no effect in bs 2.3
 				};
 			};
 		}
