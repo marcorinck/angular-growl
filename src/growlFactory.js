@@ -81,7 +81,7 @@ angular.module("angular-growl").provider("growl", function() {
 
 		function broadcastMessage(message) {
 			if (translate) {
-				message = translate(message);
+				message.text = translate(message.text);
 			}
 			$rootScope.$broadcast("growlMessage", message);
 		}
