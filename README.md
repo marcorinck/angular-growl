@@ -17,6 +17,11 @@ present, you only have to provide keys as messages, angular-translate will trans
 
 ##Changelog
 
+**0.3.1** - 1st Oct 2013
+
+* bugfix: translating of messages works again
+* change: also set alert css classes introduced by bootstrap 3
+
 **0.3.0** - 26th Sept 2013
 
 * adding css animations support via ngAnimate (for angularJS >= 1.2)
