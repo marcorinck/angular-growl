@@ -1,5 +1,5 @@
 /**
- * angular-growl - v0.3.0 - 2013-10-01
+ * angular-growl - v0.3.1 - 2013-10-01
  * https://github.com/marcorinck/angular-growl
  * Copyright (c) 2013 Marco Rinck; Licensed MIT
  */
@@ -36,7 +36,9 @@ angular.module('angular-growl').directive('growl', [
             return {
               'alert-success': message.isSuccess,
               'alert-error': message.isError,
-              'alert-info': message.isInfo
+              'alert-danger': message.isError,
+              'alert-info': message.isInfo,
+              'alert-warning': message.isWarn
             };
           };
         }
