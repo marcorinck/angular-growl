@@ -5,6 +5,7 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 	growlProvider.messagesKey("my-messages");
 	growlProvider.messageTextKey("messagetext");
 	growlProvider.messageSeverityKey("severity-level");
+	growlProvider.onlyUniqueMessages(true);
 	$httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
 
 

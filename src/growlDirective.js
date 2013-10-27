@@ -11,15 +11,34 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 					'</div>',
 		replace: false,
 		scope: true,
-		controller: function ($scope, $timeout) {
+		controller: ['$scope', '$timeout', 'growl', function ($scope, $timeout, growl) {
+			var onlyUnique = growl.onlyUnique();
+
 			$scope.messages = [];
 
-			$rootScope.$on("growlMessage", function (event, message) {
+			function addMessage(message) {
 				$scope.messages.push(message);
+
 				if (message.ttl && message.ttl !== -1) {
 					$timeout(function () {
 						$scope.deleteMessage(message);
 					}, message.ttl);
+				}
+			}
+			$rootScope.$on("growlMessage", function (event, message) {
+				var found;
+				if (onlyUnique) {
+					angular.forEach($scope.messages, function(msg, index) {
+						if (message.text === msg.text && message.severity === msg.severity) {
+							found = true;
+						}
+					});
+
+					if (!found) {
+						addMessage(message);
+					}
+				} else {
+					addMessage(message);
 				}
 			});
 
@@ -33,13 +52,13 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 
 			$scope.computeClasses = function (message) {
 				return {
-					'alert-success': message.isSuccess,
-					'alert-error': message.isError, //bootstrap 2.3
-					'alert-danger': message.isError, //bootstrap 3
-					'alert-info': message.isInfo,
-					'alert-warning': message.isWarn //bootstrap 3, no effect in bs 2.3
+					'alert-success': message.severity === "success",
+					'alert-error': message.severity === "error", //bootstrap 2.3
+					'alert-danger': message.severity === "error", //bootstrap 3
+					'alert-info': message.severity === "info",
+					'alert-warning': message.severity === "warn" //bootstrap 3, no effect in bs 2.3
 				};
 			};
-		}
+		}]
 	};
 }]);

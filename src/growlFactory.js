@@ -4,7 +4,8 @@ angular.module("angular-growl").provider("growl", function() {
 	var _ttl = null,
 		_messagesKey = 'messages',
 		_messageTextKey = 'text',
-		_messageSeverityKey = 'severity';
+		_messageSeverityKey = 'severity',
+		_onlyUniqueMessages = true;
 
 	/**
 	 * set a global timeout (time to live) after which messages will be automatically closed
@@ -41,6 +42,10 @@ angular.module("angular-growl").provider("growl", function() {
 	 */
 	this.messageSeverityKey = function(messageSeverityKey) {
 		_messageSeverityKey = messageSeverityKey;
+	};
+
+	this.onlyUniqueMessages = function(onlyUniqueMessages) {
+		_onlyUniqueMessages = onlyUniqueMessages;
 	};
 
 	/**
@@ -91,10 +96,7 @@ angular.module("angular-growl").provider("growl", function() {
 
 			message = {
 				text: text,
-				isWarn: severity.isWarn,
-				isError: severity.isError,
-				isInfo: severity.isInfo,
-				isSuccess: severity.isSuccess,
+				severity: severity,
 				ttl: _config.ttl || _ttl
 			};
 
@@ -108,7 +110,7 @@ angular.module("angular-growl").provider("growl", function() {
 		 * @param {{ttl: number}} config
 		 */
 		function addWarnMessage(text, config) {
-			sendMessage(text, config, {isWarn: true});
+			sendMessage(text, config, "warn");
 		}
 
 		/**
@@ -118,7 +120,7 @@ angular.module("angular-growl").provider("growl", function() {
 		 * @param {{ttl: number}} config
 		 */
 		function addErrorMessage(text, config) {
-			sendMessage(text, config, {isError: true});
+			sendMessage(text, config, "error");
 		}
 
 		/**
@@ -128,7 +130,7 @@ angular.module("angular-growl").provider("growl", function() {
 		 * @param {{ttl: number}} config
 		 */
 		function addInfoMessage(text, config) {
-			sendMessage(text, config, {isInfo: true});
+			sendMessage(text, config, "info");
 		}
 
 		/**
@@ -138,7 +140,7 @@ angular.module("angular-growl").provider("growl", function() {
 		 * @param {{ttl: number}} config
 		 */
 		function addSuccessMessage(text, config) {
-			sendMessage(text, config, {isSuccess: true});
+			sendMessage(text, config, "success");
 		}
 
 		/**
@@ -155,16 +157,16 @@ angular.module("angular-growl").provider("growl", function() {
 				if (message[_messageTextKey] && message[_messageSeverityKey]) {
 					switch (message[_messageSeverityKey]) {
 						case "warn":
-							severity = {isWarn: true};
+							severity = "warn";
 							break;
 						case "success":
-							severity = {isSuccess: true};
+							severity = "success";
 							break;
 						case "info":
-							severity = {isInfo: true};
+							severity = "info";
 							break;
 						case "error":
-							severity = {isError: true};
+							severity = "error";
 							break;
 					}
 					sendMessage(message[_messageTextKey], undefined, severity);
@@ -172,12 +174,17 @@ angular.module("angular-growl").provider("growl", function() {
 			}
 		}
 
+		function onlyUnique() {
+			return _onlyUniqueMessages;
+		}
+
 		return {
 			addWarnMessage: addWarnMessage,
 			addErrorMessage: addErrorMessage,
 			addInfoMessage: addInfoMessage,
 			addSuccessMessage: addSuccessMessage,
-			addServerMessages: addServerMessages
+			addServerMessages: addServerMessages,
+			onlyUnique: onlyUnique
 		};
 	}];
 });
