@@ -30,6 +30,9 @@ app.controller("demoCtrl", function demoCtrl($scope, growl, $http) {
 		if ($scope.timeout) {
 			config.ttl = $scope.timeout;
 		}
+		if ($scope.enableHtml) {
+			config.enableHtml = $scope.enableHtml;
+		}
 
 		if ($scope.alertType === "success") {
 			growl.addSuccessMessage($scope.message, config);

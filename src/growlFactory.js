@@ -2,10 +2,10 @@ angular.module("angular-growl").provider("growl", function() {
 	"use strict";
 
 	var _ttl = null,
+        _enableHtml = false,
 		_messagesKey = 'messages',
 		_messageTextKey = 'text',
-		_messageSeverityKey = 'severity',
-		_onlyUniqueMessages = true;
+		_messageSeverityKey = 'severity';
 
 	/**
 	 * set a global timeout (time to live) after which messages will be automatically closed
@@ -14,6 +14,15 @@ angular.module("angular-growl").provider("growl", function() {
 	 */
 	this.globalTimeToLive = function(ttl) {
 		_ttl = ttl;
+	};
+
+	/**
+	 * set whether HTML in message content should be escaped (default) or binded as-is
+	 *
+	 * @param {bool} true to make all messages not escapes
+	 */
+	this.globalEnableHtml = function(enableHtml) {
+		_enableHtml = enableHtml;
 	};
 
 	/**
@@ -97,7 +106,8 @@ angular.module("angular-growl").provider("growl", function() {
 			message = {
 				text: text,
 				severity: severity,
-				ttl: _config.ttl || _ttl
+				ttl: _config.ttl || _ttl,
+				enableHtml: _config.enableHtml || _enableHtml
 			};
 
 			broadcastMessage(message);
