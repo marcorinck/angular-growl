@@ -21,7 +21,7 @@ present, you only have to provide keys as messages, angular-translate will trans
 
 * updated dependency to angularJS 1.2.x, angular-growl does not work with 1.0.x anymore (BREAKING CHANGE)
 * new option: only display unique messages, which is the new default, disable to allow same message more than once (BREAKING CHANGE)
-* new option: allow html tags in messages, default is off  you need to
+* new option: allow html tags in messages, default is off, allows to use HTML tags in messages
 
 **0.3.1** - 1st Oct 2013
 
@@ -32,16 +32,6 @@ present, you only have to provide keys as messages, angular-translate will trans
 
 * adding css animations support via ngAnimate (for angularJS >= 1.2)
 * ability to configure server message keys
-
-**0.2.0** - 22nd Sept 2013
-
-* reworking, bugfixing and documenting handling of server sent messages/notifications
-* externalizing css styles of growl class
-* provide minified versions of js and css files in build folder
-
-**0.1.3**  - 20th Sept 2013
-
-* introducing ttl config option, fixes #2
 
 ##Installation
 
