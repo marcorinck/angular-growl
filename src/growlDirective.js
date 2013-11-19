@@ -9,7 +9,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 					'       <div ng-switch="message.enableHtml">' +
 					'           <div ng-switch-when="true" ng-bind-html="message.text"></div>' +
 					'           <div ng-switch-default ng-bind="message.text"></div>' +
-					'       </div>' +					
+					'       </div>' +
 					'	</div>' +
 					'</div>',
 		replace: false,
@@ -31,7 +31,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 			$rootScope.$on("growlMessage", function (event, message) {
 				var found;
 				if (onlyUnique) {
-					angular.forEach($scope.messages, function(msg, index) {
+					angular.forEach($scope.messages, function(msg) {
 						if (message.text === msg.text && message.severity === msg.severity) {
 							found = true;
 						}
