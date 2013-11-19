@@ -1,1 +1,1 @@
-angular.module('angular-growl', ['ngSanitize']);
+angular.module('angular-growl', []);

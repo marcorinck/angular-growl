@@ -23,7 +23,7 @@ app.run(function($httpBackend) {
 	});
 });
 
-app.controller("demoCtrl", function demoCtrl($scope, growl, $http) {
+app.controller("demoCtrl",  function demoCtrl($scope, growl, $http) {
 
 	$scope.createMessage = function () {
 		var config = {};

@@ -17,6 +17,12 @@ present, you only have to provide keys as messages, angular-translate will trans
 
 ##Changelog
 
+**0.4.0** - 19th Nov 2013
+
+* updated dependency to angularJS 1.2.x, angular-growl does not work with 1.0.x anymore (BREAKING CHANGE)
+* new option: only display unique messages, which is the new default, disable to allow same message more than once (BREAKING CHANGE)
+* new option: allow html tags in messages, default is off  you need to
+
 **0.3.1** - 1st Oct 2013
 
 * bugfix: translating of messages works again
@@ -102,8 +108,25 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 
 ##Configuration
 
+###Only unique messages
+
+* Default: true
+
+Accept only unique messages as a new message. If a message is already displayed (text and severity are the same) then this
+message will not be added to the displayed message list. Set to false, to always display all messages regardless if they
+are already displayed or not:
+
+````javascript
+var app = angular.module('myApp', ['angular-growl']);
+
+app.config(['growlProvider', function(growlProvider) {
+    growlProvider.onlyUniqueMessages(false);
+}]);
+````
+
 ###Automatic closing of notifications (timeout, ttl)
-Standard behaviour is, that all notifications need to be closed manually by the user.
+
+* Default: none (all messages need to be closed manually by the user.)
 
 However, you can configure a global timeout (TTL) after which notifications should be automatically closed.  To do
 this, you have to configure this during config phase of angular bootstrap like this:
@@ -136,6 +159,33 @@ If you have set a global TTL, you can disable automatic closing of single notifi
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
     $scope.addSpecialWarnMessage = function() {
         growl.addWarnMessage("this will not be closed automatically even when a global ttl is set", {ttl: -1});
+    }
+}]);
+````
+
+###Allow HTML in messages
+
+* Default: false
+
+Turn this on to be able to display html tags in messages, default behaviour is to NOT display HTML.
+
+For this to work, you have to declare a dependency to "ngSanitize" (and load the extra javascript) in your own application
+module!
+
+````javascript
+var app = angular.module('myApp', ['angular-growl', 'ngSanitize']);
+
+app.config(['growlProvider', function(growlProvider) {
+    growlProvider.globalEnableHtml(true);
+}]);
+````
+
+You can override the global option and allow HTML tags in single messages too:
+
+````javascript
+app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
+    $scope.addSpecialWarnMessage = function() {
+        growl.addWarnMessage("<strong>This is a HTML message</strong>", {enableHtml: true});
     }
 }]);
 ````

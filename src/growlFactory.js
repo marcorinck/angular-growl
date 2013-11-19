@@ -5,7 +5,8 @@ angular.module("angular-growl").provider("growl", function() {
         _enableHtml = false,
 		_messagesKey = 'messages',
 		_messageTextKey = 'text',
-		_messageSeverityKey = 'severity';
+		_messageSeverityKey = 'severity',
+		_onlyUniqueMessages = true;
 
 	/**
 	 * set a global timeout (time to live) after which messages will be automatically closed
@@ -19,7 +20,7 @@ angular.module("angular-growl").provider("growl", function() {
 	/**
 	 * set whether HTML in message content should be escaped (default) or binded as-is
 	 *
-	 * @param {bool} true to make all messages not escapes
+	 * @param {bool} enableHtml true to make all messages not escapes
 	 */
 	this.globalEnableHtml = function(enableHtml) {
 		_enableHtml = enableHtml;
