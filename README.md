@@ -269,6 +269,12 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 	growlProvider.messageTextKey("messagetext");
 	growlProvider.messageSeverityKey("severity-level");
 	$httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
+	growlProvider.messageClasses({
+		'success' : 'success-notification',
+		'error' : 'error-notification bold',
+		'info' : 'info-notification',
+		'warn' : 'warn-notification'
+	});
 }]);
 ````
 

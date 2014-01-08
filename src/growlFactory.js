@@ -6,7 +6,13 @@ angular.module("angular-growl").provider("growl", function() {
 		_messagesKey = 'messages',
 		_messageTextKey = 'text',
 		_messageSeverityKey = 'severity',
-		_onlyUniqueMessages = true;
+		_onlyUniqueMessages = true,
+		_messageClasses = {
+			'success' : 'alert-success',
+			'error' : 'alert-error alert-danger',
+			'info' : 'alert-info',
+			'warn' : 'alert-warning'
+		};
 
 	/**
 	 * set a global timeout (time to live) after which messages will be automatically closed
@@ -56,6 +62,19 @@ angular.module("angular-growl").provider("growl", function() {
 
 	this.onlyUniqueMessages = function(onlyUniqueMessages) {
 		_onlyUniqueMessages = onlyUniqueMessages;
+	};
+
+	/**
+	 * Sets association between message severity and applied css class
+	 *
+	 * @param {object} classes default: twitter bootstrap alert classes:
+	 *		'success' : 'alert-success',
+	 *		'error'   : 'alert-error alert-danger',
+	 *		'info'    : 'alert-info',
+	 *		'warn'    : 'alert-warning' 
+	 */
+	this.messageClasses = function (messageClasses) {
+		_messageClasses = messageClasses;
 	};
 
 	/**
@@ -189,13 +208,22 @@ angular.module("angular-growl").provider("growl", function() {
 			return _onlyUniqueMessages;
 		}
 
+		/**
+		 * Returns object with severity levels
+		 * as keys and CSS classes (string) as values
+		 */
+		function messageClasses() {
+			return _messageClasses;
+		}
+
 		return {
 			addWarnMessage: addWarnMessage,
 			addErrorMessage: addErrorMessage,
 			addInfoMessage: addInfoMessage,
 			addSuccessMessage: addSuccessMessage,
 			addServerMessages: addServerMessages,
-			onlyUnique: onlyUnique
+			onlyUnique: onlyUnique,
+			messageClasses: messageClasses
 		};
 	}];
 });

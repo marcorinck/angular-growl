@@ -54,13 +54,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 			};
 
 			$scope.computeClasses = function (message) {
-				return {
-					'alert-success': message.severity === "success",
-					'alert-error': message.severity === "error", //bootstrap 2.3
-					'alert-danger': message.severity === "error", //bootstrap 3
-					'alert-info': message.severity === "info",
-					'alert-warning': message.severity === "warn" //bootstrap 3, no effect in bs 2.3
-				};
+				return growl.messageClasses()[message.severity];
 			};
 		}]
 	};

@@ -1,7 +1,7 @@
 /**
- * angular-growl - v0.4.0 - 2013-11-19
+ * angular-growl - v0.4.0 - 2014-01-08
  * https://github.com/marcorinck/angular-growl
- * Copyright (c) 2013 Marco Rinck; Licensed MIT
+ * Copyright (c) 2014 Marco Rinck; Licensed MIT
  */
 angular.module('angular-growl', []);
 angular.module('angular-growl').directive('growl', [
@@ -50,13 +50,7 @@ angular.module('angular-growl').directive('growl', [
             }
           };
           $scope.computeClasses = function (message) {
-            return {
-              'alert-success': message.severity === 'success',
-              'alert-error': message.severity === 'error',
-              'alert-danger': message.severity === 'error',
-              'alert-info': message.severity === 'info',
-              'alert-warning': message.severity === 'warn'
-            };
+            return growl.messageClasses()[message.severity];
           };
         }
       ]
@@ -65,7 +59,12 @@ angular.module('angular-growl').directive('growl', [
 ]);
 angular.module('angular-growl').provider('growl', function () {
   'use strict';
-  var _ttl = null, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true;
+  var _ttl = null, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageClasses = {
+      'success': 'alert-success',
+      'error': 'alert-error alert-danger',
+      'info': 'alert-info',
+      'warn': 'alert-warning'
+    };
   this.globalTimeToLive = function (ttl) {
     _ttl = ttl;
   };
@@ -83,6 +82,9 @@ angular.module('angular-growl').provider('growl', function () {
   };
   this.onlyUniqueMessages = function (onlyUniqueMessages) {
     _onlyUniqueMessages = onlyUniqueMessages;
+  };
+  this.messageClasses = function (messageClasses) {
+    _messageClasses = messageClasses;
   };
   this.serverMessagesInterceptor = [
     '$q',
@@ -170,13 +172,17 @@ angular.module('angular-growl').provider('growl', function () {
       function onlyUnique() {
         return _onlyUniqueMessages;
       }
+      function messageClasses() {
+        return _messageClasses;
+      }
       return {
         addWarnMessage: addWarnMessage,
         addErrorMessage: addErrorMessage,
         addInfoMessage: addInfoMessage,
         addSuccessMessage: addSuccessMessage,
         addServerMessages: addServerMessages,
-        onlyUnique: onlyUnique
+        onlyUnique: onlyUnique,
+        messageClasses: messageClasses
       };
     }
   ];
