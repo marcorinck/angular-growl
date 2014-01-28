@@ -6,7 +6,6 @@ angular.module("angular-growl").provider("growl", function() {
 		_messagesKey = 'messages',
 		_messageTextKey = 'text',
 		_messageSeverityKey = 'severity',
-		_messageVariableKey = 'variables',
 		_onlyUniqueMessages = true;
 
 	/**
@@ -55,15 +54,6 @@ angular.module("angular-growl").provider("growl", function() {
 		_messageSeverityKey = messageSeverityKey;
 	};
 
-	/**
-	 * sets the key in server sent messages the serverMessagesInterecptor is looking for variables to inject in the message
-	 *
-	 * @param  {string} messageVariableKey default: variables
-	 */
-  this.messageVariableKey = function (messageVariableKey) {
-    _messageVariableKey = messageVariableKey;
-  };
-
 	this.onlyUniqueMessages = function(onlyUniqueMessages) {
 		_onlyUniqueMessages = onlyUniqueMessages;
 	};
@@ -106,7 +96,7 @@ angular.module("angular-growl").provider("growl", function() {
 
 		function broadcastMessage(message) {
 			if (translate) {
-				message.text = translate(message.text, message.variables);
+				message.text = translate(message.text);
 			}
 			$rootScope.$broadcast("growlMessage", message);
 		}
@@ -118,8 +108,7 @@ angular.module("angular-growl").provider("growl", function() {
 				text: text,
 				severity: severity,
 				ttl: _config.ttl || _ttl,
-				enableHtml: _config.enableHtml || _enableHtml,
-        variables: _config.variables || {}
+				enableHtml: _config.enableHtml || _enableHtml
 			};
 
 			broadcastMessage(message);
@@ -198,12 +187,7 @@ angular.module("angular-growl").provider("growl", function() {
 					else {
 						severity = 'error';
 					}
-
-					var config = {};
-          // were any variables included
-          config.variables = message[_messageVariableKey] || {};
-
-					sendMessage(message[_messageTextKey], config, severity);
+					sendMessage(message[_messageTextKey], undefined, severity);
 				}
 			}
 		}
