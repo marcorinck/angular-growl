@@ -6,6 +6,7 @@ angular.module("angular-growl").provider("growl", function() {
 		_messagesKey = 'messages',
 		_messageTextKey = 'text',
 		_messageSeverityKey = 'severity',
+		_messageVariableKey = 'variables',
 		_onlyUniqueMessages = true;
 
 	/**
@@ -54,6 +55,15 @@ angular.module("angular-growl").provider("growl", function() {
 		_messageSeverityKey = messageSeverityKey;
 	};
 
+	/**
+	 * sets the key in server sent messages the serverMessagesInterecptor is looking for variables to inject in the message
+	 *
+	 * @param  {string} messageVariableKey default: variables
+	 */
+  this.messageVariableKey = function (messageVariableKey) {
+    _messageVariableKey = messageVariableKey;
+  };
+
 	this.onlyUniqueMessages = function(onlyUniqueMessages) {
 		_onlyUniqueMessages = onlyUniqueMessages;
 	};
@@ -96,7 +106,7 @@ angular.module("angular-growl").provider("growl", function() {
 
 		function broadcastMessage(message) {
 			if (translate) {
-				message.text = translate(message.text);
+				message.text = translate(message.text, message.variables);
 			}
 			$rootScope.$broadcast("growlMessage", message);
 		}
@@ -108,7 +118,8 @@ angular.module("angular-growl").provider("growl", function() {
 				text: text,
 				severity: severity,
 				ttl: _config.ttl || _ttl,
-				enableHtml: _config.enableHtml || _enableHtml
+				enableHtml: _config.enableHtml || _enableHtml,
+        variables: _config.variables || {}
 			};
 
 			broadcastMessage(message);
@@ -165,22 +176,34 @@ angular.module("angular-growl").provider("growl", function() {
 			for (i = 0; i < length; i++) {
 				message = messages[i];
 
-				if (message[_messageTextKey] && message[_messageSeverityKey]) {
-					switch (message[_messageSeverityKey]) {
-						case "warn":
-							severity = "warn";
-							break;
-						case "success":
-							severity = "success";
-							break;
-						case "info":
-							severity = "info";
-							break;
-						case "error":
-							severity = "error";
-							break;
+
+				if (message[_messageTextKey]) {
+					if (message[_messageSeverityKey]) {
+						switch (message[_messageSeverityKey]) {
+							case "warn":
+								severity = "warn";
+								break;
+							case "success":
+								severity = "success";
+								break;
+							case "info":
+								severity = "info";
+								break;
+							case "error":
+								severity = "error";
+								break;
+						}
 					}
-					sendMessage(message[_messageTextKey], undefined, severity);
+					// default the severity to error if no severity is provided
+					else {
+						severity = 'error';
+					}
+
+					var config = {};
+          // were any variables included
+          config.variables = message[_messageVariableKey] || {};
+
+					sendMessage(message[_messageTextKey], config, severity);
 				}
 			}
 		}
