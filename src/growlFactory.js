@@ -176,27 +176,20 @@ angular.module("angular-growl").provider("growl", function() {
 			for (i = 0; i < length; i++) {
 				message = messages[i];
 
-
-				if (message[_messageTextKey]) {
-					if (message[_messageSeverityKey]) {
-						switch (message[_messageSeverityKey]) {
-							case "warn":
-								severity = "warn";
-								break;
-							case "success":
-								severity = "success";
-								break;
-							case "info":
-								severity = "info";
-								break;
-							case "error":
-								severity = "error";
-								break;
-						}
-					}
-					// default the severity to error if no severity is provided
-					else {
-						severity = 'error';
+				if (message[_messageTextKey] && message[_messageSeverityKey]) {
+					switch (message[_messageSeverityKey]) {
+						case "warn":
+							severity = "warn";
+							break;
+						case "success":
+							severity = "success";
+							break;
+						case "info":
+							severity = "info";
+							break;
+						case "error":
+							severity = "error";
+							break;
 					}
 
 					var config = {};
