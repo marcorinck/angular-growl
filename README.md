@@ -189,7 +189,6 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
     }
 }]);
 ````
-````
 
 ###Close text for assisitive technology (AT)
 
