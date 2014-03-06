@@ -75,7 +75,7 @@ Finally, you have to include the directive somewhere in your HTML like this:
 
 ````html
 <body>
-    <div growl></div>
+    <div growl aria-live="polite"></div>
 </body>
 ````
 
@@ -187,6 +187,20 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
     $scope.addSpecialWarnMessage = function() {
         growl.addWarnMessage("<strong>This is a HTML message</strong>", {enableHtml: true});
     }
+}]);
+````
+
+###Close text for assisitive technology (AT)
+
+* Default: 'Close'
+
+Label for close button. If angular-translate is present, provide a key for the translate text
+
+````javascript
+var app = angular.module('myApp', ['angular-growl']);
+
+app.config(['growlProvider', function(growlProvider) {
+    growlProvider.closeButtonText('Lukk');
 }]);
 ````
 
