@@ -1,12 +1,22 @@
 angular.module("angular-growl").provider("growl", function() {
 	"use strict";
 
-	var _ttl = null,
-        _enableHtml = false,
+	var _closeButtonText = 'close',
+		_ttl = null,
+    _enableHtml = false,
 		_messagesKey = 'messages',
 		_messageTextKey = 'text',
 		_messageSeverityKey = 'severity',
 		_onlyUniqueMessages = true;
+
+	/**
+	 * set the text used for the close button for screen readers
+	 *
+	 * @param {string} closeButtonText default: close
+	 */
+	this.closeButtonText = function(closeButtonText) {
+		_closeButtonText = closeButtonText;
+	};
 
 	/**
 	 * set a global timeout (time to live) after which messages will be automatically closed
@@ -97,6 +107,7 @@ angular.module("angular-growl").provider("growl", function() {
 		function broadcastMessage(message) {
 			if (translate) {
 				message.text = translate(message.text);
+				message.closeButtonText = translate(message.closeButtonText);
 			}
 			$rootScope.$broadcast("growlMessage", message);
 		}
@@ -105,6 +116,7 @@ angular.module("angular-growl").provider("growl", function() {
 			var _config = config || {}, message;
 
 			message = {
+				closeButtonText: _config.closeButtonText || _closeButtonText,
 				text: text,
 				severity: severity,
 				ttl: _config.ttl || _ttl,
