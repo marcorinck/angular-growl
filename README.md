@@ -56,7 +56,6 @@ Alternatively you can download the files in the [build folder](build/) manually 
     <head>
         <link href="bootstrap.min.css" rel="stylesheet">
         <script src="angular.min.js"></script>
-        <script src="angular-sanitize.min.js"></script>
 
         <link href="angular-growl.css" rel="stylesheet">
         <script src="angular-growl.js"></script>
@@ -169,11 +168,8 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 
 Turn this on to be able to display html tags in messages, default behaviour is to NOT display HTML.
 
-For this to work, you have to declare a dependency to "ngSanitize" (and load the extra javascript) in your own application
-module!
-
 ````javascript
-var app = angular.module('myApp', ['angular-growl', 'ngSanitize']);
+var app = angular.module('myApp', ['angular-growl']);
 
 app.config(['growlProvider', function(growlProvider) {
     growlProvider.globalEnableHtml(true);

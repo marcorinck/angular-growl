@@ -1,12 +1,13 @@
 /**
- * angular-growl - v0.4.0 - 2013-11-19
+ * angular-growl - v0.4.0 - 2014-03-13
  * https://github.com/marcorinck/angular-growl
- * Copyright (c) 2013 Marco Rinck; Licensed MIT
+ * Copyright (c) 2014 Marco Rinck; Licensed MIT
  */
 angular.module('angular-growl', []);
 angular.module('angular-growl').directive('growl', [
   '$rootScope',
-  function ($rootScope) {
+  '$sce',
+  function ($rootScope, $sce) {
     'use strict';
     return {
       restrict: 'A',
@@ -21,6 +22,7 @@ angular.module('angular-growl').directive('growl', [
           var onlyUnique = growl.onlyUnique();
           $scope.messages = [];
           function addMessage(message) {
+            message.text = $sce.trustAsHtml(message.text);
             $scope.messages.push(message);
             if (message.ttl && message.ttl !== -1) {
               $timeout(function () {
