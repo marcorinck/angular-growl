@@ -1,7 +1,7 @@
 /**
- * angular-growl - v0.4.0 - 2013-11-19
+ * angular-growl - v0.4.0 - 2014-03-12
  * https://github.com/marcorinck/angular-growl
- * Copyright (c) 2013 Marco Rinck; Licensed MIT
+ * Copyright (c) 2014 Marco Rinck; Licensed MIT
  */
 angular.module('angular-growl', []);
 angular.module('angular-growl').directive('growl', [
@@ -10,7 +10,7 @@ angular.module('angular-growl').directive('growl', [
     'use strict';
     return {
       restrict: 'A',
-      template: '<div class="growl">' + '\t<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '\t\t<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' + '       <div ng-switch="message.enableHtml">' + '           <div ng-switch-when="true" ng-bind-html="message.text"></div>' + '           <div ng-switch-default ng-bind="message.text"></div>' + '       </div>' + '\t</div>' + '</div>',
+      template: '<div class="growl">' + '\t<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '\t\t<button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' + '       <div ng-switch="message.enableHtml">' + '           <div ng-switch-when="true" ng-bind-html="message.text"></div>' + '           <div ng-switch-default ng-bind="message.text"></div>' + '       </div>' + '\t</div>' + '</div>',
       replace: false,
       scope: true,
       controller: [
@@ -65,12 +65,15 @@ angular.module('angular-growl').directive('growl', [
 ]);
 angular.module('angular-growl').provider('growl', function () {
   'use strict';
-  var _ttl = null, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true;
+  var _ttl = null, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _disableCloseButton = false;
   this.globalTimeToLive = function (ttl) {
     _ttl = ttl;
   };
   this.globalEnableHtml = function (enableHtml) {
     _enableHtml = enableHtml;
+  };
+  this.globalDisableCloseButton = function (disableCloseButton) {
+    _disableCloseButton = disableCloseButton;
   };
   this.messagesKey = function (messagesKey) {
     _messagesKey = messagesKey;
@@ -127,7 +130,8 @@ angular.module('angular-growl').provider('growl', function () {
           text: text,
           severity: severity,
           ttl: _config.ttl || _ttl,
-          enableHtml: _config.enableHtml || _enableHtml
+          enableHtml: _config.enableHtml || _enableHtml,
+          disableCloseButton: _config.disableCloseButton || _disableCloseButton
         };
         broadcastMessage(message);
       }
