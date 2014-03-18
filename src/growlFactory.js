@@ -191,10 +191,10 @@ angular.module("angular-growl").provider("growl", function() {
 							case "error":
 								severity = "error";
 								break;
-						} else {
+						}
+					} else {
 							// default the severity to error if no severity is provided
 							severity = 'error';
-						}
 					}
 					sendMessage(message[_messageTextKey], undefined, severity);
 				}
