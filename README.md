@@ -204,7 +204,7 @@ You can override the global option and hide the close button in single messages 
      }
  }]);
  ````
- 
+
 ###Animations
 
 Beginning with angularJS 1.2 growl messages can be automatically animated with CSS animations when adding and/or closing them. All you have to do is load the angular-animate.js provided by angularJS and add **ngAnimate** to your applications dependency list:
@@ -286,6 +286,15 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 ````
 
 Server messages will be created with default TTL.
+
+#Thanks
+Thanks Marco Rinck for the original code, the following people have contributed to this project:
+
+* [orangeskins](https://github.com/orangeskins)
+* [adamalbrecht](https://github.com/adamalbrecht)
+* [m0ppers](https://github.com/m0ppers)
+* [lbehnke](https://github.com/lbehnke)
+* [rorymadden](https://github.com/rorymadden)
 
 # License
 Copyright (C) 2014 Marco Rinck
