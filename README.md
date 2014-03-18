@@ -1,52 +1,5 @@
-#angular-growl
-
-> growl like notifications for angularJS projects, using bootstrap alert classes
-
-##Features
-
-![Standard bootstrap 2.x styles](doc/screenshot.jpg)
-
-* growl like notifications like in MacOS X
-* using standard bootstrap classes (alert, alert-info, alert-error, alert-success)
-* global or per message configuration of a timeout when message will be automatically closed
-* automatic translation of messages if [angular-translate](https://github.com/PascalPrecht/angular-translate) filter is
-present, you only have to provide keys as messages, angular-translate will translate them
-* pre-defined $http-Interceptor to automatically handle $http responses for server-sent messages
-* automatic CSS animations when adding/closing notifications (only when using >= angularJS 1.2)
-* < 1 kB after GZIP
-
-##Changelog
-
-**0.5.0** - 18 Mar 2014
-* Manually merged some pull requests from the original branch
-* Fixed bower.json file to include itself and the css file
-* [BREAK] changed the function names to add growl notifications to be a shorter (success, info, warning, error VS addSuccessMessage, addInfoMessage...)
-
-**0.4.0** - 19th Nov 2013
-
-* updated dependency to angularJS 1.2.x, angular-growl does not work with 1.0.x anymore (BREAKING CHANGE)
-* new option: only display unique messages, which is the new default, disable to allow same message more than once (BREAKING CHANGE)
-* new option: allow html tags in messages, default is off  you need to
-
-**0.3.1** - 1st Oct 2013
-
-* bugfix: translating of messages works again
-* change: also set alert css classes introduced by bootstrap 3
-
-**0.3.0** - 26th Sept 2013
-
-* adding css animations support via ngAnimate (for angularJS >= 1.2)
-* ability to configure server message keys
-
-**0.2.0** - 22nd Sept 2013
-
-* reworking, bugfixing and documenting handling of server sent messages/notifications
-* externalizing css styles of growl class
-* provide minified versions of js and css files in build folder
-
-**0.1.3**  - 20th Sept 2013
-
-* introducing ttl config option, fixes #2
+#angular-growl-2
+Growl like notifications for angularJS projects, using bootstrap alert classes, originally developed by Marco Rinck
 
 ##Installation
 
@@ -82,6 +35,19 @@ Finally, you have to include the directive somewhere in your HTML like this:
     <div growl></div>
 </body>
 ````
+
+##Features
+
+![Standard bootstrap 2.x styles](doc/screenshot.jpg)
+
+* growl like notifications like in MacOS X
+* using standard bootstrap classes (alert, alert-info, alert-error, alert-success)
+* global or per message configuration of a timeout when message will be automatically closed
+* automatic translation of messages if [angular-translate](https://github.com/PascalPrecht/angular-translate) filter is
+present, you only have to provide keys as messages, angular-translate will translate them
+* pre-defined $http-Interceptor to automatically handle $http responses for server-sent messages
+* automatic CSS animations when adding/closing notifications (only when using >= angularJS 1.2)
+* < 1 kB after GZIP
 
 ##Usage
 
@@ -286,6 +252,39 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 ````
 
 Server messages will be created with default TTL.
+
+##Changelog
+
+**0.5.0** - 18 Mar 2014
+* Manually merged some pull requests from the original branch
+* Fixed bower.json file to include itself and the css file
+* [BREAK] changed the function names to add growl notifications to be a shorter (success, info, warning, error VS addSuccessMessage, addInfoMessage...)
+
+**0.4.0** - 19th Nov 2013
+
+* updated dependency to angularJS 1.2.x, angular-growl does not work with 1.0.x anymore (BREAKING CHANGE)
+* new option: only display unique messages, which is the new default, disable to allow same message more than once (BREAKING CHANGE)
+* new option: allow html tags in messages, default is off  you need to
+
+**0.3.1** - 1st Oct 2013
+
+* bugfix: translating of messages works again
+* change: also set alert css classes introduced by bootstrap 3
+
+**0.3.0** - 26th Sept 2013
+
+* adding css animations support via ngAnimate (for angularJS >= 1.2)
+* ability to configure server message keys
+
+**0.2.0** - 22nd Sept 2013
+
+* reworking, bugfixing and documenting handling of server sent messages/notifications
+* externalizing css styles of growl class
+* provide minified versions of js and css files in build folder
+
+**0.1.3**  - 20th Sept 2013
+
+* introducing ttl config option, fixes #2
 
 #Thanks
 Thanks Marco Rinck for the original code, the following people have contributed to this project:
