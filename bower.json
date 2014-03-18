@@ -17,7 +17,6 @@
 		"package.json",
 		"gruntfile.js",
 		"karma.conf.js",
-		"bower.json",
 		"demo",
 		".gitignore"
 	],
