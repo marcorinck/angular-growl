@@ -17,6 +17,11 @@ present, you only have to provide keys as messages, angular-translate will trans
 
 ##Changelog
 
+**0.5.0** - 18 Mar 2014
+* Manually merged some pull requests from the original branch
+* Fixed bower.json file to include itself and the css file
+* [BREAK] changed the function names to add growl notifications to be a shorter (success, info, warning, error VS addSuccessMessage, addInfoMessage...)
+
 **0.4.0** - 19th Nov 2013
 
 * updated dependency to angularJS 1.2.x, angular-growl does not work with 1.0.x anymore (BREAKING CHANGE)
@@ -85,10 +90,10 @@ Just let angular inject the growl Factory into your code and call the 4 function
 ````javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
     $scope.addSpecialWarnMessage = function() {
-        growl.addWarnMessage("This adds a warn message");
-        growl.addInfoMessage("This adds a info message");
-        growl.addSuccessMessage("This adds a success message");
-        growl.addErrorMessage("This adds a error message");
+        growl.warning("This adds a warn message");
+        growl.info("This adds a info message");
+        growl.success("This adds a success message");
+        growl.error("This adds a error message");
     }
 }]);
 ````
@@ -107,9 +112,7 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 
 ##Configuration
 
-###Only unique messages
-
-* Default: true
+###Only unique messages [default: true]
 
 Accept only unique messages as a new message. If a message is already displayed (text and severity are the same) then this
 message will not be added to the displayed message list. Set to false, to always display all messages regardless if they
@@ -123,12 +126,9 @@ app.config(['growlProvider', function(growlProvider) {
 }]);
 ````
 
-###Automatic closing of notifications (timeout, ttl)
+###Automatic closing of notifications (timeout, ttl) [default: none]
 
-* Default: none (all messages need to be closed manually by the user.)
-
-However, you can configure a global timeout (TTL) after which notifications should be automatically closed.  To do
-this, you have to configure this during config phase of angular bootstrap like this:
+However, you can configure a global timeout (TTL) after which notifications should be automatically closed.  To do this, you have to configure this during config phase of angular bootstrap like this:
 
 ````javascript
 var app = angular.module('myApp', ['angular-growl']);
@@ -145,7 +145,7 @@ You can override TTL generally for every single message if you want:
 ````javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
     $scope.addSpecialWarnMessage = function() {
-        growl.addWarnMessage("Override global ttl setting", {ttl: 10000});
+        growl.warning("Override global ttl setting", {ttl: 10000});
     }
 }]);
 ````
@@ -157,16 +157,14 @@ If you have set a global TTL, you can disable automatic closing of single notifi
 ````javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
     $scope.addSpecialWarnMessage = function() {
-        growl.addWarnMessage("this will not be closed automatically even when a global ttl is set", {ttl: -1});
+        growl.warning("this will not be closed automatically even when a global ttl is set", {ttl: -1});
     }
 }]);
 ````
 
-###Allow HTML in messages
+###Allow HTML in messages [default: false]
 
-* Default: false
-
-Turn this on to be able to display html tags in messages, default behaviour is to NOT display HTML.
+Turn this on to be able to display html tags in messages, default behaviour is to NOT display HTML. It uses `$sce` service from angular to mark the html as trusted.
 
 ````javascript
 var app = angular.module('myApp', ['angular-growl']);
@@ -181,16 +179,14 @@ You can override the global option and allow HTML tags in single messages too:
 ````javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
     $scope.addSpecialWarnMessage = function() {
-        growl.addWarnMessage("<strong>This is a HTML message</strong>", {enableHtml: true});
+        growl.warning("<strong>This is a HTML message</strong>", {enableHtml: true});
     }
 }]);
 ````
 
 ###Animations
 
-Beginning with angularJS 1.2 growl messages can be automatically animated with CSS animations when adding and/or closing
-them. All you have to do is load the angular-animate.js provided by angularJS and add **ngAnimate** to your applications
-dependency list:
+Beginning with angularJS 1.2 growl messages can be automatically animated with CSS animations when adding and/or closing them. All you have to do is load the angular-animate.js provided by angularJS and add **ngAnimate** to your applications dependency list:
 
 ````html
 <html>
@@ -269,3 +265,12 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 ````
 
 Server messages will be created with default TTL.
+
+# License
+Copyright (C) 2014 Marco Rinck
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

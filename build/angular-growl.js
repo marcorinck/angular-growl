@@ -1,5 +1,5 @@
 /**
- * angular-growl - v0.4.0 - 2014-03-18
+ * angular-growl - v0.5.0 - 2014-03-18
  * https://github.com/marcorinck/angular-growl
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
