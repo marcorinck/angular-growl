@@ -1,4 +1,4 @@
-angular.module("angular-growl").directive("growl", ["$rootScope", function ($rootScope) {
+angular.module("angular-growl").directive("growl", ["$rootScope", "$sce", function ($rootScope, $sce) {
 	"use strict";
 
 	return {
@@ -20,6 +20,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 			$scope.messages = [];
 
 			function addMessage(message) {
+				message.text = $sce.trustAsHtml(message.text);
 				$scope.messages.push(message);
 
 				if (message.ttl && message.ttl !== -1) {

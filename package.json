@@ -7,7 +7,8 @@
     "url": "https://github.com/marcorinck/angular-growl"
   },
   "author": {
-    "name": "Marco Rinck"
+    "name": "Marco Rinck",
+    "name": "Jan Stevens"
   },
   "license": "MIT",
   "devDependencies": {
