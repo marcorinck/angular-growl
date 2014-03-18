@@ -133,16 +133,16 @@ angular.module('angular-growl').provider('growl', function () {
         };
         broadcastMessage(message);
       }
-      function addWarnMessage(text, config) {
+      function warning(text, config) {
         sendMessage(text, config, 'warn');
       }
-      function addErrorMessage(text, config) {
+      function error(text, config) {
         sendMessage(text, config, 'error');
       }
-      function addInfoMessage(text, config) {
+      function info(text, config) {
         sendMessage(text, config, 'info');
       }
-      function addSuccessMessage(text, config) {
+      function success(text, config) {
         sendMessage(text, config, 'success');
       }
       function addServerMessages(messages) {
@@ -173,10 +173,10 @@ angular.module('angular-growl').provider('growl', function () {
         return _onlyUniqueMessages;
       }
       return {
-        addWarnMessage: addWarnMessage,
-        addErrorMessage: addErrorMessage,
-        addInfoMessage: addInfoMessage,
-        addSuccessMessage: addSuccessMessage,
+        warning: warning,
+        error: error,
+        info: info,
+        success: success,
         addServerMessages: addServerMessages,
         onlyUnique: onlyUnique
       };

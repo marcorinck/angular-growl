@@ -1,3 +1,5 @@
+'use strict';
+
 var app = angular.module("demo", ["angular-growl", "ngAnimate", "ngMockE2E"]);
 
 app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvider) {
@@ -35,19 +37,19 @@ app.controller("demoCtrl",  function demoCtrl($scope, growl, $http) {
 		}
 
 		if ($scope.alertType === "success") {
-			growl.addSuccessMessage($scope.message, config);
+			growl.success($scope.message, config);
 		}
 
 		if ($scope.alertType === "warn") {
-			growl.addWarnMessage($scope.message, config);
+			growl.warning($scope.message, config);
 		}
 
 		if ($scope.alertType === "info") {
-			growl.addInfoMessage($scope.message, config);
+			growl.info($scope.message, config);
 		}
 
 		if ($scope.alertType === "error") {
-			growl.addErrorMessage($scope.message, config);
+			growl.error($scope.message, config);
 		}
 	};
 
