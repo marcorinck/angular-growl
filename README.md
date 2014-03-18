@@ -1,11 +1,25 @@
 #angular-growl-2
 Growl like notifications for angularJS projects, using bootstrap alert classes, originally developed by Marco Rinck
 
+##Features
+
+![Standard bootstrap 2.x styles](doc/screenshot.jpg)
+
+* growl like notifications like in MacOS X
+* using standard bootstrap classes (alert, alert-info, alert-error, alert-success)
+* global or per message configuration of a timeout when message will be automatically closed
+* automatic translation of messages if [angular-translate](https://github.com/PascalPrecht/angular-translate) filter is
+present, you only have to provide keys as messages, angular-translate will translate them
+* pre-defined $http-Interceptor to automatically handle $http responses for server-sent messages
+* automatic CSS animations when adding/closing notifications (only when using >= angularJS 1.2)
+* < 1 kB after GZIP
+* Allows for HTML content inside the alert
+
 ##Installation
 
-You can install angular-growl with bower:
+You can install angular-growl-2 with bower:
 
-> bower install angular-growl
+> bower install angular-growl-2
 
 Alternatively you can download the files in the [build folder](build/) manually and include them in your project.
 
@@ -35,19 +49,6 @@ Finally, you have to include the directive somewhere in your HTML like this:
     <div growl></div>
 </body>
 ````
-
-##Features
-
-![Standard bootstrap 2.x styles](doc/screenshot.jpg)
-
-* growl like notifications like in MacOS X
-* using standard bootstrap classes (alert, alert-info, alert-error, alert-success)
-* global or per message configuration of a timeout when message will be automatically closed
-* automatic translation of messages if [angular-translate](https://github.com/PascalPrecht/angular-translate) filter is
-present, you only have to provide keys as messages, angular-translate will translate them
-* pre-defined $http-Interceptor to automatically handle $http responses for server-sent messages
-* automatic CSS animations when adding/closing notifications (only when using >= angularJS 1.2)
-* < 1 kB after GZIP
 
 ##Usage
 
