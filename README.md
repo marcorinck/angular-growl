@@ -17,9 +17,9 @@ present, you only have to provide keys as messages, angular-translate will trans
 
 ##Installation
 
-You can install angular-growl-2 with bower:
+You can install angular-growl-v2 with bower:
 
-> bower install angular-growl-2
+> bower install angular-growl-v2
 
 Alternatively you can download the files in the [build folder](build/) manually and include them in your project.
 
