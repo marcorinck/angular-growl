@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var app = angular.module("demo", ["angular-growl", "ngAnimate", "ngMockE2E"]);
 
