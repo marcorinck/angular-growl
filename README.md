@@ -184,6 +184,27 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 }]);
 ````
 
+###Disable close button on messages [default: false]
+Turn this on to hide the close button on messages, default behaviour is to display the close button.
+
+```javascript
+var app = angular.module('myApp', ['angular-growl']);
+
+app.config(['growlProvider', function(growlProvider) {
+    growlProvider.globalDisableCloseButton(true);
+}]);
+```
+
+You can override the global option and hide the close button in single messages too:
+ 
+ ````javascript
+ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
+     $scope.addSpecialWarnMessage = function() {
+         growl.addWarnMessage("<strong>This is a message without a close button</strong>", {disableCloseButton: true});
+     }
+ }]);
+ ````
+ 
 ###Animations
 
 Beginning with angularJS 1.2 growl messages can be automatically animated with CSS animations when adding and/or closing them. All you have to do is load the angular-animate.js provided by angularJS and add **ngAnimate** to your applications dependency list:

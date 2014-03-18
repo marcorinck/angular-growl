@@ -6,7 +6,8 @@ angular.module("angular-growl").provider("growl", function() {
 		_messagesKey = 'messages',
 		_messageTextKey = 'text',
 		_messageSeverityKey = 'severity',
-		_onlyUniqueMessages = true;
+		_onlyUniqueMessages = true,
+		_disableCloseButton = false;
 
 	/**
 	 * set a global timeout (time to live) after which messages will be automatically closed
@@ -25,6 +26,15 @@ angular.module("angular-growl").provider("growl", function() {
 	this.globalEnableHtml = function(enableHtml) {
 		_enableHtml = enableHtml;
 	};
+
+	/**
+   * set whether the close button should be displayed (default) or hidden
+   *
+   * @param {bool} disableCloseButton true to hide close button on all messages
+   */
+  this.globalDisableCloseButton = function (disableCloseButton) {
+    _disableCloseButton = disableCloseButton;
+  };
 
 	/**
 	 * sets the key in $http response the serverMessagesInterecptor is looking for server-sent messages, value of key
@@ -108,7 +118,8 @@ angular.module("angular-growl").provider("growl", function() {
 				text: text,
 				severity: severity,
 				ttl: _config.ttl || _ttl,
-				enableHtml: _config.enableHtml || _enableHtml
+				enableHtml: _config.enableHtml || _enableHtml,
+				disableCloseButton: _config.disableCloseButton || _disableCloseButton
 			};
 
 			broadcastMessage(message);
