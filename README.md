@@ -104,8 +104,8 @@ only the key:
 ````javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
     $scope.addSpecialWarnMessage = function() {
-        growl.addSuccessMessage("SAVE_SUCCESS_MESSAGE");
-        growl.addErrorMessage("VALIDATION_ERROR");
+        growl.success("SAVE_SUCCESS_MESSAGE");
+        growl.error("VALIDATION_ERROR");
     }
 }]);
 ````
@@ -200,7 +200,7 @@ You can override the global option and hide the close button in single messages 
  ````javascript
  app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
      $scope.addSpecialWarnMessage = function() {
-         growl.addWarnMessage("<strong>This is a message without a close button</strong>", {disableCloseButton: true});
+         growl.warning("<strong>This is a message without a close button</strong>", {disableCloseButton: true});
      }
  }]);
  ````
