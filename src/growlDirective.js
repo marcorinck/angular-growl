@@ -20,7 +20,9 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce", functi
 			$scope.messages = [];
 
 			function addMessage(message) {
-				message.text = $sce.trustAsHtml(message.text);
+				if(message.enableHtml) {
+					message.text = $sce.trustAsHtml(message.text);
+				}
 				$scope.messages.push(message);
 
 				if (message.ttl && message.ttl !== -1) {

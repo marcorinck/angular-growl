@@ -2,12 +2,12 @@ angular.module("angular-growl").provider("growl", function() {
 	"use strict";
 
 	var _ttl = null,
-        _enableHtml = false,
-		_messagesKey = 'messages',
-		_messageTextKey = 'text',
-		_messageSeverityKey = 'severity',
-		_onlyUniqueMessages = true,
-		_disableCloseButton = false;
+      _enableHtml = false,
+			_messagesKey = 'messages',
+			_messageTextKey = 'text',
+			_messageSeverityKey = 'severity',
+			_onlyUniqueMessages = true,
+			_disableCloseButton = false;
 
 	/**
 	 * set a global timeout (time to live) after which messages will be automatically closed
