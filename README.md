@@ -297,6 +297,8 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 Server messages will be created with default TTL.
 
 ##Changelog
+**0.5.3** - 19 Mar 2014
+* Fixed bug where globalInlineMessage option would not work globally
 
 **0.5.2** - 19 Mar 2014
 * Added an option to show notifications inline instead of growl like behaviour (very handy for forms)
