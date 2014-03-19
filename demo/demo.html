@@ -18,9 +18,9 @@
   <body ng-app="demo">
     <div ng-controller="demoCtrl">
       <div class="text-center container"><h1>angular-growl Demo site</h1></div>
-      <div growl></div>
       <div class="container">
         <div class="well row">
+          <div growl></div>
           <label>
             Message type<br/>
           </label>
@@ -60,6 +60,13 @@
           <button ng-click="simulateServerMessages()">Simulate backend call to create fake server messages</button>
         </div>
       </div>
+      <div class="container">
+        <div class="well row">
+          <div growl reference="1" inline="true"></div>
+          <button ng-click="inlineMessage(1)">Create Message for this well</button>
+        </div>
+      </div>
     </div>
-  </body>
+  </div>
+</body>
 </html>

@@ -14,6 +14,7 @@ present, you only have to provide keys as messages, angular-translate will trans
 * automatic CSS animations when adding/closing notifications (only when using >= angularJS 1.2)
 * < 1 kB after GZIP
 * Allows for HTML content inside the alert
+* Possible to use multiple growl directives that show their notification inline
 
 ##Installation
 
@@ -172,6 +173,47 @@ You can override the global option and hide the close button in single messages 
  }]);
  ````
 
+###Inline Messages [default: false]
+Turn this on globally or on the directive to allow inline messages instead of the growl like messages. The default behaviour is to show growl like messages.
+
+```javascript
+var app = angular.module('myApp', ['angular-growl']);
+
+app.config(['growlProvider', function(growlProvider) {
+    growlProvider.globalInlineMessages(true);
+});
+```
+
+You can override the global option by specifing a display method on the directive, you can also use this in combination with reference id option:
+
+```html
+<form>
+    <div growl inline="true"></div>
+    <label>Name:<label><input type="text" name="name" />
+</form>
+```
+
+###Reference ID [default: 0]
+When using inline growl notifications, it is possible to have multiple growl directives. For this reason it is possible to define a referenceId on the directive. When sending a message give it the same referenceId in the configuration. Example:
+
+```javascript
+app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
+    $scope.sendToGrowl = function(referenceId) {
+        growl.warning("This is only send to growl directive with referenceId = 1", {referenceId: referenceId});
+    }
+}]);
+```
+
+```html
+<div growl inline="true" reference="1"></div>
+<div growl inline="true" reference="2"></div>
+<div growl inline="true" reference="3"></div>
+<button ng-click="sendToGrowl(1)">Send to Growl #1</button>
+```
+When the user clicks on the button in the example, only the first growl directive will show the message inline. For bigger forms with multiple parts, this can be very handy.
+
+When no ID is given the default 0 will be used.
+
 ###Animations
 
 Beginning with angularJS 1.2 growl messages can be automatically animated with CSS animations when adding and/or closing them. All you have to do is load the angular-animate.js provided by angularJS and add **ngAnimate** to your applications dependency list:
@@ -255,6 +297,12 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 Server messages will be created with default TTL.
 
 ##Changelog
+
+**0.5.2** - 19 Mar 2014
+* Added an option to show notifications inline instead of growl like behaviour (very handy for forms)
+* Added a referenceId field so different inline growl directives can be targeted
+* Converted tabs to spaces
+* Updated the demo site to show the new changes
 
 **0.5.0** - 18 Mar 2014
 * Manually merged some pull requests from the original branch

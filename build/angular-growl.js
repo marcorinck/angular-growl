@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.5.0 - 2014-03-18
+ * angular-growl-v2 - v0.5.2 - 2014-03-19
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -11,9 +11,12 @@ angular.module('angular-growl').directive('growl', [
     'use strict';
     return {
       restrict: 'A',
-      template: '<div class="growl">' + '\t<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '\t\t<button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' + '       <div ng-switch="message.enableHtml">' + '           <div ng-switch-when="true" ng-bind-html="message.text"></div>' + '           <div ng-switch-default ng-bind="message.text"></div>' + '       </div>' + '\t</div>' + '</div>',
+      template: '<div ng-class="{growl: !inline}">' + ' <div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '   <button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' + '       <div ng-switch="message.enableHtml">' + '           <div ng-switch-when="true" ng-bind-html="message.text"></div>' + '           <div ng-switch-default ng-bind="message.text"></div>' + '       </div>' + ' </div>' + '</div>',
       replace: false,
-      scope: true,
+      scope: {
+        reference: '@',
+        inline: '@'
+      },
       controller: [
         '$scope',
         '$timeout',
@@ -21,6 +24,8 @@ angular.module('angular-growl').directive('growl', [
         function ($scope, $timeout, growl) {
           var onlyUnique = growl.onlyUnique();
           $scope.messages = [];
+          var referenceId = $scope.reference || 0;
+          $scope.inline = $scope.inline || growl.inlineMessages();
           function addMessage(message) {
             if (message.enableHtml) {
               message.text = $sce.trustAsHtml(message.text);
@@ -34,17 +39,19 @@ angular.module('angular-growl').directive('growl', [
           }
           $rootScope.$on('growlMessage', function (event, message) {
             var found;
-            if (onlyUnique) {
-              angular.forEach($scope.messages, function (msg) {
-                if (message.text === msg.text && message.severity === msg.severity) {
-                  found = true;
+            if (parseInt(referenceId, 10) === parseInt(message.referenceId, 10)) {
+              if (onlyUnique) {
+                angular.forEach($scope.messages, function (msg) {
+                  if (message.text === msg.text && message.severity === msg.severity) {
+                    found = true;
+                  }
+                });
+                if (!found) {
+                  addMessage(message);
                 }
-              });
-              if (!found) {
+              } else {
                 addMessage(message);
               }
-            } else {
-              addMessage(message);
             }
           });
           $scope.deleteMessage = function (message) {
@@ -69,7 +76,7 @@ angular.module('angular-growl').directive('growl', [
 ]);
 angular.module('angular-growl').provider('growl', function () {
   'use strict';
-  var _ttl = null, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _disableCloseButton = false;
+  var _ttl = null, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _referenceId = 0, _inline = false, _disableCloseButton = false;
   this.globalTimeToLive = function (ttl) {
     _ttl = ttl;
   };
@@ -78,6 +85,9 @@ angular.module('angular-growl').provider('growl', function () {
   };
   this.globalDisableCloseButton = function (disableCloseButton) {
     _disableCloseButton = disableCloseButton;
+  };
+  this.globalInlineMessages = function (inline) {
+    _inline = inline;
   };
   this.messagesKey = function (messagesKey) {
     _messagesKey = messagesKey;
@@ -135,7 +145,8 @@ angular.module('angular-growl').provider('growl', function () {
           severity: severity,
           ttl: _config.ttl || _ttl,
           enableHtml: _config.enableHtml || _enableHtml,
-          disableCloseButton: _config.disableCloseButton || _disableCloseButton
+          disableCloseButton: _config.disableCloseButton || _disableCloseButton,
+          referenceId: _config.referenceId || _referenceId
         };
         broadcastMessage(message);
       }
@@ -182,13 +193,17 @@ angular.module('angular-growl').provider('growl', function () {
       function onlyUnique() {
         return _onlyUniqueMessages;
       }
+      function inlineMessages() {
+        return _inline;
+      }
       return {
         warning: warning,
         error: error,
         info: info,
         success: success,
         addServerMessages: addServerMessages,
-        onlyUnique: onlyUnique
+        onlyUnique: onlyUnique,
+        inlineMessages: inlineMessages
       };
     }
   ];
