@@ -4,7 +4,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
 
     return {
       restrict: 'A',
-      template: '<div ng-class="{growl: !inline}">' +
+      template: '<div ng-class="{growl: !inlineMessage}">' +
         ' <div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
         '   <button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' +
         '       <div ng-switch="message.enableHtml">' +
@@ -23,7 +23,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
           var onlyUnique = growl.onlyUnique();
           $scope.messages = [];
           var referenceId = $scope.reference || 0;
-          $scope.inline = $scope.inline || growl.inlineMessages();
+          $scope.inlineMessage = $scope.inline || growl.inlineMessages();
 
           function addMessage(message) {
             if (message.enableHtml) {

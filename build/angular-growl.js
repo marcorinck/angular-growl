@@ -11,7 +11,7 @@ angular.module('angular-growl').directive('growl', [
     'use strict';
     return {
       restrict: 'A',
-      template: '<div ng-class="{growl: !inline}">' + ' <div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '   <button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' + '       <div ng-switch="message.enableHtml">' + '           <div ng-switch-when="true" ng-bind-html="message.text"></div>' + '           <div ng-switch-default ng-bind="message.text"></div>' + '       </div>' + ' </div>' + '</div>',
+      template: '<div ng-class="{growl: !inlineMessage}">' + ' <div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' + '   <button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' + '       <div ng-switch="message.enableHtml">' + '           <div ng-switch-when="true" ng-bind-html="message.text"></div>' + '           <div ng-switch-default ng-bind="message.text"></div>' + '       </div>' + ' </div>' + '</div>',
       replace: false,
       scope: {
         reference: '@',
@@ -25,7 +25,7 @@ angular.module('angular-growl').directive('growl', [
           var onlyUnique = growl.onlyUnique();
           $scope.messages = [];
           var referenceId = $scope.reference || 0;
-          $scope.inline = $scope.inline || growl.inlineMessages();
+          $scope.inlineMessage = $scope.inline || growl.inlineMessages();
           function addMessage(message) {
             if (message.enableHtml) {
               message.text = $sce.trustAsHtml(message.text);
