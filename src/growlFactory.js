@@ -1,7 +1,7 @@
 angular.module("angular-growl").provider("growl", function() {
   "use strict";
 
-  var _ttl = null,
+  var _ttl = {success: null, error: null, warning: null, info: null},
       _enableHtml = false,
       _messagesKey = 'messages',
       _messageTextKey = 'text',
@@ -17,7 +17,19 @@ angular.module("angular-growl").provider("growl", function() {
    * @param ttl in seconds
    */
   this.globalTimeToLive = function(ttl) {
-    _ttl = ttl;
+    if(typeof ttl === 'object') {
+      for(var k in ttl) {
+        if(ttl.hasOwnProperty(k)) {
+          _ttl[k] = ttl[k];
+        }
+      }
+    } else {
+      for(var severity in _ttl) {
+        if(_ttl.hasOwnProperty(severity)) {
+          _ttl[severity] = ttl;
+        }
+      }
+    }
   };
 
   /**
@@ -128,7 +140,7 @@ angular.module("angular-growl").provider("growl", function() {
       message = {
         text: text,
         severity: severity,
-        ttl: _config.ttl || _ttl,
+        ttl: _config.ttl || _ttl[severity],
         enableHtml: _config.enableHtml || _enableHtml,
         disableCloseButton: _config.disableCloseButton || _disableCloseButton,
         referenceId: _config.referenceId || _referenceId

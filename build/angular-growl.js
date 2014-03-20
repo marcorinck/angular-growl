@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.5.2 - 2014-03-19
+ * angular-growl-v2 - v0.5.3 - 2014-03-20
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -76,9 +76,26 @@ angular.module('angular-growl').directive('growl', [
 ]);
 angular.module('angular-growl').provider('growl', function () {
   'use strict';
-  var _ttl = null, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _referenceId = 0, _inline = false, _disableCloseButton = false;
+  var _ttl = {
+      success: null,
+      error: null,
+      warning: null,
+      info: null
+    }, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _referenceId = 0, _inline = false, _disableCloseButton = false;
   this.globalTimeToLive = function (ttl) {
-    _ttl = ttl;
+    if (typeof ttl === 'object') {
+      for (var k in ttl) {
+        if (ttl.hasOwnProperty(k)) {
+          _ttl[k] = ttl[k];
+        }
+      }
+    } else {
+      for (var severity in _ttl) {
+        if (_ttl.hasOwnProperty(severity)) {
+          _ttl[severity] = ttl;
+        }
+      }
+    }
   };
   this.globalEnableHtml = function (enableHtml) {
     _enableHtml = enableHtml;
@@ -143,7 +160,7 @@ angular.module('angular-growl').provider('growl', function () {
         message = {
           text: text,
           severity: severity,
-          ttl: _config.ttl || _ttl,
+          ttl: _config.ttl || _ttl[severity],
           enableHtml: _config.enableHtml || _enableHtml,
           disableCloseButton: _config.disableCloseButton || _disableCloseButton,
           referenceId: _config.referenceId || _referenceId
