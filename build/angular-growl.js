@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.5.3 - 2014-03-20
+ * angular-growl-v2 - v0.5.3 - 2014-04-03
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -81,7 +81,7 @@ angular.module('angular-growl').provider('growl', function () {
       error: null,
       warning: null,
       info: null
-    }, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _referenceId = 0, _inline = false, _disableCloseButton = false;
+    }, _enableHtml = false, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _disableCloseButton = false;
   this.globalTimeToLive = function (ttl) {
     if (typeof ttl === 'object') {
       for (var k in ttl) {
@@ -102,6 +102,9 @@ angular.module('angular-growl').provider('growl', function () {
   };
   this.globalDisableCloseButton = function (disableCloseButton) {
     _disableCloseButton = disableCloseButton;
+  };
+  this.messageVariableKey = function (messageVariableKey) {
+    _messageVariableKey = messageVariableKey;
   };
   this.globalInlineMessages = function (inline) {
     _inline = inline;
@@ -151,7 +154,7 @@ angular.module('angular-growl').provider('growl', function () {
       }
       function broadcastMessage(message) {
         if (translate) {
-          message.text = translate(message.text);
+          message.text = translate(message.text, message.variables);
         }
         $rootScope.$broadcast('growlMessage', message);
       }
@@ -162,6 +165,7 @@ angular.module('angular-growl').provider('growl', function () {
           severity: severity,
           ttl: _config.ttl || _ttl[severity],
           enableHtml: _config.enableHtml || _enableHtml,
+          variables: _config.variables || {},
           disableCloseButton: _config.disableCloseButton || _disableCloseButton,
           referenceId: _config.referenceId || _referenceId
         };
@@ -203,7 +207,9 @@ angular.module('angular-growl').provider('growl', function () {
             } else {
               severity = 'error';
             }
-            sendMessage(message[_messageTextKey], undefined, severity);
+            var config = {};
+            config.variables = message[_messageVariableKey] || {};
+            sendMessage(message[_messageTextKey], config, severity);
           }
         }
       }

@@ -7,6 +7,7 @@ angular.module("angular-growl").provider("growl", function() {
       _messageTextKey = 'text',
       _messageSeverityKey = 'severity',
       _onlyUniqueMessages = true,
+      _messageVariableKey = 'variables',
       _referenceId = 0,
       _inline = false,
       _disableCloseButton = false;
@@ -48,6 +49,15 @@ angular.module("angular-growl").provider("growl", function() {
    */
   this.globalDisableCloseButton = function (disableCloseButton) {
     _disableCloseButton = disableCloseButton;
+  };
+
+  /**
+   * sets the key in server sent messages the serverMessagesInterecptor is looking for variables to inject in the message
+   *
+   * @param  {string} messageVariableKey default: variables
+   */
+  this.messageVariableKey = function (messageVariableKey) {
+    _messageVariableKey = messageVariableKey;
   };
 
   /**
@@ -129,7 +139,7 @@ angular.module("angular-growl").provider("growl", function() {
 
     function broadcastMessage(message) {
       if (translate) {
-        message.text = translate(message.text);
+        message.text = translate(message.text, message.variables);
       }
       $rootScope.$broadcast("growlMessage", message);
     }
@@ -142,6 +152,7 @@ angular.module("angular-growl").provider("growl", function() {
         severity: severity,
         ttl: _config.ttl || _ttl[severity],
         enableHtml: _config.enableHtml || _enableHtml,
+        variables: _config.variables || {},
         disableCloseButton: _config.disableCloseButton || _disableCloseButton,
         referenceId: _config.referenceId || _referenceId
       };
@@ -220,7 +231,9 @@ angular.module("angular-growl").provider("growl", function() {
               // default the severity to error if no severity is provided
               severity = 'error';
           }
-          sendMessage(message[_messageTextKey], undefined, severity);
+          var config = {};
+          config.variables = message[_messageVariableKey] || {};
+          sendMessage(message[_messageTextKey], config, severity);
         }
       }
     }
