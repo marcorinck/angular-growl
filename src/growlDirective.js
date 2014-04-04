@@ -8,6 +8,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
         ' <div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
         '   <button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' +
         '       <div ng-switch="message.enableHtml">' +
+        '           <h4 ng-show="!message.enableTitle" ng-bind="computeTitle(message)"></h4>' +
         '           <div ng-switch-when="true" ng-bind-html="message.text"></div>' +
         '           <div ng-switch-default ng-bind="message.text"></div>' +
         '       </div>' +
@@ -80,6 +81,16 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
             };
             ret[this.position] = true;
             return ret
+          };
+
+          $scope.computeTitle = function(message){
+            var ret = {
+              'success': 'Success',
+              'error': 'Error',
+              'info': 'Information',
+              'warn': 'Warning'
+            }
+            return ret[message.severity];
           }
         }
       ]

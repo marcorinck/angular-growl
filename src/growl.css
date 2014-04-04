@@ -4,6 +4,16 @@
     width: 250px;
     z-index: 9999;
 }
+.growl h4 {
+    font-size: 13px;
+    color: #333;
+    margin-bottom: .5em;
+    
+    -webkit-text-shadow: 0 0 1px #FFF;
+    -moz-text-shadow: 0 0 1px #FFF;
+    -o-text-shadow: 0 0 1px #FFF;
+    text-shadow: 0 0 1px #FFF;
+}
 .top-right {top: 10px; right: 15px;}
 .bottom-right {bottom: 10px; right: 15px;}
 .top-left {top: 10px; left: 15px;}
