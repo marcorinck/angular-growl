@@ -1,12 +1,15 @@
 .growl {
     position: fixed;
-    top: 10px;
-    right: 10px;
     float: right;
     width: 250px;
     z-index: 9999;
 }
-
+.top-right {top: 10px; right: 15px;}
+.bottom-right {bottom: 10px; right: 15px;}
+.top-left {top: 10px; left: 15px;}
+.bottom-left {bottom: 10px; left: 15px;}
+.top-center {top: 10px; left: 50%; margin-left: -150px;}
+.bottom-center { bottom: 10px; left: 50%; margin-left: -150px;}
 .growl-item.ng-enter,
 .growl-item.ng-leave {
     -webkit-transition:0.5s linear all;
