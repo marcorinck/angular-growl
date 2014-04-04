@@ -172,6 +172,16 @@ You can override the global option and hide the close button in single messages 
      }
  }]);
  ````
+###Position [default:top-right]
+Instruct where the messages while appear relative to the screen
+Options: top-left, top-right, bottom-left, bottom-right, top-center, bottom-center
+````javascript
+var app = angular.module('myApp', ['angular-growl']);
+
+app.config(['growlProvider', function(growlProvider) {
+    growlProvider.globalPosition('bottom-center');
+});
+````
 
 ###Inline Messages [default: false]
 Turn this on globally or on the directive to allow inline messages instead of the growl like messages. The default behaviour is to show growl like messages.
