@@ -174,7 +174,8 @@ You can override the global option and hide the close button in single messages 
  ````
 ###Position [default:top-right]
 Instruct where the messages while appear relative to the screen
-Options: top-left, top-right, bottom-left, bottom-right, top-center, bottom-center
+>Options: top-left, top-right, bottom-left, bottom-right, top-center, bottom-center
+
 ````javascript
 var app = angular.module('myApp', ['angular-growl']);
 
