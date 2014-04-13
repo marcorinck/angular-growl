@@ -4,10 +4,11 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
 
     return {
       restrict: 'A',
-      template: '<div ng-class="{growl: !inlineMessage}">' +
+      template: '<div ng-class="computeContainerClasses()">' +
         ' <div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
         '   <button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' +
         '       <div ng-switch="message.enableHtml">' +
+        '           <h4 ng-show="!message.enableTitle" ng-bind="computeTitle(message)"></h4>' +
         '           <div ng-switch-when="true" ng-bind-html="message.text"></div>' +
         '           <div ng-switch-default ng-bind="message.text"></div>' +
         '       </div>' +
@@ -24,7 +25,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
           $scope.messages = [];
           var referenceId = $scope.reference || 0;
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
-
+          $scope.position = growl.Position();
           function addMessage(message) {
             if (message.enableHtml) {
               message.text = $sce.trustAsHtml(message.text);
@@ -73,6 +74,24 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
               'alert-warning': message.severity === "warn" //bootstrap 3, no effect in bs 2.3
             };
           };
+
+          $scope.computeContainerClasses = function(){
+            var ret = {
+              'growl': !this.inlineMessage,
+            };
+            ret[this.position] = true;
+            return ret
+          };
+
+          $scope.computeTitle = function(message){
+            var ret = {
+              'success': 'Success',
+              'error': 'Error',
+              'info': 'Information',
+              'warn': 'Warning'
+            }
+            return ret[message.severity];
+          }
         }
       ]
     };

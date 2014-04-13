@@ -10,6 +10,7 @@ angular.module("angular-growl").provider("growl", function() {
       _messageVariableKey = 'variables',
       _referenceId = 0,
       _inline = false,
+      _position = 'top-right',
       _disableCloseButton = false;
 
   /**
@@ -69,6 +70,14 @@ angular.module("angular-growl").provider("growl", function() {
     _inline = inline;
   };
 
+  /**
+   * set position
+   *
+   * @param  {string} messageVariableKey default: top-right
+   */
+  this.globalPosition = function(position) {
+    _position = position;
+  };
   /**
    * sets the key in $http response the serverMessagesInterecptor is looking for server-sent messages, value of key
    * needs to be an array of objects
@@ -245,7 +254,10 @@ angular.module("angular-growl").provider("growl", function() {
     function inlineMessages() {
       return _inline;
     }
-
+    
+    function Position(){
+      return _position
+    }
     return {
       warning: warning,
       error: error,
@@ -254,6 +266,7 @@ angular.module("angular-growl").provider("growl", function() {
       addServerMessages: addServerMessages,
       onlyUnique: onlyUnique,
       inlineMessages: inlineMessages,
+      Position: Position,
     };
   }];
 });
