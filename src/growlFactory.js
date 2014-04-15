@@ -2,7 +2,6 @@ angular.module("angular-growl").provider("growl", function() {
   "use strict";
 
   var _ttl = {success: null, error: null, warning: null, info: null},
-      _enableHtml = false,
       _messagesKey = 'messages',
       _messageTextKey = 'text',
       _messageSeverityKey = 'severity',
@@ -32,15 +31,6 @@ angular.module("angular-growl").provider("growl", function() {
         }
       }
     }
-  };
-
-  /**
-   * set whether HTML in message content should be escaped (default) or binded as-is
-   *
-   * @param {bool} enableHtml true to make all messages not escapes
-   */
-  this.globalEnableHtml = function(enableHtml) {
-    _enableHtml = enableHtml;
   };
 
   /**
@@ -160,7 +150,6 @@ angular.module("angular-growl").provider("growl", function() {
         text: text,
         severity: severity,
         ttl: _config.ttl || _ttl[severity],
-        enableHtml: _config.enableHtml === undefined ? _enableHtml : _config.enableHtml,
         variables: _config.variables || {},
         disableCloseButton: _config.disableCloseButton || _disableCloseButton,
         position: _config.position || _position,

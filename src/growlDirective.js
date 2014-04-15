@@ -18,9 +18,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
 
           function addMessage(message) {
-            if (message.enableHtml) {
-              message.text = $sce.trustAsHtml(message.text);
-            }
+            message.text = $sce.trustAsHtml(message.text);
             $scope.messages.push(message);
 
             if (message.ttl && message.ttl !== -1) {
@@ -95,10 +93,8 @@ angular.module("angular-growl").run(['$templateCache', function($templateCache) 
     '<div ng-class="wrapperClasses()">' +
       '<div class="growl-item alert" ng-repeat="message in messages" ng-class="messageClasses(message)">' +
         '<button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' +
-        '<div ng-switch="message.enableHtml">' +
           '<h4 ng-show="message.enableTitle" ng-bind="computeTitle(message)"></h4>' +
-          '<div ng-switch-when="true" ng-bind-html="message.text"></div>' +
-          '<div ng-switch-default ng-bind="message.text"></div>' +
+          '<div ng-bind-html="message.text"></div>' +
         '</div>' +
       '</div>' +
     '</div>'
