@@ -137,7 +137,7 @@ angular.module("angular-growl").provider("growl", function() {
     };
   }];
 
-  this.$get = ["$rootScope", "$filter", function ($rootScope, $filter) {
+  this.$get = ["$rootScope", "$interpolate", "$filter", function ($rootScope, $interpolate, $filter) {
     var translate;
 
     try {
@@ -150,6 +150,9 @@ angular.module("angular-growl").provider("growl", function() {
       if (translate) {
         message.text = translate(message.text, message.variables);
       }
+      var polation = $interpolate(message.text);
+      message.text = polation(message.variables);
+
       $rootScope.$broadcast("growlMessage", message);
     }
 

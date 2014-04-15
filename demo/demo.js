@@ -16,7 +16,7 @@ app.run(function($httpBackend) {
   $httpBackend.when('GET', '/mockbackend').respond({
     someData: "fhsdfshfshdfs",
     "my-messages": [
-      {"messagetext":"this is a server message", "severity-level": "warn"},
+      {"messagetext":"{{field}} this is a server message", "severity-level": "warn",  "variables": {"field":"first name"}},
       {"messagetext":"this is another server message", "severity-level": "info"},
       {"messagetext":"and another", "severity-level": "error"}
     ]
