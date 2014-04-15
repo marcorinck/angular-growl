@@ -27,7 +27,7 @@ app.controller("demoCtrl",  function demoCtrl($scope, growl, $http) {
 
   $scope.createMessage = function () {
     var config = {};
-
+    config.title = "awesome title";
     if ($scope.timeout) {
       config.ttl = $scope.timeout;
     }

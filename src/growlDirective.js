@@ -93,7 +93,7 @@ angular.module("angular-growl").run(['$templateCache', function($templateCache) 
     '<div class="growl-container" ng-class="wrapperClasses()">' +
       '<div class="growl-item alert" ng-repeat="message in messages" ng-class="alertClasses(message)">' +
         '<button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' +
-        '<h4 class="growl-title">Testing</h4>' +
+        '<h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>' +
         '<div class="growl-message" ng-bind-html="message.text"></div>' +
       '</div>' +
     '</div>'
