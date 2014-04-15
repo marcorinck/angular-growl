@@ -1,12 +1,11 @@
-.growl-fixed {
+/*
+ *  growl-container styles
+ */
+.growl-container.growl-fixed {
   position: fixed;
   float: right;
   width: 400px;
   z-index: 9999;
-}
-.growl-title {
-  font-size: 16px;
-  margin: 0 0 0 40px;
 }
 .top-right {
   top: 10px;
@@ -34,20 +33,28 @@
   left: 50%;
   margin-left: -150px;
 }
-.growl-item.ng-enter,
-.growl-item.ng-leave {
+
+/*
+ * growl-item styles
+ */
+.growl-container > .growl-item {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.growl-container > .growl-item.ng-enter,
+.growl-container > .growl-item.ng-leave {
   -webkit-transition:0.5s linear all;
   -moz-transition:0.5s linear all;
   -o-transition:0.5s linear all;
   transition:0.5s linear all;
 }
 
-.growl-item.ng-enter,
-.growl-item.ng-leave.ng-leave-active {
+.growl-container > .growl-item.ng-enter,
+.growl-container > .growl-item.ng-leave.ng-leave-active {
   opacity:0;
 }
-.growl-item.ng-leave,
-.growl-item.ng-enter.ng-enter-active {
+.growl-container > .growl-item.ng-leave,
+.growl-container > .growl-item.ng-enter.ng-enter-active {
   opacity:1;
 }
 
@@ -56,9 +63,24 @@
   background-repeat: no-repeat;
 }
 
+/*
+ * growl-title styles
+ */
+.growl-title {
+  font-size: 16px;
+  margin: 0 0 0 40px;
+}
+
+/*
+ * growl-message styles
+ */
 .growl-message {
   margin: 0 0 0 40px;
 }
+
+/*
+ * growl background images
+ */
 .growl-container > .alert-info {
   /* for the white images
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGwSURBVEhLtZa9SgNBEMc9sUxxRcoUKSzSWIhXpFMhhYWFhaBg4yPYiWCXZxBLERsLRS3EQkEfwCKdjWJAwSKCgoKCcudv4O5YLrt7EzgXhiU3/4+b2ckmwVjJSpKkQ6wAi4gwhT+z3wRBcEz0yjSseUTrcRyfsHsXmD0AmbHOC9Ii8VImnuXBPglHpQ5wwSVM7sNnTG7Za4JwDdCjxyAiH3nyA2mtaTJufiDZ5dCaqlItILh1NHatfN5skvjx9Z38m69CgzuXmZgVrPIGE763Jx9qKsRozWYw6xOHdER+nn2KkO+Bb+UV5CBN6WC6QtBgbRVozrahAbmm6HtUsgtPC19tFdxXZYBOfkbmFJ1VaHA1VAHjd0pp70oTZzvR+EVrx2Ygfdsq6eu55BHYR8hlcki+n+kERUFG8BrA0BwjeAv2M8WLQBtcy+SD6fNsmnB3AlBLrgTtVW1c2QN4bVWLATaIS60J2Du5y1TiJgjSBvFVZgTmwCU+dAZFoPxGEEs8nyHC9Bwe2GvEJv2WXZb0vjdyFT4Cxk3e/kIqlOGoVLwwPevpYHT+00T+hWwXDf4AJAOUqWcDhbwAAAAASUVORK5CYII=");
