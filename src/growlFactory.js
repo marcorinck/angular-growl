@@ -160,9 +160,10 @@ angular.module("angular-growl").provider("growl", function() {
         text: text,
         severity: severity,
         ttl: _config.ttl || _ttl[severity],
-        enableHtml: _config.enableHtml || _enableHtml,
+        enableHtml: _config.enableHtml === undefined ? _enableHtml : _config.enableHtml,
         variables: _config.variables || {},
         disableCloseButton: _config.disableCloseButton || _disableCloseButton,
+        position: _config.position || _position,
         referenceId: _config.referenceId || _referenceId
       };
 
@@ -254,10 +255,11 @@ angular.module("angular-growl").provider("growl", function() {
     function inlineMessages() {
       return _inline;
     }
-    
-    function Position(){
-      return _position
+
+    function position() {
+      return _position;
     }
+
     return {
       warning: warning,
       error: error,
@@ -266,7 +268,7 @@ angular.module("angular-growl").provider("growl", function() {
       addServerMessages: addServerMessages,
       onlyUnique: onlyUnique,
       inlineMessages: inlineMessages,
-      Position: Position,
+      position: position,
     };
   }];
 });

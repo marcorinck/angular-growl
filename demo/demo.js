@@ -53,7 +53,7 @@ app.controller("demoCtrl",  function demoCtrl($scope, growl, $http) {
 
   $scope.inlineMessage = function(id) {
     growl.success("Inline Message!", {referenceId: id});
-  }
+  };
 
   $scope.simulateServerMessages= function() {
     $http.get("/mockbackend").then(function(data) {

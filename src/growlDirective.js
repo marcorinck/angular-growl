@@ -4,16 +4,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
 
     return {
       restrict: 'A',
-      template: '<div ng-class="computeContainerClasses()">' +
-        ' <div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
-        '   <button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' +
-        '       <div ng-switch="message.enableHtml">' +
-        '           <h4 ng-show="!message.enableTitle" ng-bind="computeTitle(message)"></h4>' +
-        '           <div ng-switch-when="true" ng-bind-html="message.text"></div>' +
-        '           <div ng-switch-default ng-bind="message.text"></div>' +
-        '       </div>' +
-        ' </div>' +
-        '</div>',
+      templateUrl: 'templates/growl/growl.html',
       replace: false,
       scope: {
         reference: '@',
@@ -25,7 +16,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
           $scope.messages = [];
           var referenceId = $scope.reference || 0;
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
-          $scope.position = growl.Position();
+
           function addMessage(message) {
             if (message.enableHtml) {
               message.text = $sce.trustAsHtml(message.text);
@@ -38,6 +29,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
               }, message.ttl);
             }
           }
+
           $rootScope.$on("growlMessage", function(event, message) {
             var found;
             if (parseInt(referenceId, 10) === parseInt(message.referenceId, 10)) {
@@ -65,7 +57,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
 
           };
 
-          $scope.computeClasses = function(message) {
+          $scope.messageClasses = function(message) {
             return {
               'alert-success': message.severity === "success",
               'alert-error': message.severity === "error", //bootstrap 2.3
@@ -75,12 +67,11 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
             };
           };
 
-          $scope.computeContainerClasses = function(){
-            var ret = {
-              'growl': !this.inlineMessage,
-            };
-            ret[this.position] = true;
-            return ret
+          $scope.wrapperClasses = function(){
+            var classes = {};
+            classes['growl'] = !$scope.inlineMessage;
+            classes[growl.position()] = true;
+            return classes;
           };
 
           $scope.computeTitle = function(message){
@@ -89,11 +80,27 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
               'error': 'Error',
               'info': 'Information',
               'warn': 'Warning'
-            }
+            };
             return ret[message.severity];
-          }
+          };
         }
       ]
     };
   }
 ]);
+
+angular.module("angular-growl").run(['$templateCache', function($templateCache) {
+  "use strict";
+  $templateCache.put("templates/growl/growl.html",
+    '<div ng-class="wrapperClasses()">' +
+      '<div class="growl-item alert" ng-repeat="message in messages" ng-class="messageClasses(message)">' +
+        '<button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' +
+        '<div ng-switch="message.enableHtml">' +
+          '<h4 ng-show="message.enableTitle" ng-bind="computeTitle(message)"></h4>' +
+          '<div ng-switch-when="true" ng-bind-html="message.text"></div>' +
+          '<div ng-switch-default ng-bind="message.text"></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  );
+}]);
