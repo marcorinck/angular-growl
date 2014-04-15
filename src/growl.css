@@ -1,39 +1,58 @@
 .growl {
-    position: fixed;
-    float: right;
-    width: 250px;
-    z-index: 9999;
+  position: fixed;
+  float: right;
+  width: 250px;
+  z-index: 9999;
 }
 .growl h4 {
-    font-size: 13px;
-    color: #333;
-    margin-bottom: .5em;
-    
-    -webkit-text-shadow: 0 0 1px #FFF;
-    -moz-text-shadow: 0 0 1px #FFF;
-    -o-text-shadow: 0 0 1px #FFF;
-    text-shadow: 0 0 1px #FFF;
+  font-size: 13px;
+  color: #333;
+  margin-bottom: .5em;
+
+  -webkit-text-shadow: 0 0 1px #FFF;
+  -moz-text-shadow: 0 0 1px #FFF;
+  -o-text-shadow: 0 0 1px #FFF;
+  text-shadow: 0 0 1px #FFF;
 }
-.top-right {top: 10px; right: 15px;}
-.bottom-right {bottom: 10px; right: 15px;}
-.top-left {top: 10px; left: 15px;}
-.bottom-left {bottom: 10px; left: 15px;}
-.top-center {top: 10px; left: 50%; margin-left: -150px;}
-.bottom-center { bottom: 10px; left: 50%; margin-left: -150px;}
+.top-right {
+  top: 10px;
+  right: 15px;
+}
+.bottom-right {
+  bottom: 10px;
+  right: 15px;
+}
+.top-left {
+  top: 10px;
+  left: 15px;
+}
+.bottom-left {
+  bottom: 10px;
+  left: 15px;
+}
+.top-center {
+  top: 10px;
+  left: 50%;
+  margin-left: -150px;
+}
+.bottom-center {
+  bottom: 10px;
+  left: 50%;
+  margin-left: -150px;
+}
 .growl-item.ng-enter,
 .growl-item.ng-leave {
-    -webkit-transition:0.5s linear all;
-    -moz-transition:0.5s linear all;
-    -o-transition:0.5s linear all;
-    transition:0.5s linear all;
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
 }
 
 .growl-item.ng-enter,
 .growl-item.ng-leave.ng-leave-active {
-    opacity:0;
+  opacity:0;
 }
 .growl-item.ng-leave,
 .growl-item.ng-enter.ng-enter-active {
-    opacity:1;
-
+  opacity:1;
 }
