@@ -55,7 +55,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
 
           };
 
-          $scope.messageClasses = function(message) {
+          $scope.alertClasses = function(message) {
             return {
               'alert-success': message.severity === "success",
               'alert-error': message.severity === "error", //bootstrap 2.3
@@ -67,7 +67,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
 
           $scope.wrapperClasses = function(){
             var classes = {};
-            classes['growl'] = !$scope.inlineMessage;
+            classes['growl-fixed'] = !$scope.inlineMessage;
             classes[growl.position()] = true;
             return classes;
           };
@@ -90,12 +90,11 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
 angular.module("angular-growl").run(['$templateCache', function($templateCache) {
   "use strict";
   $templateCache.put("templates/growl/growl.html",
-    '<div ng-class="wrapperClasses()">' +
-      '<div class="growl-item alert" ng-repeat="message in messages" ng-class="messageClasses(message)">' +
+    '<div class="growl-container" ng-class="wrapperClasses()">' +
+      '<div class="growl-item alert" ng-repeat="message in messages" ng-class="alertClasses(message)">' +
         '<button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' +
-          '<h4 ng-show="message.enableTitle" ng-bind="computeTitle(message)"></h4>' +
-          '<div ng-bind-html="message.text"></div>' +
-        '</div>' +
+        '<h4 class="growl-title">Testing</h4>' +
+        '<div class="growl-message" ng-bind-html="message.text"></div>' +
       '</div>' +
     '</div>'
   );
