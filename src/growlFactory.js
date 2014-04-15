@@ -10,7 +10,8 @@ angular.module("angular-growl").provider("growl", function() {
       _referenceId = 0,
       _inline = false,
       _position = 'top-right',
-      _disableCloseButton = false;
+      _disableCloseButton = false,
+      _disableIcons = false;
 
   /**
    * set a global timeout (time to live) after which messages will be automatically closed
@@ -43,7 +44,16 @@ angular.module("angular-growl").provider("growl", function() {
   };
 
   /**
-   * sets the key in server sent messages the serverMessagesInterecptor is looking for variables to inject in the message
+   * set whether the icons will be shown in the message
+   *
+   * @param {bool} messageIcons
+   */
+  this.globalDisableIcons = function (disableIcons) {
+    _disableIcons = disableIcons;
+  };
+
+  /**
+   * set the key in server sent messages the serverMessagesInterecptor is looking for variables to inject in the message
    *
    * @param  {string} messageVariableKey default: variables
    */
@@ -153,6 +163,7 @@ angular.module("angular-growl").provider("growl", function() {
         ttl: _config.ttl || _ttl[severity],
         variables: _config.variables || {},
         disableCloseButton: _config.disableCloseButton || _disableCloseButton,
+        disableIcons: _config.disableIcons === undefined ? _disableIcons : _config.disableIcons,
         position: _config.position || _position,
         referenceId: _config.referenceId || _referenceId
       };
