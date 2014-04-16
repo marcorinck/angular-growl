@@ -15,6 +15,9 @@ present, you only have to provide keys as messages, angular-translate will trans
 * < 1 kB after GZIP
 * Allows for HTML content inside the alert
 * Possible to use multiple growl directives that show their notification inline
+* Icons for the different alert types (can be disabled)
+* Possible to set an optional title
+* Server side variable interpolation
 
 ##Installation
 
@@ -26,13 +29,13 @@ Alternatively you can download the files in the [build folder](build/) manually 
 
 ````html
 <html>
-    <head>
-        <link href="bootstrap.min.css" rel="stylesheet">
-        <script src="angular.min.js"></script>
+  <head>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <script src="angular.min.js"></script>
 
-        <link href="angular-growl.css" rel="stylesheet">
-        <script src="angular-growl.js"></script>
-    </head>
+    <link href="angular-growl.css" rel="stylesheet">
+    <script src="angular-growl.js"></script>
+  </head>
 </html>
 ````
 
@@ -57,12 +60,25 @@ Just let angular inject the growl Factory into your code and call the 4 function
 
 ````javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-    $scope.addSpecialWarnMessage = function() {
-        growl.warning("This adds a warn message");
-        growl.info("This adds a info message");
-        growl.success("This adds a success message");
-        growl.error("This adds a error message");
-    }
+  $scope.addSpecialWarnMessage = function() {
+    growl.warning("This adds a warn message");
+    growl.info("This adds a info message");
+    growl.success("This adds a success message");
+    growl.error("This adds a error message");
+  }
+}]);
+````
+
+The title must be set as a configuration parameter:
+
+````javascript
+app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
+  $scope.addSpecialWarnMessage = function() {
+    growl.warning("This adds a warn message", {title: 'Warning!'});
+    growl.info("This adds a info message", {title: 'Random Information'});
+    growl.success("This adds a success message"); //no title here
+    growl.error("This adds a error message", {title: 'ALERT WE GOT ERROR'});
+  }
 }]);
 ````
 
@@ -71,10 +87,10 @@ only the key:
 
 ````javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-    $scope.addSpecialWarnMessage = function() {
-        growl.success("SAVE_SUCCESS_MESSAGE");
-        growl.error("VALIDATION_ERROR");
-    }
+  $scope.addSpecialWarnMessage = function() {
+      growl.success("SAVE_SUCCESS_MESSAGE");
+      growl.error("VALIDATION_ERROR");
+  }
 }]);
 ````
 
@@ -84,13 +100,13 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 
 Accept only unique messages as a new message. If a message is already displayed (text and severity are the same) then this
 message will not be added to the displayed message list. Set to false, to always display all messages regardless if they
-are already displayed or not:
+are already displayed or not. Uniqueness of messages is determined by the message text, severity and title:
 
 ````javascript
 var app = angular.module('myApp', ['angular-growl']);
 
 app.config(['growlProvider', function(growlProvider) {
-    growlProvider.onlyUniqueMessages(false);
+  growlProvider.onlyUniqueMessages(false);
 }]);
 ````
 
@@ -102,19 +118,24 @@ However, you can configure a global timeout (TTL) after which notifications shou
 var app = angular.module('myApp', ['angular-growl']);
 
 app.config(['growlProvider', function(growlProvider) {
-    growlProvider.globalTimeToLive(5000);
+  growlProvider.globalTimeToLive(5000);
 }]);
 ````
+This sets a global timeout of 5 seconds after which every notification will be closed. It's also possible to provide the tll based on the severity of the message. To do this, you configure `growlProvider` as follows:
 
-This sets a global timeout of 5 seconds after which every notification will be closed.
+```javascript
+app.config(['growlProvider', function(growlProvider) {
+  growlProvider.globalTimeToLive({success: 2000, error: 5000, warning: 2000, info: 2000})
+}])
+```
 
-You can override TTL generally for every single message if you want:
+This sets the success messages to 5 seconds and all the others to 2 seconds.You can override TTL generally for every single message if you want:
 
 ````javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-    $scope.addSpecialWarnMessage = function() {
-        growl.warning("Override global ttl setting", {ttl: 10000});
-    }
+  $scope.addSpecialWarnMessage = function() {
+    growl.warning("Override global ttl setting", {ttl: 10000});
+  }
 }]);
 ````
 
@@ -124,33 +145,44 @@ If you have set a global TTL, you can disable automatic closing of single notifi
 
 ````javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-    $scope.addSpecialWarnMessage = function() {
-        growl.warning("this will not be closed automatically even when a global ttl is set", {ttl: -1});
-    }
+  $scope.addSpecialWarnMessage = function() {
+    growl.warning("this will not be closed automatically even when a global ttl is set", {ttl: -1});
+  }
 }]);
 ````
 
-###Allow HTML in messages [default: false]
+###Allow HTML in messages [always-on]
 
-Turn this on to be able to display html tags in messages, default behaviour is to NOT display HTML. It uses `$sce` service from angular to mark the html as trusted.
-
-````javascript
-var app = angular.module('myApp', ['angular-growl']);
-
-app.config(['growlProvider', function(growlProvider) {
-    growlProvider.globalEnableHtml(true);
-}]);
-````
-
-You can override the global option and allow HTML tags in single messages too:
+Starting from v0.6, HTML can always be included in the message text (not the title). It uses `$sce` service from angular to mark the html as trusted. The following example shows the html usage.
 
 ````javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-    $scope.addSpecialWarnMessage = function() {
-        growl.warning("<strong>This is a HTML message</strong>", {enableHtml: true});
-    }
+  $scope.addSpecialWarnMessage = function() {
+    growl.warning("<strong>This is a HTML message</strong>");
+  }
 }]);
 ````
+
+###Disable Icons in messages [default: false]
+The icons are hardcoded as base64 string in the css file. The original images can be found in the src/images folder. The following code will disable the icons globally.
+
+```javascript
+var app = angular.module('myApp', ['angular-growl']);
+
+app.config(['growlProvider', function(growlProvider) {
+  growlProvider.globalDisableIcons(true);
+}]);
+```
+
+You can override the global options and show icons for specific messages by using the following code:
+
+ ````javascript
+ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
+  $scope.addSpecialWarnMessage = function() {
+    growl.warning("<strong>This is a message with a icon", {disableIcons: false});
+  }
+ }]);
+ ````
 
 ###Disable close button on messages [default: false]
 Turn this on to hide the close button on messages, default behaviour is to display the close button.
@@ -159,7 +191,7 @@ Turn this on to hide the close button on messages, default behaviour is to displ
 var app = angular.module('myApp', ['angular-growl']);
 
 app.config(['growlProvider', function(growlProvider) {
-    growlProvider.globalDisableCloseButton(true);
+  growlProvider.globalDisableCloseButton(true);
 }]);
 ```
 
@@ -167,11 +199,12 @@ You can override the global option and hide the close button in single messages 
  
  ````javascript
  app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-     $scope.addSpecialWarnMessage = function() {
-         growl.warning("<strong>This is a message without a close button</strong>", {disableCloseButton: true});
-     }
+  $scope.addSpecialWarnMessage = function() {
+    growl.warning("<strong>This is a message without a close button</strong>", {disableCloseButton: true});
+  }
  }]);
  ````
+
 ###Position [default:top-right]
 Instruct where the messages while appear relative to the screen
 >Options: top-left, top-right, bottom-left, bottom-right, top-center, bottom-center
@@ -180,7 +213,7 @@ Instruct where the messages while appear relative to the screen
 var app = angular.module('myApp', ['angular-growl']);
 
 app.config(['growlProvider', function(growlProvider) {
-    growlProvider.globalPosition('bottom-center');
+  growlProvider.globalPosition('bottom-center');
 });
 ````
 
@@ -191,7 +224,7 @@ Turn this on globally or on the directive to allow inline messages instead of th
 var app = angular.module('myApp', ['angular-growl']);
 
 app.config(['growlProvider', function(growlProvider) {
-    growlProvider.globalInlineMessages(true);
+  growlProvider.globalInlineMessages(true);
 });
 ```
 
@@ -199,18 +232,18 @@ You can override the global option by specifing a display method on the directiv
 
 ```html
 <form>
-    <div growl inline="true"></div>
-    <label>Name:<label><input type="text" name="name" />
+  <div growl inline="true"></div>
+  <label>Name:<label><input type="text" name="name" />
 </form>
 ```
 
 ###Reference ID [default: 0]
-When using inline growl notifications, it is possible to have multiple growl directives. For this reason it is possible to define a referenceId on the directive. When sending a message give it the same referenceId in the configuration. Example:
+When using inline growl notifications, it is possible to have multiple growl directives. For this reason it is possible to define a referenceId on the directive. When sending a message give it the same referenceId as the one in the directive configuration. Example:
 
 ```javascript
 app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-    $scope.sendToGrowl = function(referenceId) {
-        growl.warning("This is only send to growl directive with referenceId = 1", {referenceId: referenceId});
+  $scope.sendToGrowl = function(referenceId) {
+    growl.warning("This is only send to growl directive with referenceId = 1", {referenceId: referenceId});
     }
 }]);
 ```
@@ -231,14 +264,14 @@ Beginning with angularJS 1.2 growl messages can be automatically animated with C
 
 ````html
 <html>
-    <head>
-        <link href="bootstrap.min.css" rel="stylesheet">
-        <script src="angular.min.js"></script>
-        <script src="angular-animate.min.js"></script>
+  <head>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <script src="angular.min.js"></script>
+    <script src="angular-animate.min.js"></script>
 
-        <link href="angular-growl.css" rel="stylesheet">
-        <script src="angular-growl.js"></script>
-    </head>
+    <link href="angular-growl.css" rel="stylesheet">
+      <script src="angular-growl.js"></script>
+  </head>
 </html>
 ````
 
@@ -248,16 +281,16 @@ var app = angular.module('myApp', ['angular-growl', 'ngAnimate']);
 
 That's it. The angular-growl.css comes with a pre-defined animation of 0.5s to opacity.
 
-To configure the animations, just change the _growl-item.*_ classes in the css file to your preference. F.i. to change length
+To configure the animations, just change the _.growl-container > .growl-item.*_ classes in the css file to your preference. F.i. to change length
 of animation from 0.5s to 1s do this:
 
 ````css
-.growl-item.ng-enter,
-.growl-item.ng-leave {
-    -webkit-transition:1s linear all;
-    -moz-transition:1s linear all;
-    -o-transition:1s linear all;
-    transition:1s linear all;
+.growl-container > .growl-item.ng-enter,
+.growl-container > .growl-item.ng-leave {
+  -webkit-transition:1s linear all;
+  -moz-transition:1s linear all;
+  -o-transition:1s linear all;
+  transition:1s linear all;
 }
 ````
 
@@ -273,12 +306,12 @@ business logic on the server is able to send messages/notifications to the clien
 var app = angular.module('myApp', ['angular-growl']);
 
 app.config(['growlProvider', '$httpProvider', function(growlProvider, $httpProvider) {
-    $httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
+  $httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
 }]);
 ````
 
 This adds a pre-defined angularJS HTTP interceptor that is called on every HTTP request and looks if response contains
-messages. Interceptor looks in response for a "messages" array of objects with "text" and "severity" key. This is an example
+messages. Interceptor looks in response for a "messages" array of objects with "text", "title" and "severity" key. This is an example
 response which results in 3 growl messages:
 
 ````json
@@ -287,7 +320,7 @@ response which results in 3 growl messages:
 	"messages": [
 		{"text":"this is a server message", "severity": "warn"},
 		{"text":"this is another server message", "severity": "info"},
-		{"text":"and another", "severity": "error"}
+		{"text":"and another", "severity": "error", "title" : "Server side errors!"}
 	]
 }
 ````
@@ -300,6 +333,7 @@ var app = angular.module("demo", ["angular-growl"]);
 app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvider) {
 	growlProvider.messagesKey("my-messages");
 	growlProvider.messageTextKey("messagetext");
+  growlProvider.messageTitleKey("message_title");
 	growlProvider.messageSeverityKey("severity-level");
 	$httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
 }]);
@@ -307,7 +341,44 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 
 Server messages will be created with default TTL.
 
+## Custumization
+It is possible to replace the template of the growlDirective. The template is stored in the `$templateCache` and has the following html:
+
+```HTML
+<div class="growl-container" ng-class="wrapperClasses()">
+  <div class="growl-item alert" ng-repeat="message in messages" ng-class="alertClasses(message)">
+    <button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>
+    <h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>
+    <div class="growl-message" ng-bind-html="message.text"></div>
+  </div>
+</div>
+```
+
+Overwriting the template can be done by defining your own `templates/growl/growl.html` in the templateCache:
+
+```javascript
+<script type="text/ng-template" id="templates/growl/growl.html">
+// your template here
+</script>
+```
+
+A safer option to alter the view of the growl notifications is to change the css. The following classes are defined:
+* growl-container: the main div that holds all the growl messages for the directive
+* growl-item: a individual growl notification item
+* growl-title: the title of the notification
+* growl-message: the message of the notification
+
+The icons used in the notification are included in the css as base64 strings. The original images (white and colored) can be found in the src/images folder.
+
 ##Changelog
+**0.6.0** - 16 Apr 2014
+* [CHANGE] remove enableHtml, `$sce.trustAsHtml` is always run on the message text
+* Possible to set global possition for non-inline growl messages (thanks @pauloprea)
+* Template can now easily be replace or styled with CSS
+* Include icons for the different notifications, can be disabled globally or per notification
+* Server side messages can now interpolate variables into the message ([original pull request](https://github.com/marcorinck/angular-growl/pull/19))
+
+
 **0.5.3** - 19 Mar 2014
 * Fixed bug where globalInlineMessage option would not work globally
 
