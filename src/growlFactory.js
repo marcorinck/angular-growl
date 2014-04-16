@@ -175,13 +175,13 @@ angular.module("angular-growl").provider("growl", function() {
     }
 
     /**
-     * add one warn message with bootstrap class: alert
+     * add one warning message with bootstrap class: alert
      *
      * @param {string} text
      * @param {{ttl: number}} config
      */
     function warning(text, config) {
-      sendMessage(text, config, "warn");
+      sendMessage(text, config, "warning");
     }
 
     /**
@@ -226,25 +226,7 @@ angular.module("angular-growl").provider("growl", function() {
         message = messages[i];
 
         if (message[_messageTextKey]) {
-          if(message[_messageSeverityKey]) {
-            switch (message[_messageSeverityKey]) {
-              case "warn":
-                severity = "warn";
-                break;
-              case "success":
-                severity = "success";
-                break;
-              case "info":
-                severity = "info";
-                break;
-              case "error":
-                severity = "error";
-                break;
-            }
-          } else {
-              // default the severity to error if no severity is provided
-              severity = 'error';
-          }
+          severity = message[_messageSeverityKey] || "error";
           var config = {};
           config.variables = message[_messageVariableKey] || {};
           sendMessage(message[_messageTextKey], config, severity);
