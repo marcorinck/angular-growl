@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.5.3 - 2014-04-16
+ * angular-growl-v2 - v0.6.0 - 2014-04-16
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -104,7 +104,7 @@ angular.module('angular-growl').provider('growl', function () {
       error: null,
       warning: null,
       info: null
-    }, _messagesKey = 'messages', _messageTextKey = 'text', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false, _disableIcons = false;
+    }, _messagesKey = 'messages', _messageTextKey = 'text', _messageTitleKey = 'title', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false, _disableIcons = false;
   this.globalTimeToLive = function (ttl) {
     if (typeof ttl === 'object') {
       for (var k in ttl) {
@@ -140,6 +140,9 @@ angular.module('angular-growl').provider('growl', function () {
   };
   this.messageTextKey = function (messageTextKey) {
     _messageTextKey = messageTextKey;
+  };
+  this.messageTitleKey = function (messageTitleKey) {
+    _messageTitleKey = messageTitleKey;
   };
   this.messageSeverityKey = function (messageSeverityKey) {
     _messageSeverityKey = messageSeverityKey;
@@ -223,6 +226,7 @@ angular.module('angular-growl').provider('growl', function () {
             severity = message[_messageSeverityKey] || 'error';
             var config = {};
             config.variables = message[_messageVariableKey] || {};
+            config.title = message[_messageTitleKey];
             sendMessage(message[_messageTextKey], config, severity);
           }
         }
