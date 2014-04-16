@@ -18,7 +18,7 @@ app.run(function($httpBackend) {
     "my-messages": [
       {"messagetext":"{{field}} this is a server message", "severity-level": "warning",  "variables": {"field":"first name"}},
       {"messagetext":"this is another server message", "severity-level": "info"},
-      {"messagetext":"and another", "severity-level": "error"}
+      {"messagetext":"and another", "severity-level": "error", "title" : "Server Side Error"}
     ]
   });
 });

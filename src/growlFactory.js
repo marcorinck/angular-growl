@@ -4,6 +4,7 @@ angular.module("angular-growl").provider("growl", function() {
   var _ttl = {success: null, error: null, warning: null, info: null},
       _messagesKey = 'messages',
       _messageTextKey = 'text',
+      _messageTitleKey = 'title',
       _messageSeverityKey = 'severity',
       _onlyUniqueMessages = true,
       _messageVariableKey = 'variables',
@@ -95,6 +96,15 @@ angular.module("angular-growl").provider("growl", function() {
    */
   this.messageTextKey = function(messageTextKey) {
     _messageTextKey = messageTextKey;
+  };
+
+  /**
+   * sets the key in server sent messages the serverMessagesInterecptor is looking for title of message
+   *
+   * @param {string} messageTextKey default: text
+   */
+  this.messageTitleKey = function(messageTitleKey) {
+    _messageTitleKey = messageTitleKey;
   };
 
   /**
@@ -229,6 +239,7 @@ angular.module("angular-growl").provider("growl", function() {
           severity = message[_messageSeverityKey] || "error";
           var config = {};
           config.variables = message[_messageVariableKey] || {};
+          config.title = message[_messageTitleKey];
           sendMessage(message[_messageTextKey], config, severity);
         }
       }
