@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.5.3 - 2014-04-15
+ * angular-growl-v2 - v0.5.3 - 2014-04-16
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -64,7 +64,7 @@ angular.module('angular-growl').directive('growl', [
               'alert-error': message.severity === 'error',
               'alert-danger': message.severity === 'error',
               'alert-info': message.severity === 'info',
-              'alert-warning': message.severity === 'warn',
+              'alert-warning': message.severity === 'warning',
               'icon': message.disableIcons === false
             };
           };
@@ -201,7 +201,7 @@ angular.module('angular-growl').provider('growl', function () {
         broadcastMessage(message);
       }
       function warning(text, config) {
-        sendMessage(text, config, 'warn');
+        sendMessage(text, config, 'warning');
       }
       function error(text, config) {
         sendMessage(text, config, 'error');
@@ -218,24 +218,7 @@ angular.module('angular-growl').provider('growl', function () {
         for (i = 0; i < length; i++) {
           message = messages[i];
           if (message[_messageTextKey]) {
-            if (message[_messageSeverityKey]) {
-              switch (message[_messageSeverityKey]) {
-              case 'warn':
-                severity = 'warn';
-                break;
-              case 'success':
-                severity = 'success';
-                break;
-              case 'info':
-                severity = 'info';
-                break;
-              case 'error':
-                severity = 'error';
-                break;
-              }
-            } else {
-              severity = 'error';
-            }
+            severity = message[_messageSeverityKey] || 'error';
             var config = {};
             config.variables = message[_messageVariableKey] || {};
             sendMessage(message[_messageTextKey], config, severity);
