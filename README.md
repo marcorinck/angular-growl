@@ -6,7 +6,7 @@ Growl like notifications for angularJS projects, using bootstrap alert classes, 
 ![Standard bootstrap 2.x styles](doc/screenshot.jpg)
 
 * growl like notifications like in MacOS X
-* using standard bootstrap classes (alert, alert-info, alert-error, alert-success)
+* using standard bootstrap classes (alert, alert-info, aculert-error, alert-success)
 * global or per message configuration of a timeout when message will be automatically closed
 * automatic translation of messages if [angular-translate](https://github.com/PascalPrecht/angular-translate) filter is
 present, you only have to provide keys as messages, angular-translate will translate them
@@ -341,7 +341,7 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 
 Server messages will be created with default TTL.
 
-## Custumization
+## Customization
 It is possible to replace the template of the growlDirective. The template is stored in the `$templateCache` and has the following html:
 
 ```HTML
