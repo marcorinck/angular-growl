@@ -341,7 +341,7 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 
 Server messages will be created with default TTL.
 
-## Custumization
+## Customization
 It is possible to replace the template of the growlDirective. The template is stored in the `$templateCache` and has the following html:
 
 ```HTML
