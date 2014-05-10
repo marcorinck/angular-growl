@@ -7,28 +7,28 @@
   width: 400px;
   z-index: 9999;
 }
-.top-right {
+.growl-container.growl-fixed.top-right {
   top: 10px;
   right: 15px;
 }
-.bottom-right {
+.growl-container.growl-fixed.bottom-right {
   bottom: 10px;
   right: 15px;
 }
-.top-left {
+.growl-container.growl-fixed.top-left {
   top: 10px;
   left: 15px;
 }
-.bottom-left {
+.growl-container.growl-fixed.bottom-left {
   bottom: 10px;
   left: 15px;
 }
-.top-center {
+.growl-container.growl-fixed.top-center {
   top: 10px;
   left: 50%;
   margin-left: -150px;
 }
-.bottom-center {
+.growl-container.growl-fixed.bottom-center {
   bottom: 10px;
   left: 50%;
   margin-left: -150px;
