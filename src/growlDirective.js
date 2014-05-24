@@ -28,11 +28,16 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 					}, message.ttl);
 				}
 			}
+
+			function compareMessages(a, b) {
+				return a.text === b.text && a.severity === b.severity;
+			}
+
 			$rootScope.$on("growlMessage", function (event, message) {
 				var found;
 				if (onlyUnique) {
 					angular.forEach($scope.messages, function(msg) {
-						if (message.text === msg.text && message.severity === msg.severity) {
+						if (compareMessages(msg, message)) {
 							found = true;
 						}
 					});
@@ -45,12 +50,19 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 				}
 			});
 
+			$rootScope.$on('growlMessageDelete', function (event, message) {
+				angular.forEach($scope.messages, function (msg) {
+					if (compareMessages(message, msg)) {
+						$scope.deleteMessage(msg);
+					}
+				});
+			});
+
 			$scope.deleteMessage = function (message) {
 				var index = $scope.messages.indexOf(message);
 				if (index > -1) {
 					$scope.messages.splice(index, 1);
 				}
-
 			};
 
 			$scope.computeClasses = function (message) {

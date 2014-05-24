@@ -1,7 +1,7 @@
 /**
- * angular-growl - v0.4.0 - 2013-11-19
+ * angular-growl - v0.4.1 - 2014-05-24
  * https://github.com/marcorinck/angular-growl
- * Copyright (c) 2013 Marco Rinck; Licensed MIT
+ * Copyright (c) 2014 Marco Rinck; Licensed MIT
  */
 angular.module('angular-growl', []);
 angular.module('angular-growl').directive('growl', [
@@ -28,11 +28,14 @@ angular.module('angular-growl').directive('growl', [
               }, message.ttl);
             }
           }
+          function compareMessages(a, b) {
+            return a.text === b.text && a.severity === b.severity;
+          }
           $rootScope.$on('growlMessage', function (event, message) {
             var found;
             if (onlyUnique) {
               angular.forEach($scope.messages, function (msg) {
-                if (message.text === msg.text && message.severity === msg.severity) {
+                if (compareMessages(msg, message)) {
                   found = true;
                 }
               });
@@ -43,13 +46,13 @@ angular.module('angular-growl').directive('growl', [
               addMessage(message);
             }
           });
-			$rootScope.$on('growlMessageDelete', function (event, message) {
-				angular.forEach($scope.messages, function (msg) {
-					if (message.text === msg.text && message.severity === msg.severity) {
-						$scope.deleteMessage(msg);
-					}
-				});
-			});
+          $rootScope.$on('growlMessageDelete', function (event, message) {
+            angular.forEach($scope.messages, function (msg) {
+              if (compareMessages(message, msg)) {
+                $scope.deleteMessage(msg);
+              }
+            });
+          });
           $scope.deleteMessage = function (message) {
             var index = $scope.messages.indexOf(message);
             if (index > -1) {
@@ -138,24 +141,39 @@ angular.module('angular-growl').provider('growl', function () {
         };
         broadcastMessage(message);
       }
+      function deleteMessage(text, severity) {
+        if (translate) {
+          text = translate(text);
+        }
+        $rootScope.$broadcast('growlMessageDelete', {
+          text: text,
+          severity: severity
+        });
+      }
       function addWarnMessage(text, config) {
         sendMessage(text, config, 'warn');
+      }
+      function deleteWarnMessage(text) {
+        deleteMessage(text, 'warn');
       }
       function addErrorMessage(text, config) {
         sendMessage(text, config, 'error');
       }
+      function deleteErrorMessage(text) {
+        deleteMessage(text, 'error');
+      }
       function addInfoMessage(text, config) {
         sendMessage(text, config, 'info');
+      }
+      function deleteInfoMessage(text) {
+        deleteMessage(text, 'info');
       }
       function addSuccessMessage(text, config) {
         sendMessage(text, config, 'success');
       }
-		function deleteInfoMessage(text, config) {
-			if (translate) {
-				text = translate(text);
-			}
-			$rootScope.$broadcast('growlMessageDelete', {text: text, severity: 'info'});
-		}
+      function deleteSuccessMessage(text) {
+        deleteMessage(text, 'success');
+      }
       function addServerMessages(messages) {
         var i, message, severity, length;
         length = messages.length;
@@ -189,8 +207,11 @@ angular.module('angular-growl').provider('growl', function () {
         addInfoMessage: addInfoMessage,
         addSuccessMessage: addSuccessMessage,
         addServerMessages: addServerMessages,
-        onlyUnique: onlyUnique,
-        deleteInfoMessage: deleteInfoMessage
+        deleteWarnMessage: deleteWarnMessage,
+        deleteErrorMessage: deleteErrorMessage,
+        deleteInfoMessage: deleteInfoMessage,
+        deleteSuccessMessage: deleteSuccessMessage,
+        onlyUnique: onlyUnique
       };
     }
   ];
