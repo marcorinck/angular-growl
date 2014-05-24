@@ -114,6 +114,13 @@ angular.module("angular-growl").provider("growl", function() {
 			broadcastMessage(message);
 		}
 
+		function deleteMessage(text, severity) {
+			if (translate) {
+				text = translate(text);
+			}
+			$rootScope.$broadcast('growlMessageDelete', {text: text, severity: severity});
+		}
+
 		/**
 		 * add one warn message with bootstrap class: alert
 		 *
@@ -122,6 +129,15 @@ angular.module("angular-growl").provider("growl", function() {
 		 */
 		function addWarnMessage(text, config) {
 			sendMessage(text, config, "warn");
+		}
+
+		/**
+		 * delete all added warn messages with the given text
+		 *
+		 * @param {string} text
+		 */
+		function deleteWarnMessage(text) {
+			deleteMessage(text, "warn");
 		}
 
 		/**
@@ -135,6 +151,15 @@ angular.module("angular-growl").provider("growl", function() {
 		}
 
 		/**
+		 * delete all added error messages with the given text
+		 *
+		 * @param {string} text
+		 */
+		function deleteErrorMessage(text) {
+			deleteMessage(text, "error");
+		}
+
+		/**
 		 * add one info message with bootstrap classes: alert, alert-info
 		 *
 		 * @param {string} text
@@ -145,6 +170,15 @@ angular.module("angular-growl").provider("growl", function() {
 		}
 
 		/**
+		 * delete all added info messages with the given text
+		 *
+		 * @param {string} text
+		 */
+		function deleteInfoMessage(text) {
+			deleteMessage(text, "info");
+		}
+
+		/**
 		 * add one success message with bootstrap classes: alert, alert-success
 		 *
 		 * @param {string} text
@@ -152,6 +186,15 @@ angular.module("angular-growl").provider("growl", function() {
 		 */
 		function addSuccessMessage(text, config) {
 			sendMessage(text, config, "success");
+		}
+
+		/**
+		 * delete all added success messages with the given text
+		 *
+		 * @param {string} text
+		 */
+		function deleteSuccessMessage(text) {
+			deleteMessage(text, "success");
 		}
 
 		/**
@@ -195,6 +238,10 @@ angular.module("angular-growl").provider("growl", function() {
 			addInfoMessage: addInfoMessage,
 			addSuccessMessage: addSuccessMessage,
 			addServerMessages: addServerMessages,
+			deleteWarnMessage: deleteWarnMessage,
+			deleteErrorMessage: deleteErrorMessage,
+			deleteInfoMessage: deleteInfoMessage,
+			deleteSuccessMessage: deleteSuccessMessage,
 			onlyUnique: onlyUnique
 		};
 	}];

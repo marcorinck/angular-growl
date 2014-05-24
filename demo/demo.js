@@ -25,6 +25,12 @@ app.run(function($httpBackend) {
 
 app.controller("demoCtrl",  function demoCtrl($scope, growl, $http) {
 
+	$scope.removeMessage = function() {
+		var alertType =  $scope.alertType.charAt(0).toUpperCase() +  $scope.alertType.slice(1);
+		var methodName = 'delete' + alertType + 'Message';
+		growl[methodName]($scope.message);
+	};
+
 	$scope.createMessage = function () {
 		var config = {};
 		if ($scope.timeout) {
