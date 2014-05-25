@@ -159,10 +159,10 @@ angular.module("angular-growl").provider("growl", function() {
     function broadcastMessage(message) {
       if (translate) {
         message.text = translate(message.text, message.variables);
+      } else {
+        var polation = $interpolate(message.text);
+        message.text = polation(message.variables);
       }
-      var polation = $interpolate(message.text);
-      message.text = polation(message.variables);
-
       $rootScope.$broadcast("growlMessage", message);
     }
 

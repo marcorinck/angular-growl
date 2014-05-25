@@ -12,7 +12,7 @@
 		"url": "https://github.com/JanStevens/angular-growl-2"
 	},
 	"license": "MIT",
-	"main": ["./build/angular-growl.js", "./build/angular-growl.min.css"],
+	"main": ["./build/angular-growl.js", "./build/angular-growl.css"],
 	"ignore": [
 		"src",
 		"test",
