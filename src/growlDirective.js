@@ -18,14 +18,16 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
 
           function addMessage(message) {
-            message.text = $sce.trustAsHtml(message.text);
-            $scope.messages.push(message);
+            $timeout(function() {
+              message.text = $sce.trustAsHtml(message.text);
+              $scope.messages.push(message);
 
-            if (message.ttl && message.ttl !== -1) {
-              $timeout(function() {
-                $scope.deleteMessage(message);
-              }, message.ttl);
-            }
+              if (message.ttl && message.ttl !== -1) {
+                $timeout(function() {
+                  $scope.deleteMessage(message);
+                }, message.ttl);
+              }
+            }, true);
           }
 
           $rootScope.$on("growlMessage", function(event, message) {
