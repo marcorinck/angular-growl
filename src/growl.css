@@ -39,6 +39,7 @@
  */
 .growl-container > .growl-item {
   padding: 10px;
+  padding-right: 35px;
   margin-bottom: 10px;
 }
 .growl-container > .growl-item.ng-enter,
