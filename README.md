@@ -196,7 +196,7 @@ app.config(['growlProvider', function(growlProvider) {
 ```
 
 You can override the global option and hide the close button in single messages too:
- 
+
  ````javascript
  app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
   $scope.addSpecialWarnMessage = function() {
@@ -371,6 +371,11 @@ A safer option to alter the view of the growl notifications is to change the css
 The icons used in the notification are included in the css as base64 strings. The original images (white and colored) can be found in the src/images folder.
 
 ##Changelog
+**0.6.1** - 25 May 2014
+* Fixes edge case where message test is not a string
+* Fixes style issue where close button was floating outside the alert
+* Fixes issue [#12](https://github.com/JanStevens/angular-growl-2/issues/12), [#15](https://github.com/JanStevens/angular-growl-2/issues/15), [#16](https://github.com/JanStevens/angular-growl-2/issues/16)
+
 **0.6.0** - 16 Apr 2014
 * [CHANGE] remove enableHtml, `$sce.trustAsHtml` is always run on the message text
 * Possible to set global possition for non-inline growl messages (thanks @pauloprea)
