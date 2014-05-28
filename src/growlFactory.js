@@ -105,6 +105,7 @@ angular.module("angular-growl").provider("growl", function() {
 			var _config = config || {}, message;
 
 			message = {
+				classes: _config.classes,
 				text: text,
 				severity: severity,
 				ttl: _config.ttl || _ttl,
