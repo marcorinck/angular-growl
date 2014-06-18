@@ -20,7 +20,15 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
           function addMessage(message) {
             $timeout(function() {
               message.text = $sce.trustAsHtml(String(message.text));
-              $scope.messages.push(message);
+
+              /** abillity to reverse order (newest first ) **/
+              if(growl.reverseOrder())
+              {
+                  $scope.messages.unshift(message);
+              } else {
+                  $scope.messages.push(message);
+              }
+
 
               if (message.ttl && message.ttl !== -1) {
                 $timeout(function() {

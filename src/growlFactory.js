@@ -12,7 +12,8 @@ angular.module("angular-growl").provider("growl", function() {
       _inline = false,
       _position = 'top-right',
       _disableCloseButton = false,
-      _disableIcons = false;
+      _disableIcons = false,
+      _reverseOrder = false;
 
   /**
    * set a global timeout (time to live) after which messages will be automatically closed
@@ -52,6 +53,15 @@ angular.module("angular-growl").provider("growl", function() {
   this.globalDisableIcons = function (disableIcons) {
     _disableIcons = disableIcons;
   };
+
+  /**
+   * set whether message ordering is reversed
+   *
+   * @param {bool} reverseOrder
+   */
+   this.globalReversedOrder = function (reverseOrder) {
+    _reverseOrder = reverseOrder;
+   };
 
   /**
    * set the key in server sent messages the serverMessagesInterecptor is looking for variables to inject in the message
@@ -249,6 +259,10 @@ angular.module("angular-growl").provider("growl", function() {
       return _onlyUniqueMessages;
     }
 
+    function reverseOrder() {
+      return _reverseOrder;
+    }
+
     function inlineMessages() {
       return _inline;
     }
@@ -264,8 +278,9 @@ angular.module("angular-growl").provider("growl", function() {
       success: success,
       addServerMessages: addServerMessages,
       onlyUnique: onlyUnique,
+      reverseOrder : reverseOrder,
       inlineMessages: inlineMessages,
-      position: position,
+      position: position
     };
   }];
 });

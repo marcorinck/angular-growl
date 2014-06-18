@@ -96,6 +96,18 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 
 ##Configuration
 
+###Reverse ordered messages [default: false]
+
+Ability to reverse order of messages (default ordering is newest on the bottom ).
+
+````javascript
+var app = angular.module('myApp', ['angular-growl']);
+
+app.config(['growlProvider', function(growlProvider) {
+  growlProvider.globalReversedOrder(true);
+}]);
+````
+
 ###Only unique messages [default: true]
 
 Accept only unique messages as a new message. If a message is already displayed (text and severity are the same) then this
