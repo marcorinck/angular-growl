@@ -142,19 +142,16 @@ angular.module("angular-growl").provider("growl", function() {
       }
     }
 
-    function success(response) {
-      checkResponse(response);
-      return response;
-    }
-
-    function error(response) {
-      checkResponse(response);
-      return $q.reject(response);
-    }
-
-    return function (promise) {
-      return promise.then(success, error);
-    };
+	  return {
+		  'response': function(response) {
+			  checkResponse(response);
+			  return response;
+		  },
+		  'responseError': function(rejection) {
+			  checkResponse(rejection);
+			  return $q.reject(rejection);
+		  }
+	  };
   }];
 
   this.$get = ["$rootScope", "$interpolate", "$filter", function ($rootScope, $interpolate, $filter) {
