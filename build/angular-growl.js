@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.6.1 - 2014-05-25
+ * angular-growl-v2 - v0.6.1 - 2014-06-19
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -29,7 +29,11 @@ angular.module('angular-growl').directive('growl', [
           function addMessage(message) {
             $timeout(function () {
               message.text = $sce.trustAsHtml(String(message.text));
-              $scope.messages.push(message);
+              if (growl.reverseOrder()) {
+                $scope.messages.unshift(message);
+              } else {
+                $scope.messages.push(message);
+              }
               if (message.ttl && message.ttl !== -1) {
                 $timeout(function () {
                   $scope.deleteMessage(message);
@@ -107,7 +111,7 @@ angular.module('angular-growl').provider('growl', function () {
       error: null,
       warning: null,
       info: null
-    }, _messagesKey = 'messages', _messageTextKey = 'text', _messageTitleKey = 'title', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false, _disableIcons = false;
+    }, _messagesKey = 'messages', _messageTextKey = 'text', _messageTitleKey = 'title', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false, _disableIcons = false, _reverseOrder = false;
   this.globalTimeToLive = function (ttl) {
     if (typeof ttl === 'object') {
       for (var k in ttl) {
@@ -128,6 +132,9 @@ angular.module('angular-growl').provider('growl', function () {
   };
   this.globalDisableIcons = function (disableIcons) {
     _disableIcons = disableIcons;
+  };
+  this.globalReversedOrder = function (reverseOrder) {
+    _reverseOrder = reverseOrder;
   };
   this.messageVariableKey = function (messageVariableKey) {
     _messageVariableKey = messageVariableKey;
@@ -162,16 +169,15 @@ angular.module('angular-growl').provider('growl', function () {
           growl.addServerMessages(response.data[_messagesKey]);
         }
       }
-      function success(response) {
-        checkResponse(response);
-        return response;
-      }
-      function error(response) {
-        checkResponse(response);
-        return $q.reject(response);
-      }
-      return function (promise) {
-        return promise.then(success, error);
+      return {
+        'response': function (response) {
+          checkResponse(response);
+          return response;
+        },
+        'responseError': function (rejection) {
+          checkResponse(rejection);
+          return $q.reject(rejection);
+        }
       };
     }
   ];
@@ -238,6 +244,9 @@ angular.module('angular-growl').provider('growl', function () {
       function onlyUnique() {
         return _onlyUniqueMessages;
       }
+      function reverseOrder() {
+        return _reverseOrder;
+      }
       function inlineMessages() {
         return _inline;
       }
@@ -251,6 +260,7 @@ angular.module('angular-growl').provider('growl', function () {
         success: success,
         addServerMessages: addServerMessages,
         onlyUnique: onlyUnique,
+        reverseOrder: reverseOrder,
         inlineMessages: inlineMessages,
         position: position
       };

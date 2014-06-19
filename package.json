@@ -7,24 +7,25 @@
     "url": "https://github.com/JanStevens/angular-growl-2"
   },
   "author": {
-    "name": "Marco Rinck",
     "name": "Jan Stevens"
   },
   "license": "MIT",
   "devDependencies": {
-    "karma": "~0.10.x",
     "grunt": "~0.4.1",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-concat": "~0.3.x",
-    "grunt-contrib-jshint": "~0.6.x",
-    "grunt-contrib-uglify": "~0.2.x",
-    "grunt-contrib-watch": "~0.5.x",
     "grunt-bump": "0.0.2",
-    "grunt-karma": "~0.7.x",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-concat": "^0.3.0",
+    "grunt-contrib-copy": "^0.4.1",
+    "grunt-contrib-cssmin": "^0.6.2",
+    "grunt-contrib-jshint": "^0.6.5",
+    "grunt-contrib-uglify": "^0.2.7",
+    "grunt-contrib-watch": "^0.5.3",
+    "grunt-karma": "^0.7.3",
     "grunt-ngmin": "0.0.2",
-    "grunt-push-release": "0.1.x",
-    "matchdep": "0.1.2",
-    "grunt-contrib-cssmin": "~0.6.2"
+    "grunt-push-release": "^0.1.9",
+    "karma": "^0.12.16",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "matchdep": "^0.1.2"
   }
 }
