@@ -8,7 +8,8 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
       replace: false,
       scope: {
         reference: '@',
-        inline: '@'
+        inline: '@',
+        onlyOneMessage : '='
       },
       controller: ['$scope', '$timeout', 'growl',
         function($scope, $timeout, growl) {
@@ -20,6 +21,13 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
           function addMessage(message) {
             $timeout(function() {
               message.text = $sce.trustAsHtml(String(message.text));
+
+
+              if($scope.onlyOneMessage === true )
+              {
+                  //clear collection on new message
+                  $scope.messages = [];
+              }
 
               /** abillity to reverse order (newest first ) **/
               if(growl.reverseOrder())

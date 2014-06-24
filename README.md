@@ -122,6 +122,18 @@ app.config(['growlProvider', function(growlProvider) {
 }]);
 ````
 
+###Only one message [default: false]
+
+Accept only one message inside growl container. Automatically flush collection on each new message. (Message overriding) . Useful
+when growl is handling messages corresponding to specified element (for example input box inside form) , and you need to show
+message only for last request , very handy for input validation.
+
+````html
+<body>
+    <div growl only-one-message="true"></div>
+</body>
+````
+
 ###Automatic closing of notifications (timeout, ttl) [default: none]
 
 However, you can configure a global timeout (TTL) after which notifications should be automatically closed.  To do this, you have to configure this during config phase of angular bootstrap like this:
