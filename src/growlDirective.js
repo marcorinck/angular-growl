@@ -19,6 +19,22 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
 
           function addMessage(message) {
             $timeout(function() {
+              var found;
+              var msgText;
+              
+              if (onlyUnique) {
+                angular.forEach($scope.messages, function(msg) {
+                  msgText = $sce.getTrustedHtml(msg.text);
+                  if (message.text === msgText && message.severity === msg.severity && msg.title === msg.title) {
+                    found = true;
+                  }
+                });
+
+                if (found) {
+                  return;
+                }
+              }
+              
               message.text = $sce.trustAsHtml(String(message.text));
 
               /** abillity to reverse order (newest first ) **/
@@ -39,23 +55,8 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
           }
 
           $rootScope.$on("growlMessage", function(event, message) {
-            var found;
-            var msgText;
             if (parseInt(referenceId, 10) === parseInt(message.referenceId, 10)) {
-              if (onlyUnique) {
-                angular.forEach($scope.messages, function(msg) {
-                  msgText = $sce.getTrustedHtml(msg.text);
-                  if (message.text === msgText && message.severity === msg.severity && msg.title === msg.title) {
-                    found = true;
-                  }
-                });
-
-                if (!found) {
-                  addMessage(message);
-                }
-              } else {
-                addMessage(message);
-              }
+              addMessage(message);
             }
           });
 
