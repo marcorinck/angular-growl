@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.6.1 - 2014-05-25
+ * angular-growl-v2 - v0.6.1 - 2014-06-30
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -28,8 +28,25 @@ angular.module('angular-growl').directive('growl', [
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
           function addMessage(message) {
             $timeout(function () {
+              var found;
+              var msgText;
+              if (onlyUnique) {
+                angular.forEach($scope.messages, function (msg) {
+                  msgText = $sce.getTrustedHtml(msg.text);
+                  if (message.text === msgText && message.severity === msg.severity && msg.title === msg.title) {
+                    found = true;
+                  }
+                });
+                if (found) {
+                  return;
+                }
+              }
               message.text = $sce.trustAsHtml(String(message.text));
-              $scope.messages.push(message);
+              if (growl.reverseOrder()) {
+                $scope.messages.unshift(message);
+              } else {
+                $scope.messages.push(message);
+              }
               if (message.ttl && message.ttl !== -1) {
                 $timeout(function () {
                   $scope.deleteMessage(message);
@@ -38,22 +55,8 @@ angular.module('angular-growl').directive('growl', [
             }, true);
           }
           $rootScope.$on('growlMessage', function (event, message) {
-            var found;
-            var msgText;
             if (parseInt(referenceId, 10) === parseInt(message.referenceId, 10)) {
-              if (onlyUnique) {
-                angular.forEach($scope.messages, function (msg) {
-                  msgText = $sce.getTrustedHtml(msg.text);
-                  if (message.text === msgText && message.severity === msg.severity && msg.title === msg.title) {
-                    found = true;
-                  }
-                });
-                if (!found) {
-                  addMessage(message);
-                }
-              } else {
-                addMessage(message);
-              }
+              addMessage(message);
             }
           });
           $scope.deleteMessage = function (message) {
@@ -107,7 +110,7 @@ angular.module('angular-growl').provider('growl', function () {
       error: null,
       warning: null,
       info: null
-    }, _messagesKey = 'messages', _messageTextKey = 'text', _messageTitleKey = 'title', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false, _disableIcons = false;
+    }, _messagesKey = 'messages', _messageTextKey = 'text', _messageTitleKey = 'title', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false, _disableIcons = false, _reverseOrder = false;
   this.globalTimeToLive = function (ttl) {
     if (typeof ttl === 'object') {
       for (var k in ttl) {
@@ -128,6 +131,9 @@ angular.module('angular-growl').provider('growl', function () {
   };
   this.globalDisableIcons = function (disableIcons) {
     _disableIcons = disableIcons;
+  };
+  this.globalReversedOrder = function (reverseOrder) {
+    _reverseOrder = reverseOrder;
   };
   this.messageVariableKey = function (messageVariableKey) {
     _messageVariableKey = messageVariableKey;
@@ -238,6 +244,9 @@ angular.module('angular-growl').provider('growl', function () {
       function onlyUnique() {
         return _onlyUniqueMessages;
       }
+      function reverseOrder() {
+        return _reverseOrder;
+      }
       function inlineMessages() {
         return _inline;
       }
@@ -251,6 +260,7 @@ angular.module('angular-growl').provider('growl', function () {
         success: success,
         addServerMessages: addServerMessages,
         onlyUnique: onlyUnique,
+        reverseOrder: reverseOrder,
         inlineMessages: inlineMessages,
         position: position
       };
