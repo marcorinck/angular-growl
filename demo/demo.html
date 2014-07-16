@@ -1,79 +1,66 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>angular-growl demo</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-mocks.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-sanitize.js"></script>
-    <link href="http://netdna.bootstrapcdn.com//twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-    <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">-->
-
-    <!--<link href="../build/angular-growl.min.css" rel="stylesheet">-->
-    <!--<script src="../build/angular-growl.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-mocks.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="../src/growl.css" rel="stylesheet">
     <script src="../src/growl.js"></script>
     <script src="../src/growlDirective.js"></script>
     <script src="../src/growlFactory.js"></script>
     <script src="demo.js"></script>
-</head>
-<body ng-app="demo">
-
-<div ng-controller="demoCtrl">
-    <div class="text-center container"><h1>angular-growl Demo site</h1></div>
-
-    <div growl></div>
-    <div class="container">
+  </head>
+  <body ng-app="demo">
+    <div ng-controller="demoCtrl">
+      <div class="text-center container"><h1>angular-growl Demo site</h1></div>
+      <div class="container">
         <div class="well row">
+          <div growl></div>
+          <label>
+            Message type<br/>
+          </label>
+          <div class="btn-group">
             <label>
-                Message type<br/>
+              <input type="radio" name="alertType" ng-model="alertType" value="success">
+              success
             </label>
-
-            <div class="btn-group">
-                <label>
-                    <input type="radio" name="alertType" ng-model="alertType" value="success">
-                    success
-                </label>
-                <label>
-                    <input type="radio" name="alertType" ng-model="alertType" value="info">
-                    info
-                </label>
-                <label>
-                    <input type="radio" name="alertType" ng-model="alertType" value="warn">
-                    warn
-                </label>
-                <label>
-                    <input type="radio" name="alertType" ng-model="alertType" value="error">
-                    error
-                </label>
-            </div>
-
             <label>
-                Enable HTML in messages
-                <input type="checkbox" ng-model="enableHtml">
+              <input type="radio" name="alertType" ng-model="alertType" value="info">
+              info
             </label>
-
             <label>
-                Message text
-                <input type="text" ng-model="message">
+              <input type="radio" name="alertType" ng-model="alertType" value="warn">
+              warn
             </label>
-
             <label>
-                Timeout (this demo has a standard timeout of 2000 ms, enter a number to override standard or -1 for no timeout)
-                <input type="number" ng-model="timeout">
+              <input type="radio" name="alertType" ng-model="alertType" value="error">
+              error
             </label>
-
-            <button ng-click="createMessage()">Create Message</button>
-
+          </div>
+          <label>
+            Message text
+            <input type="text" ng-model="message">
+          </label>
+          <label>
+            Timeout (this demo has a standard timeout of 2000 ms, enter a number to override standard or -1 for no timeout)
+            <input type="number" ng-model="timeout">
+          </label>
+          <button ng-click="createMessage()">Create Message</button>
         </div>
-	    <div class="well row">
-			<button ng-click="simulateServerMessages()">Simulate backend call to create fake server messages</button>
-	    </div>
-
+        <div class="well row">
+          <button ng-click="simulateServerMessages()">Simulate backend call to create fake server messages</button>
+        </div>
+      </div>
+      <div class="container">
+        <div class="well row">
+          <div growl reference="1" inline="true"></div>
+          <button ng-click="inlineMessage(1)">Create Message for this well</button>
+        </div>
+      </div>
     </div>
-
-</div>
-
+  </div>
 </body>
 </html>
