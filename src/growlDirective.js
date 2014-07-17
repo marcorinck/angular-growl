@@ -9,7 +9,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
       scope: {
         reference: '@',
         inline: '@',
-        onlyOneMessage : '='
+        limitMessages : '='
       },
       controller: ['$scope', '$timeout', 'growl',
         function($scope, $timeout, growl) {
@@ -23,12 +23,14 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
               message.text = $sce.trustAsHtml(String(message.text));
 
 
-              if($scope.onlyOneMessage === true )
+              if(angular.isDefined($scope.limitMessages))
               {
-                  //clear collection on new message
-                  $scope.messages = [];
+                  var diff = $scope.messages.length - ($scope.limitMessages-1);
+                  if(diff > 0)
+                  {
+                      $scope.messages.splice($scope.limitMessages-1,diff)
+                  }
               }
-
               /** abillity to reverse order (newest first ) **/
               if(growl.reverseOrder())
               {

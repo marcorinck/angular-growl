@@ -122,15 +122,15 @@ app.config(['growlProvider', function(growlProvider) {
 }]);
 ````
 
-###Only one message [default: false]
+###Limit messages count [default: undefined]
 
-Accept only one message inside growl container. Automatically flush collection on each new message. (Message overriding) . Useful
+Accept only one X messages inside growl container. Automatically flush collection to limited count on each new message. (Message overriding) . Useful
 when growl is handling messages corresponding to specified element (for example input box inside form) , and you need to show
-message only for last request , very handy for input validation.
+specified number of messages (for example 1 ) , very handy for input validation.
 
 ````html
 <body>
-    <div growl only-one-message="true"></div>
+    <div growl limit-messages="1"></div>
 </body>
 ````
 
