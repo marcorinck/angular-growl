@@ -89,7 +89,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
           //Cancels all promises within message apon deleting message or stop deleting.
           $scope.stopTimeoutClose = function(message){
             angular.forEach(message.promises, function(promise){
-              $timeout.cancel(promise));
+              $timeout.cancel(promise);
             });
           };
 
