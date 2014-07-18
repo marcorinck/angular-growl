@@ -163,6 +163,12 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 }]);
 ````
 
+The timeout time until the message is gone is displayed in the top right corner.
+To stop a message from timing out click on the message.
+
+After the timeout is stopped click on the message again to close it out.
+
+
 ###Allow HTML in messages [always-on]
 
 Starting from v0.6, HTML can always be included in the message text (not the title). It uses `$sce` service from angular to mark the html as trusted. The following example shows the html usage.

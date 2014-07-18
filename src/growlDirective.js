@@ -27,6 +27,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
               if(message.ttl && message.ttl !== -1){
                 message.countdown = message.ttl / 1000;
                 message.promises = [];
+                message.close = false;
                 message.countdownFunction = function() {
                   if(message.countdown > 1){
                     message.countdown--;
@@ -91,6 +92,11 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
             angular.forEach(message.promises, function(promise){
               $timeout.cancel(promise);
             });
+            if(message.close){
+              $scope.deleteMessage(message);
+            } else {
+              message.close = true;
+            }
           };
 
           $scope.alertClasses = function(message) {
