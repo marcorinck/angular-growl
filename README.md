@@ -318,7 +318,7 @@ business logic on the server is able to send messages/notifications to the clien
 var app = angular.module('myApp', ['angular-growl']);
 
 app.config(['growlProvider', '$httpProvider', function(growlProvider, $httpProvider) {
-  $httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
+  $httpProvider.interceptors.push(growlProvider.serverMessagesInterceptor);
 }]);
 ````
 
