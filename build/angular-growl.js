@@ -29,6 +29,19 @@ angular.module('angular-growl').directive('growl', [
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
           function addMessage(message) {
             $timeout(function () {
+              var found;
+              var msgText;
+              if (onlyUnique) {
+                angular.forEach($scope.messages, function (msg) {
+                  msgText = $sce.getTrustedHtml(msg.text);
+                  if (message.text === msgText && message.severity === msg.severity && msg.title === msg.title) {
+                    found = true;
+                  }
+                });
+                if (found) {
+                  return;
+                }
+              }
               message.text = $sce.trustAsHtml(String(message.text));
               if (message.ttl && message.ttl !== -1) {
                 message.countdown = message.ttl / 1000;
@@ -63,22 +76,8 @@ angular.module('angular-growl').directive('growl', [
             }, true);
           }
           $rootScope.$on('growlMessage', function (event, message) {
-            var found;
-            var msgText;
             if (parseInt(referenceId, 10) === parseInt(message.referenceId, 10)) {
-              if (onlyUnique) {
-                angular.forEach($scope.messages, function (msg) {
-                  msgText = $sce.getTrustedHtml(msg.text);
-                  if (message.text === msgText && message.severity === msg.severity && msg.title === msg.title) {
-                    found = true;
-                  }
-                });
-                if (!found) {
-                  addMessage(message);
-                }
-              } else {
-                addMessage(message);
-              }
+              addMessage(message);
             }
           });
           $scope.deleteMessage = function (message) {
