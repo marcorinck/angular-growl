@@ -18,6 +18,7 @@ present, you only have to provide keys as messages, angular-translate will trans
 * Icons for the different alert types (can be disabled)
 * Possible to set an optional title
 * Server side variable interpolation
+* Lots of configuration possible!
 
 ##Installation
 
@@ -94,313 +95,26 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 }]);
 ````
 
-##Configuration
+## Configuration/Documentation/Info
+For the configuration options, documentation and live examples visit the github pages:
 
-###Reverse ordered messages [default: false]
+# [http://janstevens.github.io/angular-growl-2/](http://janstevens.github.io/angular-growl-2/)
 
-Ability to reverse order of messages (default ordering is newest on the bottom ).
+Live demo's can be found on the following codepen collection:
 
-````javascript
-var app = angular.module('myApp', ['angular-growl']);
-
-app.config(['growlProvider', function(growlProvider) {
-  growlProvider.globalReversedOrder(true);
-}]);
-````
-
-###Only unique messages [default: true]
-
-Accept only unique messages as a new message. If a message is already displayed (text and severity are the same) then this
-message will not be added to the displayed message list. Set to false, to always display all messages regardless if they
-are already displayed or not. Uniqueness of messages is determined by the message text, severity and title:
-
-````javascript
-var app = angular.module('myApp', ['angular-growl']);
-
-app.config(['growlProvider', function(growlProvider) {
-  growlProvider.onlyUniqueMessages(false);
-}]);
-````
-
-###Limit messages count [default: undefined]
-
-Accept only one X messages inside growl container. Automatically flush collection to limited count on each new message. (Message overriding) . Useful
-when growl is handling messages corresponding to specified element (for example input box inside form) , and you need to show
-specified number of messages (for example 1 ) , very handy for input validation.
-
-````html
-<body>
-    <div growl limit-messages="1"></div>
-</body>
-````
-
-###Automatic closing of notifications (timeout, ttl) [default: none]
-
-However, you can configure a global timeout (TTL) after which notifications should be automatically closed.  To do this, you have to configure this during config phase of angular bootstrap like this:
-
-````javascript
-var app = angular.module('myApp', ['angular-growl']);
-
-app.config(['growlProvider', function(growlProvider) {
-  growlProvider.globalTimeToLive(5000);
-}]);
-````
-This sets a global timeout of 5 seconds after which every notification will be closed. It's also possible to provide the tll based on the severity of the message. To do this, you configure `growlProvider` as follows:
-
-```javascript
-app.config(['growlProvider', function(growlProvider) {
-  growlProvider.globalTimeToLive({success: 2000, error: 5000, warning: 2000, info: 2000})
-}])
-```
-
-This sets the success messages to 5 seconds and all the others to 2 seconds.You can override TTL generally for every single message if you want:
-
-````javascript
-app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-  $scope.addSpecialWarnMessage = function() {
-    growl.warning("Override global ttl setting", {ttl: 10000});
-  }
-}]);
-````
-
-This sets a 10 second timeout, after which the notification will be automatically closed.
-
-If you have set a global TTL, you can disable automatic closing of single notifications by setting their ttl to -1:
-
-````javascript
-app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-  $scope.addSpecialWarnMessage = function() {
-    growl.warning("this will not be closed automatically even when a global ttl is set", {ttl: -1});
-  }
-}]);
-````
-
-The timeout time until the message is gone is displayed in the top right corner.
-To stop a message from timing out click on the message.
-
-After the timeout is stopped click on the message again to close it out.
-
-
-###Allow HTML in messages [always-on]
-
-Starting from v0.6, HTML can always be included in the message text (not the title). It uses `$sce` service from angular to mark the html as trusted. The following example shows the html usage.
-
-````javascript
-app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-  $scope.addSpecialWarnMessage = function() {
-    growl.warning("<strong>This is a HTML message</strong>");
-  }
-}]);
-````
-
-###Disable Icons in messages [default: false]
-The icons are hardcoded as base64 string in the css file. The original images can be found in the src/images folder. The following code will disable the icons globally.
-
-```javascript
-var app = angular.module('myApp', ['angular-growl']);
-
-app.config(['growlProvider', function(growlProvider) {
-  growlProvider.globalDisableIcons(true);
-}]);
-```
-
-You can override the global options and show icons for specific messages by using the following code:
-
- ````javascript
- app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-  $scope.addSpecialWarnMessage = function() {
-    growl.warning("<strong>This is a message with a icon", {disableIcons: false});
-  }
- }]);
- ````
-
-###Disable close button on messages [default: false]
-Turn this on to hide the close button on messages, default behaviour is to display the close button.
-
-```javascript
-var app = angular.module('myApp', ['angular-growl']);
-
-app.config(['growlProvider', function(growlProvider) {
-  growlProvider.globalDisableCloseButton(true);
-}]);
-```
-
-You can override the global option and hide the close button in single messages too:
-
- ````javascript
- app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-  $scope.addSpecialWarnMessage = function() {
-    growl.warning("<strong>This is a message without a close button</strong>", {disableCloseButton: true});
-  }
- }]);
- ````
-
-###Position [default:top-right]
-Instruct where the messages while appear relative to the screen
->Options: top-left, top-right, bottom-left, bottom-right, top-center, bottom-center
-
-````javascript
-var app = angular.module('myApp', ['angular-growl']);
-
-app.config(['growlProvider', function(growlProvider) {
-  growlProvider.globalPosition('bottom-center');
-});
-````
-
-###Inline Messages [default: false]
-Turn this on globally or on the directive to allow inline messages instead of the growl like messages. The default behaviour is to show growl like messages.
-
-```javascript
-var app = angular.module('myApp', ['angular-growl']);
-
-app.config(['growlProvider', function(growlProvider) {
-  growlProvider.globalInlineMessages(true);
-});
-```
-
-You can override the global option by specifing a display method on the directive, you can also use this in combination with reference id option:
-
-```html
-<form>
-  <div growl inline="true"></div>
-  <label>Name:<label><input type="text" name="name" />
-</form>
-```
-
-###Reference ID [default: 0]
-When using inline growl notifications, it is possible to have multiple growl directives. For this reason it is possible to define a referenceId on the directive. When sending a message give it the same referenceId as the one in the directive configuration. Example:
-
-```javascript
-app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
-  $scope.sendToGrowl = function(referenceId) {
-    growl.warning("This is only send to growl directive with referenceId = 1", {referenceId: referenceId});
-    }
-}]);
-```
-
-```html
-<div growl inline="true" reference="1"></div>
-<div growl inline="true" reference="2"></div>
-<div growl inline="true" reference="3"></div>
-<button ng-click="sendToGrowl(1)">Send to Growl #1</button>
-```
-When the user clicks on the button in the example, only the first growl directive will show the message inline. For bigger forms with multiple parts, this can be very handy.
-
-When no ID is given the default 0 will be used.
-
-###Animations
-
-Beginning with angularJS 1.2 growl messages can be automatically animated with CSS animations when adding and/or closing them. All you have to do is load the angular-animate.js provided by angularJS and add **ngAnimate** to your applications dependency list:
-
-````html
-<html>
-  <head>
-    <link href="bootstrap.min.css" rel="stylesheet">
-    <script src="angular.min.js"></script>
-    <script src="angular-animate.min.js"></script>
-
-    <link href="angular-growl.css" rel="stylesheet">
-      <script src="angular-growl.js"></script>
-  </head>
-</html>
-````
-
-````javascript
-var app = angular.module('myApp', ['angular-growl', 'ngAnimate']);
-````
-
-That's it. The angular-growl.css comes with a pre-defined animation of 0.5s to opacity.
-
-To configure the animations, just change the _.growl-container > .growl-item.*_ classes in the css file to your preference. F.i. to change length
-of animation from 0.5s to 1s do this:
-
-````css
-.growl-container > .growl-item.ng-enter,
-.growl-container > .growl-item.ng-leave {
-  -webkit-transition:1s linear all;
-  -moz-transition:1s linear all;
-  -o-transition:1s linear all;
-  transition:1s linear all;
-}
-````
-
-Basically you can style your animations just as you like if ngAnimate can pick it up automatically. See the [ngAnimate
-docs](http://docs.angularjs.org/api/ngAnimate) for more info.
-
-###Handling of server sent notifications
-
-When doing $http requests, you can configure angular-growl to look automatically for messages in $http responses, so your
-business logic on the server is able to send messages/notifications to the client and you can display them automagically:
-
-````javascript
-var app = angular.module('myApp', ['angular-growl']);
-
-app.config(['growlProvider', '$httpProvider', function(growlProvider, $httpProvider) {
-  $httpProvider.interceptors.push(growlProvider.serverMessagesInterceptor);
-}]);
-````
-
-This adds a pre-defined angularJS HTTP interceptor that is called on every HTTP request and looks if response contains
-messages. Interceptor looks in response for a "messages" array of objects with "text", "title" and "severity" key. This is an example
-response which results in 3 growl messages:
-
-````json
-{
-    "someOtherData": {...},
-	"messages": [
-		{"text":"this is a server message", "severity": "warn"},
-		{"text":"this is another server message", "severity": "info"},
-		{"text":"and another", "severity": "error", "title" : "Server side errors!"}
-	]
-}
-````
-
-You can configure the keys, the interceptor is looking for like this:
-
-````javascript
-var app = angular.module("demo", ["angular-growl"]);
-
-app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvider) {
-	growlProvider.messagesKey("my-messages");
-	growlProvider.messageTextKey("messagetext");
-  growlProvider.messageTitleKey("message_title");
-	growlProvider.messageSeverityKey("severity-level");
-	$httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
-}]);
-````
-
-Server messages will be created with default TTL.
-
-## Customization
-It is possible to replace the template of the growlDirective. The template is stored in the `$templateCache` and has the following html:
-
-```HTML
-<div class="growl-container" ng-class="wrapperClasses()">
-  <div class="growl-item alert" ng-repeat="message in messages" ng-class="alertClasses(message)">
-    <button type="button" class="close" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>
-    <h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>
-    <div class="growl-message" ng-bind-html="message.text"></div>
-  </div>
-</div>
-```
-
-Overwriting the template can be done by defining your own `templates/growl/growl.html` in the templateCache:
-
-```javascript
-<script type="text/ng-template" id="templates/growl/growl.html">
-// your template here
-</script>
-```
-
-A safer option to alter the view of the growl notifications is to change the css. The following classes are defined:
-* growl-container: the main div that holds all the growl messages for the directive
-* growl-item: a individual growl notification item
-* growl-title: the title of the notification
-* growl-message: the message of the notification
-
-The icons used in the notification are included in the css as base64 strings. The original images (white and colored) can be found in the src/images folder.
+# [Codepen Collection](http://codepen.io/collection/Jhcpi/)
 
 ##Changelog
+**0.7.0** - 10 Aug 2014
+* Added new documentation website with examples instead of this readme.
+* Growl Containers are now responsive for mobile devices (@tlvince) [pull #17](https://github.com/JanStevens/angular-growl-2/pull/17)
+* Add option to reverse order of messages (@MilosMosovsky) [pull #18](https://github.com/JanStevens/angular-growl-2/pull/18)
+* Add option to set the message limit of a growl container (@MilosMosovsky) [pull #21](https://github.com/JanStevens/angular-growl-2/pull/21)
+* Add new feature to stop the TTL when clicked and remove the message manually when clicked again (@willjk) [pull #27](https://github.com/JanStevens/angular-growl-2/pull/27)
+* Fix for issue #22 (@soumya92) [pull #23](https://github.com/JanStevens/angular-growl-2/pull/23)
+* Fix for angular 1.3 http interceptor API changes (@vik-singh) [pull #20](https://github.com/JanStevens/angular-growl-2/pull/20) & [pull #29](https://github.com/JanStevens/angular-growl-2/pull/29)
+* Fix only add template to cache if it doesn't exist already (@Anaphase) [pull #31](https://github.com/JanStevens/angular-growl-2/pull/31)
+
 **0.6.1** - 25 May 2014
 * Fixes edge case where message test is not a string
 * Fixes style issue where close button was floating outside the alert
@@ -454,7 +168,14 @@ The icons used in the notification are included in the css as base64 strings. Th
 
 * introducing ttl config option, fixes #2
 
-#Thanks
+## Contributions
+* Fork the project
+* Change/Fix/Add the stuff you want
+* Clone the codepens that have effect on your changes or if you add new features create a codepen that show them
+* Create a PR
+* Don't forget to add your name to the Thanks section!
+
+# Thanks
 Thanks Marco Rinck for the original code, the following people have contributed to this project:
 
 * [orangeskins](https://github.com/orangeskins)
@@ -462,6 +183,12 @@ Thanks Marco Rinck for the original code, the following people have contributed 
 * [m0ppers](https://github.com/m0ppers)
 * [lbehnke](https://github.com/lbehnke)
 * [rorymadden](https://github.com/rorymadden)
+* [pauloprea](https://github.com/pauloprea)
+* [tlvince](https://github.com/tlvince)
+* [vik-singh](https://github.com/vik-singh)
+* [Anaphase](https://github.com/Anaphase)
+* [soumya92](https://github.com/soumya92)
+* [willjk](https://github.com/willjk)
 
 # License
 Copyright (C) 2014 Marco Rinck

@@ -49,6 +49,11 @@
   margin-bottom: 10px;
   cursor: pointer;
 }
+
+.growl-container > button {
+  border: none;
+  outline:none;
+}
 .growl-container > .growl-item.ng-enter,
 .growl-container > .growl-item.ng-leave {
   -webkit-transition:0.5s linear all;
