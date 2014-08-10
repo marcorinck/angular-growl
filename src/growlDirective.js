@@ -22,11 +22,13 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
             $timeout(function() {
               var found;
               var msgText;
-              
+
               if (onlyUnique) {
                 angular.forEach($scope.messages, function(msg) {
                   msgText = $sce.getTrustedHtml(msg.text);
-                  if (message.text === msgText && message.severity === msg.severity && msg.title === msg.title) {
+                  if (message.text === msgText &&
+                        message.severity === msg.severity &&
+                          msg.title === msg.title) {
                     found = true;
                   }
                 });
@@ -35,7 +37,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
                   return;
                 }
               }
-              
+
               message.text = $sce.trustAsHtml(String(message.text));
 
               /**If message closes on timeout, add's promises array for
