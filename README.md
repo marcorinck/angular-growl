@@ -98,11 +98,11 @@ app.controller("demoCtrl", ['$scope', 'growl', function($scope, growl) {
 ## Configuration/Documentation/Info
 For the configuration options, documentation and live examples visit the github pages:
 
-# [http://janstevens.github.io/angular-growl-2/](http://janstevens.github.io/angular-growl-2/)
+## [http://janstevens.github.io/angular-growl-2/](http://janstevens.github.io/angular-growl-2/)
 
 Live demo's can be found on the following codepen collection:
 
-# [Codepen Collection](http://codepen.io/collection/Jhcpi/)
+## [Codepen Collection](http://codepen.io/collection/Jhcpi/)
 
 ##Changelog
 **0.7.0** - 10 Aug 2014
