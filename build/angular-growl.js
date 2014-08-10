@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.6.1 - 2014-06-19
+ * angular-growl-v2 - v0.6.1 - 2014-08-10
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -15,7 +15,8 @@ angular.module('angular-growl').directive('growl', [
       replace: false,
       scope: {
         reference: '@',
-        inline: '@'
+        inline: '@',
+        limitMessages: '='
       },
       controller: [
         '$scope',
@@ -29,15 +30,35 @@ angular.module('angular-growl').directive('growl', [
           function addMessage(message) {
             $timeout(function () {
               message.text = $sce.trustAsHtml(String(message.text));
+              if (message.ttl && message.ttl !== -1) {
+                message.countdown = message.ttl / 1000;
+                message.promises = [];
+                message.close = false;
+                message.countdownFunction = function () {
+                  if (message.countdown > 1) {
+                    message.countdown--;
+                    message.promises.push($timeout(message.countdownFunction, 1000));
+                  } else {
+                    message.countdown--;
+                  }
+                };
+              }
+              if (angular.isDefined($scope.limitMessages)) {
+                var diff = $scope.messages.length - ($scope.limitMessages - 1);
+                if (diff > 0) {
+                  $scope.messages.splice($scope.limitMessages - 1, diff);
+                }
+              }
               if (growl.reverseOrder()) {
                 $scope.messages.unshift(message);
               } else {
                 $scope.messages.push(message);
               }
               if (message.ttl && message.ttl !== -1) {
-                $timeout(function () {
+                message.promises.push($timeout(function () {
                   $scope.deleteMessage(message);
-                }, message.ttl);
+                }, message.ttl));
+                message.promises.push($timeout(message.countdownFunction, 1000));
               }
             }, true);
           }
@@ -64,6 +85,16 @@ angular.module('angular-growl').directive('growl', [
             var index = $scope.messages.indexOf(message);
             if (index > -1) {
               $scope.messages.splice(index, 1);
+            }
+          };
+          $scope.stopTimeoutClose = function (message) {
+            angular.forEach(message.promises, function (promise) {
+              $timeout.cancel(promise);
+            });
+            if (message.close) {
+              $scope.deleteMessage(message);
+            } else {
+              message.close = true;
             }
           };
           $scope.alertClasses = function (message) {
@@ -102,7 +133,7 @@ angular.module('angular-growl').run([
   function ($templateCache) {
     'use strict';
     if ($templateCache.get('templates/growl/growl.html') === undefined) {
-      $templateCache.put('templates/growl/growl.html', '<div class="growl-container" ng-class="wrapperClasses()">' + '<div class="growl-item alert" ng-repeat="message in messages" ng-class="alertClasses(message)">' + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' + '<h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>' + '<div class="growl-message" ng-bind-html="message.text"></div>' + '</div>' + '</div>');
+      $templateCache.put('templates/growl/growl.html', '<div class="growl-container" ng-class="wrapperClasses()">' + '<div class="growl-item alert" ng-repeat="message in messages" ng-class="alertClasses(message)">' + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' + '<button type="button" class="close" aria-hidden="true" ng-show="message.ttl > 0">{{message.countdown}}</button>' + '<h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>' + '<div class="growl-message" ng-bind-html="message.text"></div>' + '</div>' + '</div>');
     }
   }
 ]);
