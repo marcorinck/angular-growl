@@ -35,6 +35,8 @@ app.controller("demoCtrl",  function demoCtrl($scope, growl, $http) {
       config.enableHtml = $scope.enableHtml;
     }
 
+    config.disableCloseButton = true;
+
     if ($scope.alertType === "success") {
       growl.success($scope.message, config);
     }
