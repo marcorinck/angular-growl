@@ -13,7 +13,8 @@ angular.module("angular-growl").provider("growl", function() {
       _position = 'top-right',
       _disableCloseButton = false,
       _disableIcons = false,
-      _reverseOrder = false;
+      _reverseOrder = false,
+      _disableCountDown = false;
 
   /**
    * set a global timeout (time to live) after which messages will be automatically closed
@@ -61,6 +62,15 @@ angular.module("angular-growl").provider("growl", function() {
    */
    this.globalReversedOrder = function (reverseOrder) {
     _reverseOrder = reverseOrder;
+   };
+
+  /**
+   * set whether to show the count down
+   *
+   * @param {bool} reverseOrder
+   */
+   this.globalDisableCountDown = function (countDown) {
+    _disableCountDown = countDown;
    };
 
   /**
@@ -182,8 +192,9 @@ angular.module("angular-growl").provider("growl", function() {
         severity: severity,
         ttl: _config.ttl || _ttl[severity],
         variables: _config.variables || {},
-        disableCloseButton: _config.disableCloseButton || _disableCloseButton,
+        disableCloseButton: _config.disableCloseButton === undefined ? _disableCloseButton : _config.disableCloseButton,
         disableIcons: _config.disableIcons === undefined ? _disableIcons : _config.disableIcons,
+        disableCountDown: _config.disableCountDown === undefined ? _disableCountDown : _config.disableCountDown,
         position: _config.position || _position,
         referenceId: _config.referenceId || _referenceId
       };
