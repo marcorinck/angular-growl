@@ -122,6 +122,18 @@ app.config(['growlProvider', function(growlProvider) {
 }]);
 ````
 
+###Limit messages count [default: undefined]
+
+Accept only one X messages inside growl container. Automatically flush collection to limited count on each new message. (Message overriding) . Useful
+when growl is handling messages corresponding to specified element (for example input box inside form) , and you need to show
+specified number of messages (for example 1 ) , very handy for input validation.
+
+````html
+<body>
+    <div growl limit-messages="1"></div>
+</body>
+````
+
 ###Automatic closing of notifications (timeout, ttl) [default: none]
 
 However, you can configure a global timeout (TTL) after which notifications should be automatically closed.  To do this, you have to configure this during config phase of angular bootstrap like this:

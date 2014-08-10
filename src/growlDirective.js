@@ -8,7 +8,8 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
       replace: false,
       scope: {
         reference: '@',
-        inline: '@'
+        inline: '@',
+        limitMessages : '='
       },
       controller: ['$scope', '$timeout', 'growl',
         function($scope, $timeout, growl) {
@@ -21,6 +22,15 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
             $timeout(function() {
               message.text = $sce.trustAsHtml(String(message.text));
 
+
+              if(angular.isDefined($scope.limitMessages))
+              {
+                  var diff = $scope.messages.length - ($scope.limitMessages-1);
+                  if(diff > 0)
+                  {
+                      $scope.messages.splice($scope.limitMessages-1,diff)
+                  }
+              }
               /** abillity to reverse order (newest first ) **/
               if(growl.reverseOrder())
               {
