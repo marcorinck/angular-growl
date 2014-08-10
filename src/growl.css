@@ -42,6 +42,7 @@
   padding: 10px;
   padding-right: 35px;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 .growl-container > .growl-item.ng-enter,
 .growl-container > .growl-item.ng-leave {
