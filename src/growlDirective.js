@@ -72,6 +72,10 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
                 $scope.messages.push(message);
               }
 
+              if(typeof(message.onopen) === 'function') {
+                message.onopen();
+              }
+
               if (message.ttl && message.ttl !== -1) {
                 //adds message timeout to promises and starts messages countdown function.
                 message.promises.push($timeout(function() {
@@ -92,6 +96,10 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
             var index = $scope.messages.indexOf(message);
             if (index > -1) {
               $scope.messages.splice(index, 1);
+            }
+
+            if(typeof(message.onclose) === 'function') {
+              message.onclose();
             }
 
           };

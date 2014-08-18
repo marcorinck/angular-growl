@@ -196,7 +196,9 @@ angular.module("angular-growl").provider("growl", function() {
         disableIcons: _config.disableIcons === undefined ? _disableIcons : _config.disableIcons,
         disableCountDown: _config.disableCountDown === undefined ? _disableCountDown : _config.disableCountDown,
         position: _config.position || _position,
-        referenceId: _config.referenceId || _referenceId
+        referenceId: _config.referenceId || _referenceId,
+        onclose: _config.onclose,
+        onopen: _config.onopen
       };
 
       broadcastMessage(message);

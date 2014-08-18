@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.7.0 - 2014-08-10
+ * angular-growl-v2 - v0.7.1 - 2014-08-18
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -67,6 +67,9 @@ angular.module('angular-growl').directive('growl', [
               } else {
                 $scope.messages.push(message);
               }
+              if (typeof message.onopen === 'function') {
+                message.onopen();
+              }
               if (message.ttl && message.ttl !== -1) {
                 message.promises.push($timeout(function () {
                   $scope.deleteMessage(message);
@@ -84,6 +87,9 @@ angular.module('angular-growl').directive('growl', [
             var index = $scope.messages.indexOf(message);
             if (index > -1) {
               $scope.messages.splice(index, 1);
+            }
+            if (typeof message.onclose === 'function') {
+              message.onclose();
             }
           };
           $scope.stopTimeoutClose = function (message) {
@@ -250,7 +256,9 @@ angular.module('angular-growl').provider('growl', function () {
           disableIcons: _config.disableIcons === undefined ? _disableIcons : _config.disableIcons,
           disableCountDown: _config.disableCountDown === undefined ? _disableCountDown : _config.disableCountDown,
           position: _config.position || _position,
-          referenceId: _config.referenceId || _referenceId
+          referenceId: _config.referenceId || _referenceId,
+          onclose: _config.onclose,
+          onopen: _config.onopen
         };
         broadcastMessage(message);
       }
