@@ -240,7 +240,7 @@ business logic on the server is able to send messages/notifications to the clien
 var app = angular.module('myApp', ['angular-growl']);
 
 app.config(['growlProvider', '$httpProvider', function(growlProvider, $httpProvider) {
-    $httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
+    $httpProvider.interceptors.push(growlProvider.serverMessagesInterceptor);
 }]);
 ````
 
@@ -268,7 +268,7 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 	growlProvider.messagesKey("my-messages");
 	growlProvider.messageTextKey("messagetext");
 	growlProvider.messageSeverityKey("severity-level");
-	$httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
+	$httpProvider.interceptors.push(growlProvider.serverMessagesInterceptor);
 }]);
 ````
 
