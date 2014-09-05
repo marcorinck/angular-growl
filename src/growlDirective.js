@@ -23,10 +23,6 @@ angular.module("angular-growl").directive("growl", ["$rootScope",
             }
           });
 
-          $rootScope.$on("growlMessage", function(event, message) {
-            growlMessages.addMessage(message);
-          });
-
           $scope.alertClasses = function(message) {
             return {
               'alert-success': message.severity === "success",

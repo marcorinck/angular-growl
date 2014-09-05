@@ -180,7 +180,10 @@ angular.module("angular-growl").provider("growl", function() {
         var polation = $interpolate(message.text);
         message.text = polation(message.variables);
       }
+      var addedMessage = growlMessages.addMessage(message);
       $rootScope.$broadcast("growlMessage", message);
+      $rootScope.$apply();
+      return addedMessage;
     }
 
     function sendMessage(text, config, severity) {
@@ -201,7 +204,7 @@ angular.module("angular-growl").provider("growl", function() {
         onopen: _config.onopen
       };
 
-      broadcastMessage(message);
+      return broadcastMessage(message);
     }
 
     /**
@@ -211,7 +214,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {{ttl: number}} config
      */
     function warning(text, config) {
-      sendMessage(text, config, "warning");
+      return sendMessage(text, config, "warning");
     }
 
     /**
@@ -221,7 +224,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {{ttl: number}} config
      */
     function error(text, config) {
-      sendMessage(text, config, "error");
+      return sendMessage(text, config, "error");
     }
 
     /**
@@ -231,7 +234,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {{ttl: number}} config
      */
     function info(text, config) {
-      sendMessage(text, config, "info");
+      return sendMessage(text, config, "info");
     }
 
     /**
@@ -241,7 +244,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {{ttl: number}} config
      */
     function success(text, config) {
-      sendMessage(text, config, "success");
+      return sendMessage(text, config, "success");
     }
 
     /**
