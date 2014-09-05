@@ -13,7 +13,7 @@ angular.module("angular-growl").directive("growl", [
       },
       controller: ['$scope', '$timeout', 'growl', 'growlMessages',
         function($scope, $timeout, growl, growlMessages) {
-          growlMessages.init($scope.reference, $scope.inline);
+          growlMessages.init($scope.reference, $scope.inline, growl.onlyUnique(), growl.reverseOrder());
           $scope.growlMessages = growlMessages;
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
 

@@ -1,15 +1,14 @@
-angular.module("angular-growl").service("growlMessages", ['growl, $sce, $timeout', function (growl, $sce, $timeout) {
+angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', function ($sce, $timeout) {
   "use strict";
 
   var messages;
-  var onlyUnique;
   var referenceId;
 
-  this.init = function(reference, limitMessages) {
-    messages = [];
+  this.init = function(reference, limitMessages, onlyUnique, reverseOrder) {
+    this.messages = messages = [];
     this.limitMessages = limitMessages;
-    onlyUnique = growl.onlyUnique();
-
+    this.onlyUnique = onlyUnique;
+    this.reverseOrder = reverseOrder;
     referenceId = reference || 0;
 
   };
@@ -19,7 +18,7 @@ angular.module("angular-growl").service("growlMessages", ['growl, $sce, $timeout
       var found;
       var msgText;
 
-      if (onlyUnique) {
+      if (this.onlyUnique) {
         angular.forEach(messages, function(msg) {
           msgText = $sce.getTrustedHtml(msg.text);
           if (message.text === msgText &&
@@ -62,7 +61,7 @@ angular.module("angular-growl").service("growlMessages", ['growl, $sce, $timeout
       }
 
       /** abillity to reverse order (newest first ) **/
-      if (growl.reverseOrder()) {
+      if (this.reverseOrder) {
         messages.unshift(message);
       } else {
         messages.push(message);
