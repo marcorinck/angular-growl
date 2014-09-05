@@ -166,10 +166,11 @@ angular.module('angular-growl').provider('growl', function () {
   this.$get = [
     '$rootScope',
     '$interpolate',
+    '$sce',
     '$filter',
     '$timeout',
     'growlMessages',
-    function ($rootScope, $interpolate, $filter, $timeout, growlMessages) {
+    function ($rootScope, $interpolate, $sce, $filter, $timeout, growlMessages) {
       var translate;
       try {
         translate = $filter('translate');
@@ -203,6 +204,9 @@ angular.module('angular-growl').provider('growl', function () {
           referenceId: _config.referenceId || _referenceId,
           destroy: function () {
             growlMessages.deleteMessage(message);
+          },
+          setText: function (newText) {
+            message.text = $sce.getTrustedHtml(msg.text);
           },
           onclose: _config.onclose,
           onopen: _config.onopen
