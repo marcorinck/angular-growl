@@ -75,7 +75,7 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
         //adds message timeout to promises and starts messages countdown function.
         message.promises.push($timeout(angular.bind(this, function() {
           this.deleteMessage(message);
-        }, message.ttl)));
+        }), message.ttl));
         message.promises.push($timeout(message.countdownFunction, 1000));
       }
 
