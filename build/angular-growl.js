@@ -206,7 +206,7 @@ angular.module('angular-growl').provider('growl', function () {
             growlMessages.deleteMessage(message);
           },
           setText: function (newText) {
-            message.text = $sce.getTrustedHtml(newText);
+            message.text = $sce.trustAsHtml(String(newText));
           },
           onclose: _config.onclose,
           onopen: _config.onopen
