@@ -86,6 +86,7 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
   this.deleteMessage = function(message) {
     var index = messages.indexOf(message);
     if (index > -1) {
+      messages[index].close = true;
       messages.splice(index, 1);
     }
 
