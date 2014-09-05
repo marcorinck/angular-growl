@@ -21,6 +21,7 @@ module.exports = function (grunt) {
 
 			core: [
 				'src/growl.js',
+				'src/growlMessageService.js',
 				'src/growlDirective.js',
 				'src/growlFactory.js'
 			],

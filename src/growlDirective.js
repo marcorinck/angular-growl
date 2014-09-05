@@ -1,5 +1,5 @@
-angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
-  function($rootScope, $sce) {
+angular.module("angular-growl").directive("growl", ["$rootScope",
+  function($rootScope) {
     "use strict";
 
     return {
@@ -11,110 +11,21 @@ angular.module("angular-growl").directive("growl", ["$rootScope", "$sce",
         inline: '@',
         limitMessages : '='
       },
-      controller: ['$scope', '$timeout', 'growl',
-        function($scope, $timeout, growl) {
-          var onlyUnique = growl.onlyUnique();
-          $scope.messages = [];
-          var referenceId = $scope.reference || 0;
+      controller: ['$scope', '$timeout', 'growl', 'growlMessages',
+        function($scope, $timeout, growl, growlMessages) {
+          growlMessages.init($scope.reference, $scope.inline);
+          $scope.growlMessages = growlMessages;
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
 
-          function addMessage(message) {
-            $timeout(function() {
-              var found;
-              var msgText;
-
-              if (onlyUnique) {
-                angular.forEach($scope.messages, function(msg) {
-                  msgText = $sce.getTrustedHtml(msg.text);
-                  if (message.text === msgText &&
-                        message.severity === msg.severity &&
-                          msg.title === msg.title) {
-                    found = true;
-                  }
-                });
-
-                if (found) {
-                  return;
-                }
-              }
-
-              message.text = $sce.trustAsHtml(String(message.text));
-
-              /**If message closes on timeout, add's promises array for
-                timeouts to stop close. Also sets message.closeoutTimer to ttl / 1000
-              **/
-              if(message.ttl && message.ttl !== -1) {
-                message.countdown = message.ttl / 1000;
-                message.promises = [];
-                message.close = false;
-                message.countdownFunction = function() {
-                  if(message.countdown > 1){
-                    message.countdown--;
-                    message.promises.push($timeout(message.countdownFunction, 1000));
-                  } else {
-                    message.countdown--;
-                  }
-                };
-              }
-
-              /** Limit the amount of messages in the container **/
-              if (angular.isDefined($scope.limitMessages)) {
-                var diff = $scope.messages.length - ($scope.limitMessages - 1);
-                if (diff > 0) {
-                  $scope.messages.splice($scope.limitMessages - 1, diff);
-                }
-              }
-
-              /** abillity to reverse order (newest first ) **/
-              if (growl.reverseOrder()) {
-                $scope.messages.unshift(message);
-              } else {
-                $scope.messages.push(message);
-              }
-
-              if(typeof(message.onopen) === 'function') {
-                message.onopen();
-              }
-
-              if (message.ttl && message.ttl !== -1) {
-                //adds message timeout to promises and starts messages countdown function.
-                message.promises.push($timeout(function() {
-                  $scope.deleteMessage(message);
-                }, message.ttl));
-                message.promises.push($timeout(message.countdownFunction, 1000));
-              }
-            }, true);
-          }
-
-          $rootScope.$on("growlMessage", function(event, message) {
-            if (parseInt(referenceId, 10) === parseInt(message.referenceId, 10)) {
-              addMessage(message);
+          $scope.$watch('limitMessages', function(limitMessages) {
+            if (!angular.isUndefined(limitMessages)) {
+              growlMessages.limitMessages = limitMessages;
             }
           });
 
-          $scope.deleteMessage = function(message) {
-            var index = $scope.messages.indexOf(message);
-            if (index > -1) {
-              $scope.messages.splice(index, 1);
-            }
-
-            if(typeof(message.onclose) === 'function') {
-              message.onclose();
-            }
-
-          };
-
-          //Cancels all promises within message apon deleting message or stop deleting.
-          $scope.stopTimeoutClose = function(message){
-            angular.forEach(message.promises, function(promise){
-              $timeout.cancel(promise);
-            });
-            if(message.close){
-              $scope.deleteMessage(message);
-            } else {
-              message.close = true;
-            }
-          };
+          $rootScope.$on("growlMessage", function(event, message) {
+            growlMessages.addMessage(message);
+          });
 
           $scope.alertClasses = function(message) {
             return {
@@ -159,8 +70,8 @@ angular.module("angular-growl").run(['$templateCache', function($templateCache) 
   if ($templateCache.get('templates/growl/growl.html') === undefined) {
     $templateCache.put("templates/growl/growl.html",
       '<div class="growl-container" ng-class="wrapperClasses()">' +
-        '<div class="growl-item alert" ng-repeat="message in messages" ng-class="alertClasses(message)" ng-click="stopTimeoutClose(message)">' +
-          '<button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' +
+        '<div class="growl-item alert" ng-repeat="message in growlMessages.messages" ng-class="alertClasses(message)" ng-click="stopTimeoutClose(message)">' +
+          '<button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="growlMessages.deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' +
           '<button type="button" class="close" aria-hidden="true" ng-show="showCountDown(message)">{{message.countdown}}</button>' +
           '<h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>' +
           '<div class="growl-message" ng-bind-html="message.text"></div>' +
