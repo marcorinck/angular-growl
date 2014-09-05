@@ -29,6 +29,16 @@ angular.module('angular-growl').directive('growl', [function () {
               growlMessages.limitMessages = limitMessages;
             }
           });
+          $scope.stopTimeoutClose = function (message) {
+            angular.forEach(message.promises, function (promise) {
+              $timeout.cancel(promise);
+            });
+            if (message.close) {
+              growlMessages.deleteMessage(message);
+            } else {
+              message.close = true;
+            }
+          };
           $scope.alertClasses = function (message) {
             return {
               'alert-success': message.severity === 'success',
@@ -319,16 +329,6 @@ angular.module('angular-growl').service('growlMessages', [
       }
       if (typeof message.onclose === 'function') {
         message.onclose();
-      }
-    };
-    this.stopTimeoutClose = function (message) {
-      angular.forEach(message.promises, function (promise) {
-        $timeout.cancel(promise);
-      });
-      if (message.close) {
-        this.deleteMessage(message);
-      } else {
-        message.close = true;
       }
     };
   }

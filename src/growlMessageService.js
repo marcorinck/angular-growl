@@ -93,16 +93,4 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
       message.onclose();
     }
   };
-
-  //Cancels all promises within message upon deleting message or stop deleting.
-  this.stopTimeoutClose = function(message){
-    angular.forEach(message.promises, function(promise){
-      $timeout.cancel(promise);
-    });
-    if(message.close){
-      this.deleteMessage(message);
-    } else {
-      message.close = true;
-    }
-  };
 }]);

@@ -23,6 +23,18 @@ angular.module("angular-growl").directive("growl", [
             }
           });
 
+          //Cancels all promises within message upon deleting message or stop deleting.
+          $scope.stopTimeoutClose = function(message){
+            angular.forEach(message.promises, function(promise){
+              $timeout.cancel(promise);
+            });
+            if(message.close){
+              growlMessages.deleteMessage(message);
+            } else {
+              message.close = true;
+            }
+          };
+
           $scope.alertClasses = function(message) {
             return {
               'alert-success': message.severity === "success",
