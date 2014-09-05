@@ -199,6 +199,9 @@ angular.module('angular-growl').provider('growl', function () {
           disableCountDown: _config.disableCountDown === undefined ? _disableCountDown : _config.disableCountDown,
           position: _config.position || _position,
           referenceId: _config.referenceId || _referenceId,
+          destroy: function () {
+            growlMessages.deleteMessage(message);
+          },
           onclose: _config.onclose,
           onopen: _config.onopen
         };
