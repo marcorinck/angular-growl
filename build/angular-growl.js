@@ -316,7 +316,7 @@ angular.module('angular-growl').service('growlMessages', [
         if (message.ttl && message.ttl !== -1) {
           message.promises.push($timeout(angular.bind(this, function () {
             this.deleteMessage(message);
-          }, message.ttl)));
+          }), message.ttl));
           message.promises.push($timeout(message.countdownFunction, 1000));
         }
         return message;
