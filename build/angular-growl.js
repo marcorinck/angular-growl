@@ -30,13 +30,15 @@ angular.module('angular-growl').directive('growl', [function () {
             }
           });
           $scope.stopTimeoutClose = function (message) {
-            angular.forEach(message.promises, function (promise) {
-              $timeout.cancel(promise);
-            });
-            if (message.close) {
-              growlMessages.deleteMessage(message);
-            } else {
-              message.close = true;
+            if (!message.clickToClose) {
+              angular.forEach(message.promises, function (promise) {
+                $timeout.cancel(promise);
+              });
+              if (message.close) {
+                growlMessages.deleteMessage(message);
+              } else {
+                message.close = true;
+              }
             }
           };
           $scope.alertClasses = function (message) {
