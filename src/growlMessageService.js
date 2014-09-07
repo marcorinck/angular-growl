@@ -3,7 +3,7 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
 
   this.directives = {};
   this.initDirective = function(referenceId, limitMessages) {
-    this.directives[this.referenceId] = {
+    this.directives[referenceId] = {
       messages: [],
       limitMessages: limitMessages
     };

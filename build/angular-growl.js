@@ -277,7 +277,7 @@ angular.module('angular-growl').service('growlMessages', [
     'use strict';
     this.directives = {};
     this.initDirective = function (referenceId, limitMessages) {
-      this.directives[this.referenceId] = {
+      this.directives[referenceId] = {
         messages: [],
         limitMessages: limitMessages
       };
