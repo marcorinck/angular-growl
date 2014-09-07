@@ -21,11 +21,7 @@ angular.module('angular-growl').directive('growl', [function () {
         'growl',
         'growlMessages',
         function ($scope, $timeout, growl, growlMessages) {
-          if (angular.isUndefined($scope.reference)) {
-            $scope.referenceId = 0;
-          } else {
-            $scope.referenceId = $scope.reference;
-          }
+          $scope.referenceId = $scope.reference || 0;
           growlMessages.initDirective($scope.referenceId, $scope.limitMessages);
           $scope.growlMessages = growlMessages;
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
