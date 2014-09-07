@@ -283,7 +283,7 @@ angular.module('angular-growl').service('growlMessages', [
       };
     };
     this.addMessage = function (message) {
-      var directive = directives[message.referenceId];
+      var directive = this.directives[message.referenceId];
       var messages = directive.messages;
       var found;
       var msgText;
@@ -335,7 +335,7 @@ angular.module('angular-growl').service('growlMessages', [
       return message;
     };
     this.deleteMessage = function (message) {
-      var messages = directives[message.referenceId].messages;
+      var messages = this.directives[message.referenceId].messages;
       var index = messages.indexOf(message);
       if (index > -1) {
         messages[index].close = true;
