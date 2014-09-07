@@ -167,6 +167,9 @@ angular.module("angular-growl").provider("growl", function() {
   this.$get = ["$rootScope", "$interpolate", "$sce", "$filter", "$timeout", "growlMessages", function ($rootScope, $interpolate, $sce, $filter, $timeout, growlMessages) {
     var translate;
 
+    growlMessages.onlyUnique = _onlyUniqueMessages;
+    growlMessages.reverseOrder = _reverseOrder;
+
     try {
       translate = $filter("translate");
     } catch (e) {

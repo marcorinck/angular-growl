@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.7.1 - 2014-09-05
+ * angular-growl-v2 - v0.7.1 - 2014-09-07
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -21,12 +21,15 @@ angular.module('angular-growl').directive('growl', [function () {
         'growl',
         'growlMessages',
         function ($scope, $timeout, growl, growlMessages) {
-          growlMessages.init($scope.reference, $scope.inline, growl.onlyUnique(), growl.reverseOrder());
+          if (angular.isUndefined($scope.reference)) {
+            $scope.reference = 0;
+          }
+          growlMessages.initDirective($scope.reference, $scope.limitMessages);
           $scope.growlMessages = growlMessages;
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
           $scope.$watch('limitMessages', function (limitMessages) {
             if (!angular.isUndefined(limitMessages)) {
-              growlMessages.limitMessages = limitMessages;
+              growlMessages.directives[$scope.reference].limitMessages = limitMessages;
             }
           });
           $scope.stopTimeoutClose = function (message) {
@@ -79,7 +82,7 @@ angular.module('angular-growl').run([
   function ($templateCache) {
     'use strict';
     if ($templateCache.get('templates/growl/growl.html') === undefined) {
-      $templateCache.put('templates/growl/growl.html', '<div class="growl-container" ng-class="wrapperClasses()">' + '<div class="growl-item alert" ng-repeat="message in growlMessages.messages" ng-class="alertClasses(message)" ng-click="stopTimeoutClose(message)">' + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="growlMessages.deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' + '<button type="button" class="close" aria-hidden="true" ng-show="showCountDown(message)">{{message.countdown}}</button>' + '<h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>' + '<div class="growl-message" ng-bind-html="message.text"></div>' + '</div>' + '</div>');
+      $templateCache.put('templates/growl/growl.html', '<div class="growl-container" ng-class="wrapperClasses()">' + '<div class="growl-item alert" ng-repeat="message in growlMessages.directives[reference].messages" ng-class="alertClasses(message)" ng-click="stopTimeoutClose(message)">' + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="growlMessages.deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>' + '<button type="button" class="close" aria-hidden="true" ng-show="showCountDown(message)">{{message.countdown}}</button>' + '<h4 class="growl-title" ng-show="message.title" ng-bind="message.title"></h4>' + '<div class="growl-message" ng-bind-html="message.text"></div>' + '</div>' + '</div>');
     }
   }
 ]);
@@ -172,6 +175,8 @@ angular.module('angular-growl').provider('growl', function () {
     'growlMessages',
     function ($rootScope, $interpolate, $sce, $filter, $timeout, growlMessages) {
       var translate;
+      growlMessages.onlyUnique = _onlyUniqueMessages;
+      growlMessages.reverseOrder = _reverseOrder;
       try {
         translate = $filter('translate');
       } catch (e) {
@@ -270,68 +275,67 @@ angular.module('angular-growl').service('growlMessages', [
   '$timeout',
   function ($sce, $timeout) {
     'use strict';
-    var messages;
-    var referenceId;
-    this.init = function (reference, limitMessages, onlyUnique, reverseOrder) {
-      this.messages = messages = [];
-      this.limitMessages = limitMessages;
-      this.onlyUnique = onlyUnique;
-      this.reverseOrder = reverseOrder;
-      referenceId = reference || 0;
+    this.directives = {};
+    this.initDirective = function (referenceId, limitMessages) {
+      this.directives[this.referenceId] = {
+        messages: [],
+        limitMessages: limitMessages
+      };
     };
     this.addMessage = function (message) {
-      if (parseInt(referenceId, 10) === parseInt(message.referenceId, 10)) {
-        var found;
-        var msgText;
-        if (this.onlyUnique) {
-          angular.forEach(messages, function (msg) {
-            msgText = $sce.getTrustedHtml(msg.text);
-            if (message.text === msgText && message.severity === msg.severity && msg.title === msg.title) {
-              found = true;
-            }
-          });
-          if (found) {
-            return;
+      var directive = directives[message.referenceId];
+      var messages = directive.messages;
+      var found;
+      var msgText;
+      if (this.onlyUnique) {
+        angular.forEach(messages, function (msg) {
+          msgText = $sce.getTrustedHtml(msg.text);
+          if (message.text === msgText && message.severity === msg.severity && msg.title === msg.title) {
+            found = true;
           }
+        });
+        if (found) {
+          return;
         }
-        message.text = $sce.trustAsHtml(String(message.text));
-        if (message.ttl && message.ttl !== -1) {
-          message.countdown = message.ttl / 1000;
-          message.promises = [];
-          message.close = false;
-          message.countdownFunction = function () {
-            if (message.countdown > 1) {
-              message.countdown--;
-              message.promises.push($timeout(message.countdownFunction, 1000));
-            } else {
-              message.countdown--;
-            }
-          };
-        }
-        if (angular.isDefined(this.limitMessages)) {
-          var diff = messages.length - (this.limitMessages - 1);
-          if (diff > 0) {
-            messages.splice(this.limitMessages - 1, diff);
-          }
-        }
-        if (this.reverseOrder) {
-          messages.unshift(message);
-        } else {
-          messages.push(message);
-        }
-        if (typeof message.onopen === 'function') {
-          message.onopen();
-        }
-        if (message.ttl && message.ttl !== -1) {
-          message.promises.push($timeout(angular.bind(this, function () {
-            this.deleteMessage(message);
-          }), message.ttl));
-          message.promises.push($timeout(message.countdownFunction, 1000));
-        }
-        return message;
       }
+      message.text = $sce.trustAsHtml(String(message.text));
+      if (message.ttl && message.ttl !== -1) {
+        message.countdown = message.ttl / 1000;
+        message.promises = [];
+        message.close = false;
+        message.countdownFunction = function () {
+          if (message.countdown > 1) {
+            message.countdown--;
+            message.promises.push($timeout(message.countdownFunction, 1000));
+          } else {
+            message.countdown--;
+          }
+        };
+      }
+      if (angular.isDefined(directive.limitMessages)) {
+        var diff = messages.length - (directive.limitMessages - 1);
+        if (diff > 0) {
+          messages.splice(directive.limitMessages - 1, diff);
+        }
+      }
+      if (this.reverseOrder) {
+        messages.unshift(message);
+      } else {
+        messages.push(message);
+      }
+      if (typeof message.onopen === 'function') {
+        message.onopen();
+      }
+      if (message.ttl && message.ttl !== -1) {
+        message.promises.push($timeout(angular.bind(this, function () {
+          this.deleteMessage(message);
+        }), message.ttl));
+        message.promises.push($timeout(message.countdownFunction, 1000));
+      }
+      return message;
     };
     this.deleteMessage = function (message) {
+      var messages = directives[message.referenceId].messages;
       var index = messages.indexOf(message);
       if (index > -1) {
         messages[index].close = true;
