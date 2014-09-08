@@ -27,7 +27,7 @@ angular.module('angular-growl').directive('growl', [function () {
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
           $scope.$watch('limitMessages', function (limitMessages) {
             if (!angular.isUndefined(limitMessages)) {
-              growlMessages.directives[$scope.reference].limitMessages = limitMessages;
+              growlMessages.directives[$scope.referenceId].limitMessages = limitMessages;
             }
           });
           $scope.stopTimeoutClose = function (message) {
