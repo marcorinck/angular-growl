@@ -20,8 +20,9 @@ angular.module("angular-growl").directive("growl", [
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
 
           $scope.$watch('limitMessages', function(limitMessages) {
-            if (!angular.isUndefined(limitMessages)) {
-              growlMessages.directives[$scope.referenceId].limitMessages = limitMessages;
+            var directive = growlMessages.directives[$scope.referenceId];
+            if (!angular.isUndefined(limitMessages) && !angular.isUndefined(directive)) {
+              directive.limitMessages = limitMessages;
             }
           });
 

@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.7.1 - 2014-09-07
+ * angular-growl-v2 - v0.7.1 - 2014-09-11
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -26,8 +26,9 @@ angular.module('angular-growl').directive('growl', [function () {
           $scope.growlMessages = growlMessages;
           $scope.inlineMessage = $scope.inline || growl.inlineMessages();
           $scope.$watch('limitMessages', function (limitMessages) {
-            if (!angular.isUndefined(limitMessages)) {
-              growlMessages.directives[$scope.referenceId].limitMessages = limitMessages;
+            var directive = growlMessages.directives[$scope.referenceId];
+            if (!angular.isUndefined(limitMessages) && !angular.isUndefined(directive)) {
+              directive.limitMessages = limitMessages;
             }
           });
           $scope.stopTimeoutClose = function (message) {
