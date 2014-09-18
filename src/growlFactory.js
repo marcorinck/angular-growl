@@ -256,7 +256,7 @@ angular.module("angular-growl").provider("growl", function() {
         message = messages[i];
 
         if (message[_messageTextKey]) {
-          severity = message[_messageSeverityKey] || "error";
+          severity = (message[_messageSeverityKey] || "error").toLowerCase();
           var config = {};
           config.variables = message[_messageVariableKey] || {};
           config.title = message[_messageTitleKey];
