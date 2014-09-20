@@ -164,8 +164,11 @@ angular.module("angular-growl").provider("growl", function() {
       };
   }];
 
-  this.$get = ["$rootScope", "$interpolate", "$filter", function ($rootScope, $interpolate, $filter) {
+  this.$get = ["$rootScope", "$interpolate", "$sce", "$filter", "$timeout", "growlMessages", function ($rootScope, $interpolate, $sce, $filter, $timeout, growlMessages) {
     var translate;
+
+    growlMessages.onlyUnique = _onlyUniqueMessages;
+    growlMessages.reverseOrder = _reverseOrder;
 
     try {
       translate = $filter("translate");
@@ -180,7 +183,10 @@ angular.module("angular-growl").provider("growl", function() {
         var polation = $interpolate(message.text);
         message.text = polation(message.variables);
       }
+      var addedMessage = growlMessages.addMessage(message);
       $rootScope.$broadcast("growlMessage", message);
+      $timeout(function(){}, 0);
+      return addedMessage;
     }
 
     function sendMessage(text, config, severity) {
@@ -197,11 +203,17 @@ angular.module("angular-growl").provider("growl", function() {
         disableCountDown: _config.disableCountDown === undefined ? _disableCountDown : _config.disableCountDown,
         position: _config.position || _position,
         referenceId: _config.referenceId || _referenceId,
+        destroy: function() {
+          growlMessages.deleteMessage(message);
+        },
+        setText: function(newText) {
+          message.text = $sce.trustAsHtml(String(newText));
+        },
         onclose: _config.onclose,
         onopen: _config.onopen
       };
 
-      broadcastMessage(message);
+      return broadcastMessage(message);
     }
 
     /**
@@ -211,7 +223,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {{ttl: number}} config
      */
     function warning(text, config) {
-      sendMessage(text, config, "warning");
+      return sendMessage(text, config, "warning");
     }
 
     /**
@@ -221,7 +233,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {{ttl: number}} config
      */
     function error(text, config) {
-      sendMessage(text, config, "error");
+      return sendMessage(text, config, "error");
     }
 
     /**
@@ -231,7 +243,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {{ttl: number}} config
      */
     function info(text, config) {
-      sendMessage(text, config, "info");
+      return sendMessage(text, config, "info");
     }
 
     /**
@@ -241,7 +253,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {{ttl: number}} config
      */
     function success(text, config) {
-      sendMessage(text, config, "success");
+      return sendMessage(text, config, "success");
     }
 
     /**
