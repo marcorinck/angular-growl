@@ -257,6 +257,18 @@ angular.module("angular-growl").provider("growl", function() {
     }
 
     /**
+     * add one message with specified severity
+     *
+     * @param {string} text
+     * @param {{ttl: number}} config
+     * @param {string} severity
+     */
+    function general(text, config, severity) {
+        severity = (severity || "error").toLowerCase();
+        sendMessage(text, config, severity);
+    }
+
+    /**
      * add a indefinite number of messages that a backend server may have sent as a validation result
      *
      * @param {Array.<object>} messages
@@ -268,7 +280,7 @@ angular.module("angular-growl").provider("growl", function() {
         message = messages[i];
 
         if (message[_messageTextKey]) {
-          severity = message[_messageSeverityKey] || "error";
+          severity = (message[_messageSeverityKey] || "error").toLowerCase();
           var config = {};
           config.variables = message[_messageVariableKey] || {};
           config.title = message[_messageTitleKey];
@@ -298,6 +310,7 @@ angular.module("angular-growl").provider("growl", function() {
       error: error,
       info: info,
       success: success,
+      general: general,
       addServerMessages: addServerMessages,
       onlyUnique: onlyUnique,
       reverseOrder : reverseOrder,
