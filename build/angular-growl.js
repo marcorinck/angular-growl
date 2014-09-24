@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.7.1 - 2014-09-11
+ * angular-growl-v2 - v0.7.1 - 2014-09-24
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -229,13 +229,20 @@ angular.module('angular-growl').provider('growl', function () {
       function success(text, config) {
         return sendMessage(text, config, 'success');
       }
+      function general(text, config, severity) {
+        severity = (severity || 'error').toLowerCase();
+        sendMessage(text, config, severity);
+      }
       function addServerMessages(messages) {
+        if (!messages || !messages.length) {
+          return;
+        }
         var i, message, severity, length;
         length = messages.length;
         for (i = 0; i < length; i++) {
           message = messages[i];
           if (message[_messageTextKey]) {
-            severity = message[_messageSeverityKey] || 'error';
+            severity = (message[_messageSeverityKey] || 'error').toLowerCase();
             var config = {};
             config.variables = message[_messageVariableKey] || {};
             config.title = message[_messageTitleKey];
@@ -260,6 +267,7 @@ angular.module('angular-growl').provider('growl', function () {
         error: error,
         info: info,
         success: success,
+        general: general,
         addServerMessages: addServerMessages,
         onlyUnique: onlyUnique,
         reverseOrder: reverseOrder,
