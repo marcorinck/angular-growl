@@ -274,6 +274,9 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {Array.<object>} messages
      */
     function addServerMessages(messages) {
+      if((!messages) || (!messages.length)){
+        return;
+      }
       var i, message, severity, length;
       length = messages.length;
       for (i = 0; i < length; i++) {
