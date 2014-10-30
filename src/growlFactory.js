@@ -147,7 +147,7 @@ angular.module("angular-growl").provider("growl", function() {
    */
   this.serverMessagesInterceptor = ['$q', 'growl', function ($q, growl) {
     function checkResponse(response) {
-      if (response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
+      if (response!=undefined && response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
         growl.addServerMessages(response.data[_messagesKey]);
       }
     }
