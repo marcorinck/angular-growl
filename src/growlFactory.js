@@ -14,7 +14,8 @@ angular.module("angular-growl").provider("growl", function() {
       _disableCloseButton = false,
       _disableIcons = false,
       _reverseOrder = false,
-      _disableCountDown = false;
+      _disableCountDown = false,
+      _translateMessages = true;
 
   /**
    * set a global timeout (time to live) after which messages will be automatically closed
@@ -35,6 +36,15 @@ angular.module("angular-growl").provider("growl", function() {
         }
       }
     }
+  };
+
+  /**
+   * set whether the messages should be translated (default:true) when the translator is available
+   *
+   * @param {bool} translateMessages true to to translate all messages
+   */
+  this.globalTranslateMessages = function (translateMessages) {
+    _translateMessages = translateMessages;
   };
 
   /**
@@ -177,7 +187,7 @@ angular.module("angular-growl").provider("growl", function() {
     }
 
     function broadcastMessage(message) {
-      if (translate) {
+      if (translate && message.translateMessage) {
         message.text = translate(message.text, message.variables);
       } else {
         var polation = $interpolate(message.text);
@@ -203,6 +213,7 @@ angular.module("angular-growl").provider("growl", function() {
         disableCountDown: _config.disableCountDown === undefined ? _disableCountDown : _config.disableCountDown,
         position: _config.position || _position,
         referenceId: _config.referenceId || _referenceId,
+        translateMessage: _config.translateMessage === undefined ? _translateMessages : _config.translateMessage,
         destroy: function() {
           growlMessages.deleteMessage(message);
         },
