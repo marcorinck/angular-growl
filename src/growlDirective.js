@@ -14,7 +14,7 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 					'</div>',
 		replace: false,
 		scope: true,
-		controller: ['$scope', '$timeout', 'growl', function ($scope, $timeout, growl) {
+		controller: ['$scope', '$interval', 'growl', function ($scope, $interval, growl) {
 			var onlyUnique = growl.onlyUnique();
 
 			$scope.messages = [];
@@ -23,9 +23,9 @@ angular.module("angular-growl").directive("growl", ["$rootScope", function ($roo
 				$scope.messages.push(message);
 
 				if (message.ttl && message.ttl !== -1) {
-					$timeout(function () {
+					$interval(function () {
 						$scope.deleteMessage(message);
-					}, message.ttl);
+					}, message.ttl,1);
 				}
 			}
 			$rootScope.$on("growlMessage", function (event, message) {
