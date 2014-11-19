@@ -1,7 +1,7 @@
 /**
- * angular-growl - v0.4.0 - 2013-11-19
+ * angular-growl - v0.4.0 - 2014-11-19
  * https://github.com/marcorinck/angular-growl
- * Copyright (c) 2013 Marco Rinck; Licensed MIT
+ * Copyright (c) 2014 Marco Rinck; Licensed MIT
  */
 angular.module('angular-growl', []);
 angular.module('angular-growl').directive('growl', [
@@ -89,20 +89,19 @@ angular.module('angular-growl').provider('growl', function () {
     'growl',
     function ($q, growl) {
       function checkResponse(response) {
-        if (response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
+        if (response.data && response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
           growl.addServerMessages(response.data[_messagesKey]);
         }
       }
-      function success(response) {
-        checkResponse(response);
-        return response;
-      }
-      function error(response) {
-        checkResponse(response);
-        return $q.reject(response);
-      }
-      return function (promise) {
-        return promise.then(success, error);
+      return {
+        response: function (response) {
+          checkResponse(response);
+          return response;
+        },
+        responseError: function (response) {
+          checkResponse(response);
+          return $q.reject(response);
+        }
       };
     }
   ];
