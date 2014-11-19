@@ -1,7 +1,7 @@
 /**
- * angular-growl - v0.4.0 - 2013-11-19
+ * angular-growl - v0.4.0 - 2014-11-19
  * https://github.com/marcorinck/angular-growl
- * Copyright (c) 2013 Marco Rinck; Licensed MIT
+ * Copyright (c) 2014 Marco Rinck; Licensed MIT
  */
 angular.module('angular-growl', []);
 angular.module('angular-growl').directive('growl', [
@@ -15,17 +15,17 @@ angular.module('angular-growl').directive('growl', [
       scope: true,
       controller: [
         '$scope',
-        '$timeout',
+        '$interval',
         'growl',
-        function ($scope, $timeout, growl) {
+        function ($scope, $interval, growl) {
           var onlyUnique = growl.onlyUnique();
           $scope.messages = [];
           function addMessage(message) {
             $scope.messages.push(message);
             if (message.ttl && message.ttl !== -1) {
-              $timeout(function () {
+              $interval(function () {
                 $scope.deleteMessage(message);
-              }, message.ttl);
+              }, message.ttl, 1);
             }
           }
           $rootScope.$on('growlMessage', function (event, message) {
