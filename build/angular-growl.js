@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.7.1 - 2014-10-06
+ * angular-growl-v2 - v0.7.2 - 2014-11-20
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -92,7 +92,7 @@ angular.module('angular-growl').provider('growl', function () {
       error: null,
       warning: null,
       info: null
-    }, _messagesKey = 'messages', _messageTextKey = 'text', _messageTitleKey = 'title', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false, _disableIcons = false, _reverseOrder = false, _disableCountDown = false;
+    }, _messagesKey = 'messages', _messageTextKey = 'text', _messageTitleKey = 'title', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false, _disableIcons = false, _reverseOrder = false, _disableCountDown = false, _translateMessages = true;
   this.globalTimeToLive = function (ttl) {
     if (typeof ttl === 'object') {
       for (var k in ttl) {
@@ -107,6 +107,9 @@ angular.module('angular-growl').provider('growl', function () {
         }
       }
     }
+  };
+  this.globalTranslateMessages = function (translateMessages) {
+    _translateMessages = translateMessages;
   };
   this.globalDisableCloseButton = function (disableCloseButton) {
     _disableCloseButton = disableCloseButton;
@@ -149,7 +152,7 @@ angular.module('angular-growl').provider('growl', function () {
     'growl',
     function ($q, growl) {
       function checkResponse(response) {
-        if (response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
+        if (response !== undefined && response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
           growl.addServerMessages(response.data[_messagesKey]);
         }
       }
@@ -181,7 +184,7 @@ angular.module('angular-growl').provider('growl', function () {
       } catch (e) {
       }
       function broadcastMessage(message) {
-        if (translate) {
+        if (translate && message.translateMessage) {
           message.text = translate(message.text, message.variables);
         } else {
           var polation = $interpolate(message.text);
@@ -206,6 +209,7 @@ angular.module('angular-growl').provider('growl', function () {
           disableCountDown: _config.disableCountDown === undefined ? _disableCountDown : _config.disableCountDown,
           position: _config.position || _position,
           referenceId: _config.referenceId || _referenceId,
+          translateMessage: _config.translateMessage === undefined ? _translateMessages : _config.translateMessage,
           destroy: function () {
             growlMessages.deleteMessage(message);
           },

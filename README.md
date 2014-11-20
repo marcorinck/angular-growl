@@ -105,6 +105,19 @@ Live demo's can be found on the following codepen collection:
 ## [Codepen Collection](http://codepen.io/collection/Jhcpi/)
 
 ##Changelog
+**0.8.0** - TBE TODO
+* Code clean up
+* Testing
+* Latest angular support
+* [Finding a solution for this issue](https://github.com/JanStevens/angular-growl-2/issues/54)
+
+**0.7.2** - 20 Nov 2014
+* Possibility to toggle the translation of messages (@schoes) [pull #55](https://github.com/JanStevens/angular-growl-2/pull/55)
+* Check if the response is undefined (Offline Connections) (@brunoporto) [pull #50](https://github.com/JanStevens/angular-growl-2/pull/50)
+* Prevent NPEs when working with server-side messages (@madhead) [pull #45](https://github.com/JanStevens/angular-growl-2/pull/45)
+* Added a general method for setting the Growl type based on a server response (@madhead) [pull #41](https://github.com/JanStevens/angular-growl-2/pull/41)
+* Split Growl directive in a growl factory added a way to programatically close messages and a setText to update the message text (@chasemgray) [pull #38](https://github.com/JanStevens/angular-growl-2/pull/38)
+
 **0.7.0** - 10 Aug 2014
 * Added new documentation website with examples instead of this readme.
 * Growl Containers are now responsive for mobile devices (@tlvince) [pull #17](https://github.com/JanStevens/angular-growl-2/pull/17)
