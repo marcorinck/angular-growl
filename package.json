@@ -6,6 +6,7 @@
     "type": "git",
     "url": "https://github.com/JanStevens/angular-growl-2"
   },
+  "main": "./build/angular-growl.min.js",
   "author": {
     "name": "Jan Stevens"
   },
