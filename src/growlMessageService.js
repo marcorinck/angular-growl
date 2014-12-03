@@ -11,7 +11,11 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
 
   this.getAllMessages = function(referenceId) {
     referenceId = referenceId || 0;
-    return this.directives[referenceId].messages;
+    if (this.directives[referenceId]) {
+      return this.directives[referenceId].messages;
+    } else {
+      return [];
+    }
   };
 
   this.destroyAllMessages = function(referenceId) {
@@ -19,7 +23,9 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
     angular.forEach(messages, function(message) {
       message.destroy();
     });
-    this.directives[referenceId].messages = [];
+    if (this.directives[referenceId]) {
+      this.directives[referenceId].messages = [];
+    }
   };
 
   this.addMessage = function(message) {
