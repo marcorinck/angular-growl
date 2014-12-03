@@ -303,9 +303,9 @@ angular.module('angular-growl').service('growlMessages', [
     };
     this.destroyAllMessages = function (referenceId) {
       var messages = this.getAllMessages(referenceId);
-      angular.forEach(messages, function (message) {
-        message.destroy();
-      });
+      for (var i = messages.length - 1; i >= 0; i--) {
+        messages[i].destroy();
+      }
       if (this.directives[referenceId]) {
         this.directives[referenceId].messages = [];
       }
