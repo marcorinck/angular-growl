@@ -20,9 +20,9 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
 
   this.destroyAllMessages = function(referenceId) {
     var messages = this.getAllMessages(referenceId);
-    angular.forEach(messages, function(message) {
+    for (var i = messages.length - 1; i >= 0; i--) {
       message.destroy();
-    });
+    }
     if (this.directives[referenceId]) {
       this.directives[referenceId].messages = [];
     }
