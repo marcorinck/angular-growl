@@ -8,7 +8,7 @@ angular.module("angular-growl").directive("growl", [
       replace: false,
       scope: {
         reference: '@',
-        inline: '@',
+        inline: '=',
         limitMessages : '='
       },
       controller: ['$scope', '$timeout', 'growl', 'growlMessages',
@@ -17,7 +17,7 @@ angular.module("angular-growl").directive("growl", [
 
           growlMessages.initDirective($scope.referenceId, $scope.limitMessages);
           $scope.growlMessages = growlMessages;
-          $scope.inlineMessage = $scope.inline || growl.inlineMessages();
+          $scope.inlineMessage = angular.isDefined($scope.inline) ? $scope.inline : growl.inlineMessages();
 
           $scope.$watch('limitMessages', function(limitMessages) {
             var directive = growlMessages.directives[$scope.referenceId];
