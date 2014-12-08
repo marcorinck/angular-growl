@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.7.2 - 2014-11-20
+ * angular-growl-v2 - v0.7.2 - 2014-12-02
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -292,6 +292,23 @@ angular.module('angular-growl').service('growlMessages', [
         messages: [],
         limitMessages: limitMessages
       };
+    };
+    this.getAllMessages = function (referenceId) {
+      referenceId = referenceId || 0;
+      if (this.directives[referenceId]) {
+        return this.directives[referenceId].messages;
+      } else {
+        return [];
+      }
+    };
+    this.destroyAllMessages = function (referenceId) {
+      var messages = this.getAllMessages(referenceId);
+      for (var i = messages.length - 1; i >= 0; i--) {
+        messages[i].destroy();
+      }
+      if (this.directives[referenceId]) {
+        this.directives[referenceId].messages = [];
+      }
     };
     this.addMessage = function (message) {
       var directive = this.directives[message.referenceId];
