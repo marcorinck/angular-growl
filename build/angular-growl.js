@@ -1,7 +1,7 @@
 /**
- * angular-growl-v2 - v0.7.2 - 2014-12-02
+ * angular-growl-v2 - v0.7.3 - 2015-01-05
  * http://janstevens.github.io/angular-growl-2
- * Copyright (c) 2014 Marco Rinck,Jan Stevens; Licensed MIT
+ * Copyright (c) 2015 Marco Rinck,Jan Stevens; Licensed MIT
  */
 angular.module('angular-growl', []);
 angular.module('angular-growl').directive('growl', [function () {
@@ -12,7 +12,7 @@ angular.module('angular-growl').directive('growl', [function () {
       replace: false,
       scope: {
         reference: '@',
-        inline: '@',
+        inline: '=',
         limitMessages: '='
       },
       controller: [
@@ -24,7 +24,7 @@ angular.module('angular-growl').directive('growl', [function () {
           $scope.referenceId = $scope.reference || 0;
           growlMessages.initDirective($scope.referenceId, $scope.limitMessages);
           $scope.growlMessages = growlMessages;
-          $scope.inlineMessage = $scope.inline || growl.inlineMessages();
+          $scope.inlineMessage = angular.isDefined($scope.inline) ? $scope.inline : growl.inlineMessages();
           $scope.$watch('limitMessages', function (limitMessages) {
             var directive = growlMessages.directives[$scope.referenceId];
             if (!angular.isUndefined(limitMessages) && !angular.isUndefined(directive)) {
@@ -287,23 +287,41 @@ angular.module('angular-growl').service('growlMessages', [
   function ($sce, $timeout) {
     'use strict';
     this.directives = {};
+    var preloadDirectives = {};
+    function preLoad(referenceId) {
+      var directive;
+      if (preloadDirectives[referenceId]) {
+        directive = preloadDirectives[referenceId];
+      } else {
+        directive = preloadDirectives[referenceId] = { messages: [] };
+      }
+      return directive;
+    }
     this.initDirective = function (referenceId, limitMessages) {
-      this.directives[referenceId] = {
-        messages: [],
-        limitMessages: limitMessages
-      };
+      if (preloadDirectives[referenceId]) {
+        this.directives[referenceId] = preloadDirectives[referenceId];
+        this.directives[referenceId].limitMessages = limitMessages;
+      } else {
+        this.directives[referenceId] = {
+          messages: [],
+          limitMessages: limitMessages
+        };
+      }
+      return this.directives[referenceId];
     };
     this.getAllMessages = function (referenceId) {
       referenceId = referenceId || 0;
+      var messages;
       if (this.directives[referenceId]) {
-        return this.directives[referenceId].messages;
+        messages = this.directives[referenceId].messages;
       } else {
-        return [];
+        messages = [];
       }
+      return messages;
     };
     this.destroyAllMessages = function (referenceId) {
-      var messages = this.getAllMessages(referenceId);
-      for (var i = messages.length - 1; i >= 0; i--) {
+      var messages = this.getAllMessages(referenceId), i = messages.length;
+      for (i - 1; i >= 0; i--) {
         messages[i].destroy();
       }
       if (this.directives[referenceId]) {
@@ -311,14 +329,17 @@ angular.module('angular-growl').service('growlMessages', [
       }
     };
     this.addMessage = function (message) {
-      var directive = this.directives[message.referenceId];
-      var messages = directive.messages;
-      var found;
-      var msgText;
+      var directive, messages, found, msgText;
+      if (this.directives[message.referenceId]) {
+        directive = this.directives[message.referenceId];
+      } else {
+        directive = preLoad(message.referenceId);
+      }
+      messages = directive.messages;
       if (this.onlyUnique) {
         angular.forEach(messages, function (msg) {
           msgText = $sce.getTrustedHtml(msg.text);
-          if (message.text === msgText && message.severity === msg.severity && msg.title === msg.title) {
+          if (message.text === msgText && message.severity === msg.severity && message.title === msg.title) {
             found = true;
           }
         });
@@ -363,8 +384,7 @@ angular.module('angular-growl').service('growlMessages', [
       return message;
     };
     this.deleteMessage = function (message) {
-      var messages = this.directives[message.referenceId].messages;
-      var index = messages.indexOf(message);
+      var messages = this.directives[message.referenceId].messages, index = messages.indexOf(message);
       if (index > -1) {
         messages[index].close = true;
         messages.splice(index, 1);
