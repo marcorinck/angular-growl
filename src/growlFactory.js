@@ -1,37 +1,37 @@
-angular.module("angular-growl").provider("growl", function() {
+angular.module("angular-growl").provider("growl", function () {
   "use strict";
 
   var _ttl = {success: null, error: null, warning: null, info: null},
-      _messagesKey = 'messages',
-      _messageTextKey = 'text',
-      _messageTitleKey = 'title',
-      _messageSeverityKey = 'severity',
-      _onlyUniqueMessages = true,
-      _messageVariableKey = 'variables',
-      _referenceId = 0,
-      _inline = false,
-      _position = 'top-right',
-      _disableCloseButton = false,
-      _disableIcons = false,
-      _reverseOrder = false,
-      _disableCountDown = false,
-      _translateMessages = true;
+    _messagesKey = 'messages',
+    _messageTextKey = 'text',
+    _messageTitleKey = 'title',
+    _messageSeverityKey = 'severity',
+    _onlyUniqueMessages = true,
+    _messageVariableKey = 'variables',
+    _referenceId = 0,
+    _inline = false,
+    _position = 'top-right',
+    _disableCloseButton = false,
+    _disableIcons = false,
+    _reverseOrder = false,
+    _disableCountDown = false,
+    _translateMessages = true;
 
   /**
    * set a global timeout (time to live) after which messages will be automatically closed
    *
    * @param ttl in seconds
    */
-  this.globalTimeToLive = function(ttl) {
-    if(typeof ttl === 'object') {
-      for(var k in ttl) {
-        if(ttl.hasOwnProperty(k)) {
+  this.globalTimeToLive = function (ttl) {
+    if (typeof ttl === 'object') {
+      for (var k in ttl) {
+        if (ttl.hasOwnProperty(k)) {
           _ttl[k] = ttl[k];
         }
       }
     } else {
-      for(var severity in _ttl) {
-        if(_ttl.hasOwnProperty(severity)) {
+      for (var severity in _ttl) {
+        if (_ttl.hasOwnProperty(severity)) {
           _ttl[severity] = ttl;
         }
       }
@@ -70,18 +70,18 @@ angular.module("angular-growl").provider("growl", function() {
    *
    * @param {bool} reverseOrder
    */
-   this.globalReversedOrder = function (reverseOrder) {
+  this.globalReversedOrder = function (reverseOrder) {
     _reverseOrder = reverseOrder;
-   };
+  };
 
   /**
    * set whether to show the count down
    *
    * @param {bool} reverseOrder
    */
-   this.globalDisableCountDown = function (countDown) {
+  this.globalDisableCountDown = function (countDown) {
     _disableCountDown = countDown;
-   };
+  };
 
   /**
    * set the key in server sent messages the serverMessagesInterecptor is looking for variables to inject in the message
@@ -97,7 +97,7 @@ angular.module("angular-growl").provider("growl", function() {
    *
    * @param {bool} inline true to show only inline notifications
    */
-  this.globalInlineMessages = function(inline) {
+  this.globalInlineMessages = function (inline) {
     _inline = inline;
   };
 
@@ -106,7 +106,7 @@ angular.module("angular-growl").provider("growl", function() {
    *
    * @param  {string} messageVariableKey default: top-right
    */
-  this.globalPosition = function(position) {
+  this.globalPosition = function (position) {
     _position = position;
   };
   /**
@@ -115,7 +115,7 @@ angular.module("angular-growl").provider("growl", function() {
    *
    * @param {string} messagesKey default: messages
    */
-  this.messagesKey = function(messagesKey) {
+  this.messagesKey = function (messagesKey) {
     _messagesKey = messagesKey;
   };
 
@@ -124,7 +124,7 @@ angular.module("angular-growl").provider("growl", function() {
    *
    * @param {string} messageTextKey default: text
    */
-  this.messageTextKey = function(messageTextKey) {
+  this.messageTextKey = function (messageTextKey) {
     _messageTextKey = messageTextKey;
   };
 
@@ -133,7 +133,7 @@ angular.module("angular-growl").provider("growl", function() {
    *
    * @param {string} messageTextKey default: text
    */
-  this.messageTitleKey = function(messageTitleKey) {
+  this.messageTitleKey = function (messageTitleKey) {
     _messageTitleKey = messageTitleKey;
   };
 
@@ -142,11 +142,11 @@ angular.module("angular-growl").provider("growl", function() {
    *
    * @param {string} messageSeverityKey default: severity
    */
-  this.messageSeverityKey = function(messageSeverityKey) {
+  this.messageSeverityKey = function (messageSeverityKey) {
     _messageSeverityKey = messageSeverityKey;
   };
 
-  this.onlyUniqueMessages = function(onlyUniqueMessages) {
+  this.onlyUniqueMessages = function (onlyUniqueMessages) {
     _onlyUniqueMessages = onlyUniqueMessages;
   };
 
@@ -156,7 +156,7 @@ angular.module("angular-growl").provider("growl", function() {
    *
    */
   this.serverMessagesInterceptor = ['$q', 'growl', function ($q, growl) {
-    function checkResponse(response) {
+    function checkResponse (response) {
       if (response !== undefined && response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
         growl.addServerMessages(response.data[_messagesKey]);
       }
@@ -165,13 +165,13 @@ angular.module("angular-growl").provider("growl", function() {
     return {
       'response': function (response) {
         checkResponse(response);
-          return response;
+        return response;
       },
       'responseError': function (rejection) {
         checkResponse(rejection);
-          return $q.reject(rejection);
-        }
-      };
+        return $q.reject(rejection);
+      }
+    };
   }];
 
   this.$get = ["$rootScope", "$interpolate", "$sce", "$filter", "$timeout", "growlMessages", function ($rootScope, $interpolate, $sce, $filter, $timeout, growlMessages) {
@@ -186,7 +186,7 @@ angular.module("angular-growl").provider("growl", function() {
       //
     }
 
-    function broadcastMessage(message) {
+    function broadcastMessage (message) {
       if (translate && message.translateMessage) {
         message.text = translate(message.text, message.variables);
       } else {
@@ -195,11 +195,12 @@ angular.module("angular-growl").provider("growl", function() {
       }
       var addedMessage = growlMessages.addMessage(message);
       $rootScope.$broadcast("growlMessage", message);
-      $timeout(function(){}, 0);
+      $timeout(function () {
+      }, 0);
       return addedMessage;
     }
 
-    function sendMessage(text, config, severity) {
+    function sendMessage (text, config, severity) {
       var _config = config || {}, message;
 
       message = {
@@ -214,10 +215,10 @@ angular.module("angular-growl").provider("growl", function() {
         position: _config.position || _position,
         referenceId: _config.referenceId || _referenceId,
         translateMessage: _config.translateMessage === undefined ? _translateMessages : _config.translateMessage,
-        destroy: function() {
+        destroy: function () {
           growlMessages.deleteMessage(message);
         },
-        setText: function(newText) {
+        setText: function (newText) {
           message.text = $sce.trustAsHtml(String(newText));
         },
         onclose: _config.onclose,
@@ -233,7 +234,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {string} text
      * @param {{ttl: number}} config
      */
-    function warning(text, config) {
+    function warning (text, config) {
       return sendMessage(text, config, "warning");
     }
 
@@ -243,7 +244,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {string} text
      * @param {{ttl: number}} config
      */
-    function error(text, config) {
+    function error (text, config) {
       return sendMessage(text, config, "error");
     }
 
@@ -253,7 +254,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {string} text
      * @param {{ttl: number}} config
      */
-    function info(text, config) {
+    function info (text, config) {
       return sendMessage(text, config, "info");
     }
 
@@ -263,7 +264,7 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {string} text
      * @param {{ttl: number}} config
      */
-    function success(text, config) {
+    function success (text, config) {
       return sendMessage(text, config, "success");
     }
 
@@ -274,9 +275,9 @@ angular.module("angular-growl").provider("growl", function() {
      * @param {{ttl: number}} config
      * @param {string} severity
      */
-    function general(text, config, severity) {
-        severity = (severity || "error").toLowerCase();
-        sendMessage(text, config, severity);
+    function general (text, config, severity) {
+      severity = (severity || "error").toLowerCase();
+      sendMessage(text, config, severity);
     }
 
     /**
@@ -284,8 +285,8 @@ angular.module("angular-growl").provider("growl", function() {
      *
      * @param {Array.<object>} messages
      */
-    function addServerMessages(messages) {
-      if((!messages) || (!messages.length)){
+    function addServerMessages (messages) {
+      if ((!messages) || (!messages.length)) {
         return;
       }
       var i, message, severity, length;
@@ -303,19 +304,19 @@ angular.module("angular-growl").provider("growl", function() {
       }
     }
 
-    function onlyUnique() {
+    function onlyUnique () {
       return _onlyUniqueMessages;
     }
 
-    function reverseOrder() {
+    function reverseOrder () {
       return _reverseOrder;
     }
 
-    function inlineMessages() {
+    function inlineMessages () {
       return _inline;
     }
 
-    function position() {
+    function position () {
       return _position;
     }
 
@@ -327,7 +328,7 @@ angular.module("angular-growl").provider("growl", function() {
       general: general,
       addServerMessages: addServerMessages,
       onlyUnique: onlyUnique,
-      reverseOrder : reverseOrder,
+      reverseOrder: reverseOrder,
       inlineMessages: inlineMessages,
       position: position
     };
