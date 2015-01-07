@@ -27,12 +27,12 @@
 .growl-container.growl-fixed.top-center {
   top: 10px;
   left: 50%;
-  margin-left: -150px;
+  margin-left: -200px;
 }
 .growl-container.growl-fixed.bottom-center {
   bottom: 10px;
   left: 50%;
-  margin-left: -150px;
+  margin-left: -200px;
 }
 
 /*
