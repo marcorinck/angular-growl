@@ -56,9 +56,8 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
   };
 
   this.destroyAllMessages = function (referenceId) {
-    var messages = this.getAllMessages(referenceId),
-      i = messages.length;
-    for (i - 1; i >= 0; i--) {
+    var messages = this.getAllMessages(referenceId);
+    for (var i = messages.length - 1; i >= 0; i--) {
       messages[i].destroy();
     }
     if (this.directives[referenceId]) {
