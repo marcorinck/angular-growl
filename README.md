@@ -125,6 +125,7 @@ Thanks Marco Rinck for the original code, the following people have contributed 
 * [Anaphase](https://github.com/Anaphase)
 * [soumya92](https://github.com/soumya92)
 * [willjk](https://github.com/willjk)
+* [wardvijf](https://github.com/wardvijf)
 
 # License
 Copyright (C) 2015 Marco Rinck

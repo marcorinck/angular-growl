@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.7.3 - 2015-01-26
+ * angular-growl-v2 - v0.7.3 - 2015-02-22
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2015 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -186,6 +186,7 @@ angular.module('angular-growl').provider('growl', function () {
       function broadcastMessage(message) {
         if (translate && message.translateMessage) {
           message.text = translate(message.text, message.variables);
+          message.title = translate(message.title);
         } else {
           var polation = $interpolate(message.text);
           message.text = polation(message.variables);
