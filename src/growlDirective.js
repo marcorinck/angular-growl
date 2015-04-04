@@ -1,19 +1,29 @@
-angular.module("angular-growl").directive("growl", ["$rootScope", function ($rootScope) {
+angular.module("angular-growl").directive("growl", ["$rootScope", "$compile", function ($rootScope, $compile) {
 	"use strict";
 
 	return {
 		restrict: 'A',
-		template:   '<div class="growl">' +
-					'	<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
-					'		<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' +
-					'       <div ng-switch="message.enableHtml">' +
-					'           <div ng-switch-when="true" ng-bind-html="message.text"></div>' +
-					'           <div ng-switch-default ng-bind="message.text"></div>' +
-					'       </div>' +
-					'	</div>' +
-					'</div>',
 		replace: false,
 		scope: true,
+		link: function($scope, element, attrs){
+			var template = '<div class="growl">' +
+							'	<div class="growl-item alert" ng-repeat="message in messages" ng-class="computeClasses(message)">' +
+							'		<button type="button" class="close" ng-click="deleteMessage(message)">&times;</button>' +
+							'       <div ng-switch="message.enableHtml">' +
+							'           <div ng-switch-when="true" ng-bind-html="message.text"></div>' +
+							'           <div ng-switch-default ng-bind="message.text"></div>' +
+							'       </div>' +
+							'	</div>' +
+							'</div>';
+
+			if(attrs.templateUrl){
+				$scope.templateUrl = attrs.templateUrl;
+				template = '<div><ng-include src="templateUrl"/></div>';
+			}
+
+			element.html(template);
+			$compile(element.contents())($scope);
+		},
 		controller: ['$scope', '$timeout', 'growl', function ($scope, $timeout, growl) {
 			var onlyUnique = growl.onlyUnique();
 

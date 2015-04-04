@@ -9,7 +9,10 @@
 		"url": "https://github.com/marcorinck/angular-growl"
 	},
 	"license": "MIT",
-	"main": "./build/angular-growl.js",
+	"main": [
+		"./build/angular-growl.js",
+		"./build/angular-growl.min.css"
+	],
 	"ignore": [
 		"src",
 		"test",
