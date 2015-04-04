@@ -7,8 +7,6 @@ app.config(["growlProvider", "$httpProvider", function(growlProvider, $httpProvi
 	growlProvider.messageSeverityKey("severity-level");
 	growlProvider.onlyUniqueMessages(true);
 	$httpProvider.responseInterceptors.push(growlProvider.serverMessagesInterceptor);
-
-
 }]);
 
 app.run(function($httpBackend) {
@@ -21,6 +19,7 @@ app.run(function($httpBackend) {
 			{"messagetext":"and another", "severity-level": "error"}
 		]
 	});
+	$httpBackend.whenGET('custom.html').passThrough();
 });
 
 app.controller("demoCtrl",  function demoCtrl($scope, growl, $http) {
