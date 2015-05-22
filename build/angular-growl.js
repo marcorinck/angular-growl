@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.7.3 - 2015-01-27
+ * angular-growl-v2 - v0.7.3 - 2015-02-22
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2015 Marco Rinck,Jan Stevens; Licensed MIT
  */
@@ -107,59 +107,45 @@ angular.module('angular-growl').provider('growl', function () {
         }
       }
     }
-    return this;
   };
   this.globalTranslateMessages = function (translateMessages) {
     _translateMessages = translateMessages;
-    return this;
   };
   this.globalDisableCloseButton = function (disableCloseButton) {
     _disableCloseButton = disableCloseButton;
-    return this;
   };
   this.globalDisableIcons = function (disableIcons) {
     _disableIcons = disableIcons;
-    return this;
   };
   this.globalReversedOrder = function (reverseOrder) {
     _reverseOrder = reverseOrder;
-    return this;
   };
   this.globalDisableCountDown = function (countDown) {
     _disableCountDown = countDown;
-    return this;
   };
   this.messageVariableKey = function (messageVariableKey) {
     _messageVariableKey = messageVariableKey;
-    return this;
   };
   this.globalInlineMessages = function (inline) {
     _inline = inline;
-    return this;
   };
   this.globalPosition = function (position) {
     _position = position;
-    return this;
   };
   this.messagesKey = function (messagesKey) {
     _messagesKey = messagesKey;
-    return this;
   };
   this.messageTextKey = function (messageTextKey) {
     _messageTextKey = messageTextKey;
-    return this;
   };
   this.messageTitleKey = function (messageTitleKey) {
     _messageTitleKey = messageTitleKey;
-    return this;
   };
   this.messageSeverityKey = function (messageSeverityKey) {
     _messageSeverityKey = messageSeverityKey;
-    return this;
   };
   this.onlyUniqueMessages = function (onlyUniqueMessages) {
     _onlyUniqueMessages = onlyUniqueMessages;
-    return this;
   };
   this.serverMessagesInterceptor = [
     '$q',
@@ -200,6 +186,7 @@ angular.module('angular-growl').provider('growl', function () {
       function broadcastMessage(message) {
         if (translate && message.translateMessage) {
           message.text = translate(message.text, message.variables);
+          message.title = translate(message.title);
         } else {
           var polation = $interpolate(message.text);
           message.text = polation(message.variables);
