@@ -202,8 +202,8 @@ angular.module("angular-growl").provider("growl", function () {
 
     function broadcastMessage (message) {
       if (translate && message.translateMessage) {
-        message.text = translate(message.text, message.variables);
-        message.title = translate(message.title);
+        message.text = translate(message.text, message.variables) || message.text;
+        message.title = translate(message.title) || message.title;
       } else {
         var polation = $interpolate(message.text);
         message.text = polation(message.variables);
