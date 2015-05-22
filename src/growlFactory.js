@@ -36,6 +36,7 @@ angular.module("angular-growl").provider("growl", function () {
         }
       }
     }
+    return this;
   };
 
   /**
@@ -45,6 +46,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.globalTranslateMessages = function (translateMessages) {
     _translateMessages = translateMessages;
+    return this;
   };
 
   /**
@@ -54,6 +56,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.globalDisableCloseButton = function (disableCloseButton) {
     _disableCloseButton = disableCloseButton;
+    return this;
   };
 
   /**
@@ -63,6 +66,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.globalDisableIcons = function (disableIcons) {
     _disableIcons = disableIcons;
+    return this;
   };
 
   /**
@@ -72,6 +76,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.globalReversedOrder = function (reverseOrder) {
     _reverseOrder = reverseOrder;
+    return this;
   };
 
   /**
@@ -81,6 +86,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.globalDisableCountDown = function (countDown) {
     _disableCountDown = countDown;
+    return this;
   };
 
   /**
@@ -90,6 +96,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.messageVariableKey = function (messageVariableKey) {
     _messageVariableKey = messageVariableKey;
+    return this;
   };
 
   /**
@@ -99,6 +106,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.globalInlineMessages = function (inline) {
     _inline = inline;
+    return this;
   };
 
   /**
@@ -108,6 +116,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.globalPosition = function (position) {
     _position = position;
+    return this;
   };
   /**
    * sets the key in $http response the serverMessagesInterecptor is looking for server-sent messages, value of key
@@ -117,6 +126,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.messagesKey = function (messagesKey) {
     _messagesKey = messagesKey;
+    return this;
   };
 
   /**
@@ -126,6 +136,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.messageTextKey = function (messageTextKey) {
     _messageTextKey = messageTextKey;
+    return this;
   };
 
   /**
@@ -135,6 +146,7 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.messageTitleKey = function (messageTitleKey) {
     _messageTitleKey = messageTitleKey;
+    return this;
   };
 
   /**
@@ -144,10 +156,12 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.messageSeverityKey = function (messageSeverityKey) {
     _messageSeverityKey = messageSeverityKey;
+    return this;
   };
 
   this.onlyUniqueMessages = function (onlyUniqueMessages) {
     _onlyUniqueMessages = onlyUniqueMessages;
+    return this;
   };
 
   /**
