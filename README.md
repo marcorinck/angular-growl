@@ -1,7 +1,3 @@
-#Looking for a new maintainer
-Sadly I don't have the time to continue support this, for this reason I'm looking for a new maintainer!
-If you would like to maintain this plugin please make an issue
-
 #angular-growl-2
 Growl like notifications for angularJS projects, using bootstrap alert classes, originally developed by Marco Rinck
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Growl Sample</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../build/angular-growl.min.css">
+</head>
+<body ng-app="GrowlSample">
+
+    <div growl></div>
+
+    <div class="container well" ng-controller="SampleController as vm">
+        <div class="col-xs-12">
+            <form class="form form-horizontal" name="messageForm" novalidate>
+                <div class="form-group">
+                    <label class="control-label" for="title">Title</label>
+                    <input class="form-control" type="text" id="title" ng-model="vm.message.title" placeholder="Enter Title..." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="timeout">Timeout (in ms)</label>
+                    <input class="form-control" type="number" id="timeout" ng-model="vm.message.ttl" placeholder="Enter Timeout..." required>
+                </div>
+
+                <div class="form-group" ng-init="options=['success','info','error','warning']">
+                    <div class="radio" ng-repeat="op in options">
+                        <label>
+                            <input type="radio" ng-model="vm.message.type" ng-value="op">
+                            {{op}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block"
+                            data-ng-disabled="(messageForm.$invalid || messageForm.$pristine)"
+                            ng-click="vm.showMessage()">Show Message</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../build/angular-growl.min.js"></script>
+
+
+    <!-- Sample App -->
+    <script src="./app.js"></script>
+</body>
+</html>
