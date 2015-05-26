@@ -14,14 +14,17 @@
 	"license": "MIT",
 	"main": ["./build/angular-growl.js", "./build/angular-growl.css"],
 	"ignore": [
-		"src",
-		"test",
 		".jshintrc",
+	  	".gitignore",
+	  	"README.md",
+	  	"CHANGELOG.md",
 		"package.json",
 		"gruntfile.js",
 		"karma.conf.js",
-		"demo",
-		".gitignore"
+	  	"doc",
+	  	"src",
+	  	"test",
+	  	"demo"
 	],
 	"dependencies": {
 		"angular": ">=1.2.1"
