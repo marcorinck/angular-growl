@@ -5,6 +5,9 @@
 * Latest angular support
 * [Finding a solution for this issue](https://github.com/JanStevens/angular-growl-2/issues/54)
 
+**0.7.4** - 26 May 2015
+* Feature request: Return the configuration object on config methods (@disoney) [pull #73][https://github.com/JanStevens/angular-growl-2/pull/73]
+
 **0.7.3** - 05 Jan 2015
 * Fixes issue 62 where the service was called before the directive was initialized
 
