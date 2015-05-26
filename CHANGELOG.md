@@ -7,6 +7,8 @@
 
 **0.7.4** - 26 May 2015
 * Feature request: Return the configuration object on config methods (@disoney) [pull #73][https://github.com/JanStevens/angular-growl-2/pull/73]
+* On responseError data is null, and an error is raised. (@AlexTM84) [pull #87][https://github.com/JanStevens/angular-growl-2/pull/87]
+* Fix empty title and text (@asabirov) [pull #86][https://github.com/JanStevens/angular-growl-2/pull/86]
 
 **0.7.3** - 05 Jan 2015
 * Fixes issue 62 where the service was called before the directive was initialized
