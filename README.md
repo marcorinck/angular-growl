@@ -17,12 +17,24 @@ present, you only have to provide keys as messages, angular-translate will trans
 * pre-defined $http-Interceptor to automatically handle $http responses for server-sent messages
 * automatic CSS animations when adding/closing notifications (only when using >= angularJS 1.2)
 * < 1 kB after GZIP
-* Allows for HTML content inside the alert
-* Possible to use multiple growl directives that show their notification inline
-* Icons for the different alert types (can be disabled)
-* Possible to set an optional title
-* Server side variable interpolation
-* Lots of configuration possible!
+
+##Changelog
+
+**0.4.0** - 19th Nov 2013
+
+* updated dependency to angularJS 1.2.x, angular-growl does not work with 1.0.x anymore (BREAKING CHANGE)
+* new option: only display unique messages, which is the new default, disable to allow same message more than once (BREAKING CHANGE)
+* new option: allow html tags in messages, default is off, allows to use HTML tags in messages
+
+**0.3.1** - 1st Oct 2013
+
+* bugfix: translating of messages works again
+* change: also set alert css classes introduced by bootstrap 3
+
+**0.3.0** - 26th Sept 2013
+
+* adding css animations support via ngAnimate (for angularJS >= 1.2)
+* ability to configure server message keys
 
 ##Installation
 
