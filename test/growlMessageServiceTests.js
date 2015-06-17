@@ -10,6 +10,6 @@ describe("growlMessageService Spec", function() {
 
     /// TESTS
     it('Should be defined', function () {
-        expect(growlMessages).toBeDefined()
+        expect(growlMessages).toBeDefined();
     });
 });

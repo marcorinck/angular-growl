@@ -26,7 +26,7 @@ describe("growlFactory Spec", function() {
 
         var severity;
         var sampleText = 'text';
-        for (var i in builtinTypes) {
+        for (var i = 0; i < builtinTypes.length; i++) {
 
             severity = builtinTypes[i];
             expect(growlFactory[severity]).toBeDefined();
@@ -57,8 +57,7 @@ describe("growlFactory Spec", function() {
         expect(growlMessages.getAllMessages().length).toEqual(messageCount);
 
         growlMessages.destroyAllMessages();
-
         expect(growlMessages.getAllMessages().length).toEqual(0);
 
-    })
+    });
 });
