@@ -40,11 +40,25 @@ describe("growlFactory Spec", function() {
         }
     });
 
-    it('Should add and return an info message', function () {
+    it('Should add and remove 1 message', function () {
         var msg = growlFactory.info('text');
 
         expect(growlMessages.getAllMessages().length).toEqual(1);
         msg.destroy();
         expect(growlMessages.getAllMessages().length).toEqual(0);
     });
+
+    it('Should be able to destroy all messages', function () {
+        var messageCount = 10;
+        for (var i = 0; i < messageCount; i++) {
+            growlFactory.info('Test ' + i);
+        }
+
+        expect(growlMessages.getAllMessages().length).toEqual(messageCount);
+
+        growlMessages.destroyAllMessages();
+
+        expect(growlMessages.getAllMessages().length).toEqual(0);
+
+    })
 });
