@@ -1,4 +1,4 @@
-describe("growlDirective", function() {
+describe("growlDirective Spec", function() {
 	"use strict";
 
 	var $compile,
@@ -18,10 +18,5 @@ describe("growlDirective", function() {
 		$rootScope.$digest();
 
 		expect(growlElement.html()).toContain('<div class="growl-container growl-fixed top-right"');
-	});
-
-
-	it("should be true ", function() {
-		expect(true).toBe(true);
 	});
 });
