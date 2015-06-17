@@ -1,6 +1,7 @@
 angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', function ($sce, $timeout) {
   "use strict";
 
+  var self = this;
   this.directives = {};
   var preloadDirectives = {};
 
@@ -20,6 +21,11 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
       };
     }
     return directive;
+  }
+
+  function directiveForRefId(referenceId) {
+    var refId = referenceId || 0;
+    return (self.directives[refId] || preloadDirectives[refId]);
   }
 
   /**
@@ -47,8 +53,8 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
   this.getAllMessages = function (referenceId) {
     referenceId = referenceId || 0;
     var messages;
-    if (this.directives[referenceId]) {
-      messages =  this.directives[referenceId].messages;
+    if (directiveForRefId(referenceId)) {
+      messages = directiveForRefId(referenceId).messages;
     } else {
       messages = [];
     }
@@ -60,8 +66,10 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
     for (var i = messages.length - 1; i >= 0; i--) {
       messages[i].destroy();
     }
-    if (this.directives[referenceId]) {
-      this.directives[referenceId].messages = [];
+
+    var directive = directiveForRefId(referenceId);
+    if (directive) {
+      directive.messages = [];
     }
   };
 
@@ -130,8 +138,9 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
 
     if (message.ttl && message.ttl !== -1) {
       //adds message timeout to promises and starts messages countdown function.
+      var self = this;
       message.promises.push($timeout(angular.bind(this, function () {
-        this.deleteMessage(message);
+        self.deleteMessage(message);
       }), message.ttl));
       message.promises.push($timeout(message.countdownFunction, 1000));
     }
@@ -140,7 +149,7 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
   };
 
   this.deleteMessage = function (message) {
-    var messages = this.directives[message.referenceId].messages,
+    var messages = this.getAllMessages(message.referenceId),
       index = messages.indexOf(message);
     if (index > -1) {
       messages[index].close = true;

@@ -292,7 +292,7 @@ angular.module("angular-growl").provider("growl", function () {
      */
     function general (text, config, severity) {
       severity = (severity || "error").toLowerCase();
-      sendMessage(text, config, severity);
+      return sendMessage(text, config, severity);
     }
 
     /**
