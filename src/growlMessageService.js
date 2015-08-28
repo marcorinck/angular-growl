@@ -1,4 +1,4 @@
-angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', function ($sce, $timeout) {
+angular.module("angular-growl").service("growlMessages", ['$sce', '$interval', function ($sce, $interval) {
   "use strict";
 
   var self = this;
@@ -110,7 +110,7 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
       message.countdownFunction = function () {
         if (message.countdown > 1) {
           message.countdown--;
-          message.promises.push($timeout(message.countdownFunction, 1000));
+          message.promises.push($interval(message.countdownFunction, 1000, 1));
         } else {
           message.countdown--;
         }
@@ -139,10 +139,10 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$timeout', fu
     if (message.ttl && message.ttl !== -1) {
       //adds message timeout to promises and starts messages countdown function.
       var self = this;
-      message.promises.push($timeout(angular.bind(this, function () {
+      message.promises.push($interval(angular.bind(this, function () {
         self.deleteMessage(message);
-      }), message.ttl));
-      message.promises.push($timeout(message.countdownFunction, 1000));
+      }), message.ttl, 1));
+      message.promises.push($interval(message.countdownFunction, 1000, 1));
     }
 
     return message;
