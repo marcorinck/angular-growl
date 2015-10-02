@@ -110,7 +110,7 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$interval', f
       message.countdownFunction = function () {
         if (message.countdown > 1) {
           message.countdown--;
-          message.promises.push($interval(message.countdownFunction, 1000, 1));
+          message.promises.push($interval(message.countdownFunction, 1000, 1,1));
         } else {
           message.countdown--;
         }
@@ -141,8 +141,8 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$interval', f
       var self = this;
       message.promises.push($interval(angular.bind(this, function () {
         self.deleteMessage(message);
-      }), message.ttl, 1));
-      message.promises.push($interval(message.countdownFunction, 1000, 1));
+      }), message.ttl, 1,1));
+      message.promises.push($interval(message.countdownFunction, 1000, 1,1));
     }
 
     return message;
