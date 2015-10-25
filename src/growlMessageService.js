@@ -150,7 +150,10 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$interval', f
 
   this.deleteMessage = function (message) {
     var messages = this.getAllMessages(message.referenceId),
-      index = messages.indexOf(message);
+      index = -1;
+
+	  for (var i in messages) index = (messages[i] == message) ? i : index;
+	
     if (index > -1) {
       messages[index].close = true;
       messages.splice(index, 1);
