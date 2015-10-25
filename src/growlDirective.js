@@ -11,8 +11,8 @@ angular.module("angular-growl").directive("growl", [
         inline: '=',
         limitMessages: '='
       },
-      controller: ['$scope', '$timeout', 'growl', 'growlMessages',
-        function ($scope, $timeout, growl, growlMessages) {
+      controller: ['$scope', '$interval', 'growl', 'growlMessages',
+        function ($scope, $interval, growl, growlMessages) {
           $scope.referenceId = $scope.reference || 0;
 
           growlMessages.initDirective($scope.referenceId, $scope.limitMessages);
@@ -30,7 +30,7 @@ angular.module("angular-growl").directive("growl", [
           $scope.stopTimeoutClose = function (message) {
             if (!message.clickToClose) {
               angular.forEach(message.promises, function (promise) {
-                $timeout.cancel(promise);
+                $interval.cancel(promise);
               });
               if (message.close) {
                 growlMessages.deleteMessage(message);

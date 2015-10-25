@@ -188,7 +188,7 @@ angular.module("angular-growl").provider("growl", function () {
     };
   }];
 
-  this.$get = ["$rootScope", "$interpolate", "$sce", "$filter", "$timeout", "growlMessages", function ($rootScope, $interpolate, $sce, $filter, $timeout, growlMessages) {
+  this.$get = ["$rootScope", "$interpolate", "$sce", "$filter", "$interval", "growlMessages", function ($rootScope, $interpolate, $sce, $filter, $interval, growlMessages) {
     var translate;
 
     growlMessages.onlyUnique = _onlyUniqueMessages;
@@ -210,8 +210,8 @@ angular.module("angular-growl").provider("growl", function () {
       }
       var addedMessage = growlMessages.addMessage(message);
       $rootScope.$broadcast("growlMessage", message);
-      $timeout(function () {
-      }, 0);
+      $interval(function () {
+      }, 0, 1);
       return addedMessage;
     }
 

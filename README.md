@@ -1,5 +1,5 @@
 #angular-growl-2
-Growl like notifications for angularJS projects, using bootstrap alert classes, originally developed by Marco Rinck
+Growl like notifications for angularJS projects, using bootstrap alert classes, originally developed by Marco Rinck and Jan Stevens
 
 ##Features
 
