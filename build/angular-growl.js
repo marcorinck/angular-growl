@@ -1,5 +1,5 @@
 /**
- * angular-growl-v2 - v0.7.5 - 2015-10-02
+ * angular-growl-v2 - v0.7.8 - 2015-10-25
  * http://janstevens.github.io/angular-growl-2
  * Copyright (c) 2015 Marco Rinck,Jan Stevens,Silvan van Leeuwen; Licensed MIT
  */
@@ -92,7 +92,7 @@ angular.module('angular-growl').provider('growl', function () {
       error: null,
       warning: null,
       info: null
-    }, _messagesKey = 'messages', _messageTextKey = 'text', _messageTitleKey = 'title', _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false, _disableIcons = false, _reverseOrder = false, _disableCountDown = false, _translateMessages = true;
+    }, _messagesKey = 'messages', _messageTextKey = 'text', _messageTitleKey = 'title', _messageSeverityKey = 'severity', _messageTTLKey = 'ttl', _onlyUniqueMessages = true, _messageVariableKey = 'variables', _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false, _disableIcons = false, _reverseOrder = false, _disableCountDown = false, _translateMessages = true;
   this.globalTimeToLive = function (ttl) {
     if (typeof ttl === 'object') {
       for (var k in ttl) {
@@ -155,6 +155,10 @@ angular.module('angular-growl').provider('growl', function () {
   };
   this.messageSeverityKey = function (messageSeverityKey) {
     _messageSeverityKey = messageSeverityKey;
+    return this;
+  };
+  this.messageTTLKey = function (messageTTLKey) {
+    _messageTTLKey = messageTTLKey;
     return this;
   };
   this.onlyUniqueMessages = function (onlyUniqueMessages) {
@@ -265,6 +269,9 @@ angular.module('angular-growl').provider('growl', function () {
             var config = {};
             config.variables = message[_messageVariableKey] || {};
             config.title = message[_messageTitleKey];
+            if (message[_messageTTLKey]) {
+              config.ttl = message[_messageTTLKey];
+            }
             sendMessage(message[_messageTextKey], config, severity);
           }
         }
@@ -406,7 +413,12 @@ angular.module('angular-growl').service('growlMessages', [
       return message;
     };
     this.deleteMessage = function (message) {
-      var messages = this.getAllMessages(message.referenceId), index = messages.indexOf(message);
+      var messages = this.getAllMessages(message.referenceId), index = -1;
+      for (var i in messages) {
+        if (messages.hasOwnProperty(i)) {
+          index = messages[i] === message ? i : index;
+        }
+      }
       if (index > -1) {
         messages[index].close = true;
         messages.splice(index, 1);
