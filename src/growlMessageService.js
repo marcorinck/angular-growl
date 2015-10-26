@@ -152,7 +152,11 @@ angular.module("angular-growl").service("growlMessages", ['$sce', '$interval', f
     var messages = this.getAllMessages(message.referenceId),
       index = -1;
 
-	  for (var i in messages) index = (messages[i] == message) ? i : index;
+    for (var i in messages) {
+      if (messages.hasOwnProperty(i)) {
+        index = messages[i] === message ? i : index;
+      }
+    }
 	
     if (index > -1) {
       messages[index].close = true;
