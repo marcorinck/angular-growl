@@ -6,6 +6,7 @@ angular.module("angular-growl").provider("growl", function () {
     _messageTextKey = 'text',
     _messageTitleKey = 'title',
     _messageSeverityKey = 'severity',
+    _messageTTLKey = 'ttl',
     _onlyUniqueMessages = true,
     _messageVariableKey = 'variables',
     _referenceId = 0,
@@ -158,6 +159,17 @@ angular.module("angular-growl").provider("growl", function () {
     _messageSeverityKey = messageSeverityKey;
     return this;
   };
+
+  /**
+   * sets the key in server sent messages the serverMessagesInterecptor is looking for ttl of message
+   *
+   * @param {string} messageTTLKey default: ttl
+   */
+  this.messageTTLKey = function (messageTTLKey) {
+    _messageTTLKey = messageTTLKey;
+    return this;
+  };
+
 
   this.onlyUniqueMessages = function (onlyUniqueMessages) {
     _onlyUniqueMessages = onlyUniqueMessages;
@@ -314,6 +326,9 @@ angular.module("angular-growl").provider("growl", function () {
           var config = {};
           config.variables = message[_messageVariableKey] || {};
           config.title = message[_messageTitleKey];
+          if (message[_messageTTLKey]) {
+            config.ttl = message[_messageTTLKey];
+          }
           sendMessage(message[_messageTextKey], config, severity);
         }
       }
