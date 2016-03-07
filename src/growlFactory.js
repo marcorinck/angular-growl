@@ -6,7 +6,8 @@ angular.module("angular-growl").provider("growl", function() {
 		_messagesKey = 'messages',
 		_messageTextKey = 'text',
 		_messageSeverityKey = 'severity',
-		_onlyUniqueMessages = true;
+		_onlyUniqueMessages = true,
+		_callback = null;
 
 	/**
 	 * set a global timeout (time to live) after which messages will be automatically closed
@@ -66,7 +67,7 @@ angular.module("angular-growl").provider("growl", function() {
 	 */
 	 this.registerCallback = function (callback) {
         _callback = callback;
-    }
+    };
 
 	/**
 	 * $http interceptor that can be added to array of $http interceptors during config phase of application
