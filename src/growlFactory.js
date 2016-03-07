@@ -57,6 +57,16 @@ angular.module("angular-growl").provider("growl", function() {
 	this.onlyUniqueMessages = function(onlyUniqueMessages) {
 		_onlyUniqueMessages = onlyUniqueMessages;
 	};
+	
+	/**
+	 * defines a callback that would be called with the message object as parameter
+	 * this callback can be use to process the message in the angular app, e.g. write the message to a status bar
+	 * 
+	 * @param {function} callback default: null
+	 */
+	 this.registerCallback = function (callback) {
+        _callback = callback;
+    }
 
 	/**
 	 * $http interceptor that can be added to array of $http interceptors during config phase of application
@@ -112,6 +122,9 @@ angular.module("angular-growl").provider("growl", function() {
 			};
 
 			broadcastMessage(message);
+			if (_callback) {
+                  _callback(message);
+            }
 		}
 
 		/**
