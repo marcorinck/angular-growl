@@ -9,7 +9,7 @@ angular.module("angular-growl").provider("growl", function () {
     _messageTTLKey = 'ttl',
     _onlyUniqueMessages = true,
     _messageVariableKey = 'variables',
-    _referenceIdKey = 'referenceId',
+    _messageReferenceIdKey = 'referenceId',
     _referenceId = 0,
     _inline = false,
     _position = 'top-right',
@@ -174,10 +174,10 @@ angular.module("angular-growl").provider("growl", function () {
   /**
    * sets the key in server sent messages the serverMessagesInterecptor is looking for referenceId of message
    *
-   * @param {string} referenceIdKey default: referenceId
+   * @param {string} messageReferenceIdKey default: referenceId
    */
-  this.referenceIdKey = function (referenceIdKey) {
-    _referenceIdKey = referenceIdKey;
+  this.messageReferenceIdKey = function (messageReferenceIdKey) {
+    _messageReferenceIdKey = messageReferenceIdKey;
     return this;
   };
 
@@ -340,8 +340,8 @@ angular.module("angular-growl").provider("growl", function () {
           if (message[_messageTTLKey]) {
             config.ttl = message[_messageTTLKey];
           }
-          if (message[_referenceIdKey]) {
-            config.referenceId = message[_referenceIdKey];
+          if (message[_messageReferenceIdKey]) {
+            config.referenceId = message[_messageReferenceIdKey];
           }
           sendMessage(message[_messageTextKey], config, severity);
         }
