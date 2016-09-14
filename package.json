@@ -11,6 +11,9 @@
     "name": "Jan Stevens"
   },
   "license": "MIT",
+  "dependencies": {
+    "angular": ">=1.2.1"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-bump": "0.0.2",
