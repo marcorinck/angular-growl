@@ -15,6 +15,7 @@ angular.module("angular-growl").provider("growl", function () {
     _position = 'top-right',
     _disableCloseButton = false,
     _disableIcons = false,
+    _pauseOnMouseOver = false,
     _reverseOrder = false,
     _disableCountDown = false,
     _translateMessages = true;
@@ -68,6 +69,16 @@ angular.module("angular-growl").provider("growl", function () {
    */
   this.globalDisableIcons = function (disableIcons) {
     _disableIcons = disableIcons;
+    return this;
+  };
+
+  /**
+   * set whether message is paused on mouse-over
+   *
+   * @param {bool} pauseOnMouseOver
+   */
+  this.globalPauseOnMouseOver = function (pauseOnMouseOver) {
+    _pauseOnMouseOver = pauseOnMouseOver;
     return this;
   };
 
@@ -249,6 +260,7 @@ angular.module("angular-growl").provider("growl", function () {
         variables: _config.variables || {},
         disableCloseButton: _config.disableCloseButton === undefined ? _disableCloseButton : _config.disableCloseButton,
         disableIcons: _config.disableIcons === undefined ? _disableIcons : _config.disableIcons,
+        pauseOnMouseOver: _config.pauseOnMouseOver === undefined ? _pauseOnMouseOver : _config.pauseOnMouseOver,
         disableCountDown: _config.disableCountDown === undefined ? _disableCountDown : _config.disableCountDown,
         position: _config.position || _position,
         referenceId: _config.referenceId || _referenceId,
