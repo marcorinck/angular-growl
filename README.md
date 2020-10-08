@@ -138,6 +138,7 @@ Thanks Marco Rinck for the original code, the following people have contributed 
 * [soumya92](https://github.com/soumya92)
 * [willjk](https://github.com/willjk)
 * [wardvijf](https://github.com/wardvijf)
+* [naveenpeterj](https://github.com/naveenpeterj)
 
 # License
 Copyright (C) 2015 Marco Rinck
