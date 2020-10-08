@@ -86,7 +86,7 @@ angular.module("angular-growl").run(['$templateCache', function ($templateCache)
   if ($templateCache.get('templates/growl/growl.html') === undefined) {
     $templateCache.put("templates/growl/growl.html",
       '<div class="growl-container" ng-class="wrapperClasses()">' +
-      '<div class="growl-item alert" ng-repeat="message in growlMessages.directives[referenceId].messages" ng-class="alertClasses(message)" ng-click="stopTimeoutClose(message)">' +
+      '<div class="growl-item alert" ng-repeat="message in growlMessages.directives[referenceId].messages" ng-class="alertClasses(message)" ng-click="stopTimeoutClose(message)" ng-mouseenter="(message.pauseOnMouseOver) == true ? stopTimeoutClose(message) : null" ng-mouseleave="(message.pauseOnMouseOver) == true ? stopTimeoutClose(message) : null">' +
       '<button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-click="growlMessages.deleteMessage(message)" ng-if="!message.disableCloseButton">&times;</button>' +
       '<button type="button" class="close" aria-hidden="true" ng-if="showCountDown(message)">{{message.countdown}}</button>' +
       '<h4 class="growl-title" ng-if="message.title" ng-bind="message.title"></h4>' +

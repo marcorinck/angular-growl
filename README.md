@@ -116,6 +116,14 @@ Live demo's can be found on the following codepen collection:
 
 ## [Codepen Collection](http://codepen.io/collection/Jhcpi/)
 
+This stops messages from closing when mouse is over:
+
+````javascript
+app.config(['growlProvider', function (growlProvider) {
+  growlProvider.globalPauseOnMouseOver(true);
+}]);
+````
+
 ## Contributions
 * Fork the project
 * Change/Fix/Add the stuff you want
