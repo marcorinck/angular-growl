@@ -32,10 +32,13 @@ angular.module("angular-growl").directive("growl", [
               angular.forEach(message.promises, function (promise) {
                 $interval.cancel(promise);
               });
-              if (message.close) {
+              if(message.ttl == undefined || message.ttl == -1 || message.close) {
+                if (typeof (message.onclick) === 'function') {
+                    message.onclick();
+                }
                 growlMessages.deleteMessage(message);
               } else {
-                message.close = true;
+                  message.close = true;
               }
             }
           };
