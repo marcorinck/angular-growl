@@ -22,7 +22,8 @@ module.exports = function (grunt) {
 			core: [
 				'src/growl.js',
 				'src/growlDirective.js',
-				'src/growlFactory.js'
+				'src/growlFactory.js',
+				'src/growlMessageService.js'
 			],
 			css:  [
 				'src/growl.css'
@@ -72,12 +73,20 @@ module.exports = function (grunt) {
 					banner: '<%= meta.banner %>'
 				},
 				src: '<%= concat.core.dest %>',
-				dest: '<%= concat.core.dest %>'
+				dest: '<%= concat.core.dest %>',
 			},
 
 			core: {
 				src: ['<%= lib_files.core %>'],
 				dest: '<%= build_dir %>/angular-growl.js'
+			},
+
+			css: {
+				options: {
+					banner: '<%= meta.banner %>'
+				},
+				src: ['<%= lib_files.css %>'],
+				dest: '<%= build_dir %>/angular-growl.css'
 			}
 		},
 
@@ -150,6 +159,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('build:core', [
 		'concat:core',
+		'concat:css',
 		'ngmin:core',
 		'concat:banner',
 		'uglify:core',

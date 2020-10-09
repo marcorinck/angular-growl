@@ -13,11 +13,13 @@
 	"strict": true,
 	"bitwise": true,
 	"trailing": true,
+  	"plusplus": false,
 	"regexp": true,
 	"nonew": true,
+  	"white": false,
 	"forin": true,
-	"globals": {
-		"angular": true,
+	"predef": {
+		"angular": false,
 		"console": true,
 		"define": true,
 		"require": true,
