@@ -160,9 +160,8 @@ angular.module("angular-growl").provider("growl", function() {
 		 * @param {Array.<object>} messages
 		 */
 		function addServerMessages(messages) {
-			var i, message, severity, length;
-			length = messages.length;
-			for (i = 0; i < length; i++) {
+			var i, message, severity;
+			for (i = 0; i < messages.length; i++) {
 				message = messages[i];
 
 				if (message[_messageTextKey] && message[_messageSeverityKey]) {
